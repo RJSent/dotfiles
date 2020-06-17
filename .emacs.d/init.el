@@ -26,16 +26,16 @@
   :init (global-flycheck-mode))
 (use-package rbenv
   :ensure t
-  :init (global-rbenv-mode)) ;; Needs symlink to /usr/bin/ruby from ~/.rbenv/bin/rbenv if using AUR package
+  :init (global-rbenv-mode)) ;; Needs symlink to /usr/bin/ruby from $RBENV_ROOT/bin/rbenv if using AUR package
 (use-package nord-theme
   :ensure t
   :config (load-theme 'nord t))
 
 ;;; Mode definitions
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
-  "A mode for my Elisp configs.")
+  "A mode for my Elisp configs so Flycheck doesn't yell at me.")
 
-;; Ruby mode, emacswiki.org/emacs/RubyMode
+;; Autoload modes for the correct files
 (add-to-list 'auto-mode-alist
 	     '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist
@@ -46,7 +46,7 @@
 ;; Maximizes Emacs on startup
 ;; https://emacs.stackexchange.com/questions/2999/
 ;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-;; REMOVED because it caused issues with toggle-frame-fullscreen later on, not sure why yet
+;; REMOVED because it caused issues with toggle-frame-fullscreen not sure why yet
 
 ;; Removes empty space at bottom of screen with maximized emacs.
 ;; emacs.stackexchange.com/questions/34675
