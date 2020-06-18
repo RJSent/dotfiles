@@ -4,6 +4,7 @@
 ;; Learn about a variable with C-h v, describe-variable
 ;; Learn about a key binding with C-h k, describe-key. Useful if I remember a binding but not what it does
 
+;;; Packages
 ;; Autoinstall use-package if we don't have it installed
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -42,50 +43,38 @@
 	     '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("init.el" . mycfg-elisp-mode))
 
+;;; Splitting init.el across multiple files
+(write-region "" "" "custom.el")
+(setq custom-file (expand-file-name "custom.el" (file-name-directory (or load-file-name buffer-file-name))))
+(load custom-file)
 
-;; Maximizes Emacs on startup
-;; https://emacs.stackexchange.com/questions/2999/
-;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-;; REMOVED because it caused issues with toggle-frame-fullscreen not sure why yet
-
+;;; Unosrted code goes here
 ;; Removes empty space at bottom of screen with maximized emacs.
 ;; emacs.stackexchange.com/questions/34675
 (setq frame-resize-pixelwise t)
-
 ;; Increases font in default buffer, which all other buffers base off of. May be overwritten by buffer specific fonts
 ;; stackoverflow.com/questions/294664
 (set-face-attribute 'default nil :height 110)
-
 ;; Consider fixing commenting with https://stackoverflow.com/questions/26312317
-
-
-;; Display line numbers on all files. Currently includes shell, want to figure out how to disable
+;; Display line numbers on all files. Currently includes shell, want to disable that
 ;; https://emacs.stackexchange.com/questions/36747 likely has the solution
 ;; http://ergoemacs.org/emacs/emacs_line_number_mode.html
 (global-display-line-numbers-mode)
-
 ;; Disable menu bar? Not sure, didn't look for this online but in Emacs
 ;; Yay, entirely using emacs self help system
 (menu-bar-mode -1)
-
 ;; Disable tool bar.
 (tool-bar-mode -1)
-
 ;; Make the initial frame maximized and fullscreen. If you exit fullscreen the frame is still maximized
 (toggle-frame-maximized)
 (toggle-frame-fullscreen)
-
 ;; Disable scroll bar
 (scroll-bar-mode -1)
-
 ;; Disable hidden text in info files
 (setq Info-hide-note-references 1)
-
 ;; Inhibit startup message
 (setq inhibit-startup-message t)
-
 (setq ring-bell-function 'ignore)
-
 ;; https://www.emacswiki.org/emacs/BackupDirectory
 (setq
    backup-by-copying t      ; don't clobber symlinks
@@ -98,3 +87,4 @@
 
 (provide 'init)
 ;;; init.el ends here
+
