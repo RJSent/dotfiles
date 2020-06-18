@@ -22,25 +22,26 @@
 (eval-when-compile
   (require 'use-package))
 
+
 (use-package flycheck
+  :defer t
   :ensure t
   :init (global-flycheck-mode))
 (use-package rbenv
+  :defer t
   :ensure t
   :init (global-rbenv-mode)) ;; Needs symlink to /usr/bin/ruby from $RBENV_ROOT/bin/rbenv if using AUR package
 (use-package nord-theme
   :ensure t
   :config (load-theme 'nord t))
+(use-package ruby-mode
+  :ensure t
+  :mode "\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\|Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'"
+  :interpreter "ruby")
 
-;;; Mode definitions
+;;; Mode definitions that don't fit in with use-package yet
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
   "A mode for my Elisp configs so Flycheck doesn't yell at me.")
-
-;; Autoload modes for the correct files
-(add-to-list 'auto-mode-alist
-	     '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist
-	     '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("init.el" . mycfg-elisp-mode))
 
 ;;; Splitting init.el across multiple files
