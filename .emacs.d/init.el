@@ -31,7 +31,7 @@
 (use-package nord-theme
   :ensure t
   :config (load-theme 'nord t))
-(use-package ruby-mode
+(use-package enh-ruby-mode
   :ensure t
   :mode "\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\|Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'"
   :interpreter "ruby")
