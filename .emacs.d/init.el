@@ -44,7 +44,7 @@
 (add-to-list 'auto-mode-alist '("init.el" . mycfg-elisp-mode))
 
 ;;; Splitting init.el across multiple files
-(write-region "" "" "custom.el")
+(write-region "" "" "custom.el") ;; FIXME: if launched from shell writes to PWD
 (setq custom-file (expand-file-name "custom.el" (file-name-directory (or load-file-name buffer-file-name))))
 (load custom-file)
 
