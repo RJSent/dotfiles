@@ -22,13 +22,10 @@
 (eval-when-compile
   (require 'use-package))
 
-
 (use-package flycheck
-  :defer t
   :ensure t
   :init (global-flycheck-mode))
 (use-package rbenv
-  :defer t
   :ensure t
   :init (global-rbenv-mode)) ;; Needs symlink to /usr/bin/ruby from $RBENV_ROOT/bin/rbenv if using AUR package
 (use-package nord-theme
