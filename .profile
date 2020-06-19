@@ -1,4 +1,5 @@
 export XDG_CONFIG_HOME=~/.config
+export XDG_DATA_HOME=~/.local/share
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 export PATH="$HOME/.rbenv/bin:$PATH"

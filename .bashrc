@@ -99,17 +99,12 @@ complete -cf sudo
 # it regains control.  #65623
 # http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
 shopt -s checkwinsize
-
-#shopt -s expand_aliases #Done by default for interactive shells
-
 # Enable history appending instead of overwriting.  #139609
 shopt -s histappend
 
 ###########################################################################
 ######################## BEGIN USER CUSTOMIZATIONS ########################
 ###########################################################################
-
-eval "$(rbenv init -)" # Rbenv setup
 set -o noclobber # Don't overwrite files with > unless >|
 
 # Color output from less
@@ -123,3 +118,7 @@ export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 # Anything below this line was appended and should be sorted
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)" # Rbenv setup
+
+export IRBRC="$XDG_CONFIG_HOME"/irb/irbrc
