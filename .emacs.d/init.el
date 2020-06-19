@@ -35,6 +35,10 @@
   :ensure t
   :mode "\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\|Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'"
   :interpreter "ruby")
+(use-package inf-ruby
+  :ensure t
+  :hook enh-ruby-mode-hook
+  :config (add-to-list 'inf-ruby-implementations '("ruby" . "irb --prompt default --noreadline --nomultiline -r irb/completion")))
 
 ;;; Mode definitions that don't fit in with use-package yet
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
