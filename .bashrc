@@ -117,8 +117,5 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 # Anything below this line was appended and should be sorted
+# Dotfile version control
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)" # Rbenv setup
-
-export IRBRC="$XDG_CONFIG_HOME"/irb/irbrc
