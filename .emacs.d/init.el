@@ -8,17 +8,16 @@
 ;; Autoinstall use-package if we don't have it installed
 (require 'package)
 (setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("MELPA"        . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("MELPA Stable" . "https://stable.melpa.org/packages/"))
-(add-to-list 'package-archives '("MELPA"        . "https://melpa.org/packages"))
-(add-to-list 'package-archive-priorities '("MELPA Stable" . 10))
-(add-to-list 'package-archive-priorities '("MELPA"        . 5))
+(add-to-list 'package-archive-priorities '("MELPA"        . 10))
+(add-to-list 'package-archive-priorities '("MELPA Stable" . 5))
 (add-to-list 'package-archive-priorities '("gnu"          . 0))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
 (eval-when-compile
   (require 'use-package))
 
@@ -37,7 +36,7 @@
   :ensure t
   :mode "\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\|Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'"
   :interpreter "ruby")
-(use-package inf-ruby
+(use-package inf-ruby ;; Latest version has --nomultline by default, but not for bundle console, only ruby
   :ensure t
   :hook enh-ruby-mode-hook)
 
