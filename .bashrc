@@ -119,3 +119,4 @@ export LESS_TERMCAP_us=$'\e[1;4;31m'
 # Anything below this line was appended and should be sorted
 # Dotfile version control
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+eval "$(rbenv init -)" # Rbenv setup
