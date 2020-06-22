@@ -46,7 +46,8 @@
   :config (global-company-mode)
   (setq company-minimum-prefix-length 1)
   (setq company-frontends '(company-pseudo-tooltip-frontend
-			    company-echo-metadata-frontend)))
+			    company-echo-metadata-frontend))
+  (setq company-idle-delay 0))
 
 ;;; Mode definitions that don't fit in with use-package yet
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
