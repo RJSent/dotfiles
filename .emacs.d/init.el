@@ -26,9 +26,7 @@
   :init (global-flycheck-mode))
 (use-package rbenv
   :ensure t
-  :init (setq rbenv--initialized t) ;; prevent $RBENV_ROOT/shims and /bin from being added to path twice, already setup in ~/.profile
-  (global-rbenv-mode) ;; Needs symlink to /usr/bin/ruby from $RBENV_ROOT/bin/rbenv if using AUR package
-  :config (rbenv--update-mode-line)) ;; show mode on startup properly
+  :init (global-rbenv-mode)) ;; Needs symlink to /usr/bin/ruby from $RBENV_ROOT/bin/rbenv if using AUR package
 (use-package nord-theme
   :ensure t
   :config (load-theme 'nord t))
