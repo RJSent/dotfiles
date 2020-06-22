@@ -26,7 +26,7 @@
   :init (global-flycheck-mode))
 (use-package rbenv
   :ensure t
-  :init (global-rbenv-mode)) ;; Needs symlink to /usr/bin/ruby from $RBENV_ROOT/bin/rbenv if using AUR package
+  :hook (enh-ruby-mode . global-rbenv-mode))
 (use-package nord-theme
   :ensure t
   :config (load-theme 'nord t))
@@ -36,7 +36,10 @@
   :interpreter "ruby")
 (use-package inf-ruby ;; Latest version has --nomultline by default, but not for bundle console, only ruby
   :ensure t
-  :hook enh-ruby-mode-hook)
+  :hook (enh-ruby-mode . inf-ruby-minor-mode))
+(use-package robe
+  :ensure t
+  :hook (enh-ruby-mode . robe-mode))
 
 ;;; Mode definitions that don't fit in with use-package yet
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
