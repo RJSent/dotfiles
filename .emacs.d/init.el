@@ -23,7 +23,7 @@
 
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode))
+  :config (global-flycheck-mode))
 (use-package rbenv
   :ensure t
   :hook (enh-ruby-mode . global-rbenv-mode))
@@ -39,7 +39,14 @@
   :hook (enh-ruby-mode . inf-ruby-minor-mode))
 (use-package robe
   :ensure t
-  :hook (enh-ruby-mode . robe-mode))
+  :hook (enh-ruby-mode . robe-mode)
+  :config (push 'company-robe company-backends))
+(use-package company
+  :ensure t
+  :config (global-company-mode)
+  (setq company-minimum-prefix-length 1)
+  (setq company-frontends '(company-pseudo-tooltip-frontend
+			    company-echo-metadata-frontend)))
 
 ;;; Mode definitions that don't fit in with use-package yet
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
