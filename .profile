@@ -2,6 +2,9 @@
 export XDG_CONFIG_HOME=~/.config
 export XDG_DATA_HOME=~/.local/share
 
+# Editor function
+export EDITOR="$(command -v emacs) -nw"
+
 # Rbenv setup
 export PATH="$HOME/.rbenv/bin:$PATH"
 

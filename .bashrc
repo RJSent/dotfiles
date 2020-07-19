@@ -120,4 +120,5 @@ export LESS_TERMCAP_us=$'\e[1;4;31m'
 # Dotfile version control
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 eval "$(rbenv init -)" # Rbenv setup
-alias diff=colordiff
+alias cdiff=colordiff
+alias ccat=bat
