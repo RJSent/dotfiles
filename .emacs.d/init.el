@@ -43,11 +43,17 @@
   :config (push 'company-robe company-backends))
 (use-package company
   :ensure t
-  :config (global-company-mode)
+  :hook (prog-mode . company-mode)
+  :config
   (setq company-minimum-prefix-length 1)
   (setq company-frontends '(company-pseudo-tooltip-frontend
 			    company-echo-metadata-frontend))
   (setq company-idle-delay 1))
+(use-package smartparens
+  :ensure t
+  :hook (prog-mode . smartparens-mode) ; FIXME not working for enh-ruby-mode although that is part of prog-mode
+  :config (require 'smartparens-config))
+
 
 ;;; Mode definitions that don't fit in with use-package yet
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
@@ -95,6 +101,9 @@
    kept-new-versions 6
    kept-old-versions 2
    version-control t)       ; use versioned backups
+
+;; SORT ME
+(delete-selection-mode 1)
 
 (provide 'init)
 ;;; init.el ends here
