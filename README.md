@@ -9,7 +9,7 @@ is common for customization files, as most people do not want to see them all th
 I am using something called a git bare repository in order to track my dotfiles.
 
 You'll find configurations for common things like bash and Emacs,
-as well as some less frequently customized, like IRB (the Ruby interpreter).
+as well as some that are less frequently customized, like IRB (the Ruby interpreter).
 
 Some customizations are done for the obvious reason of customizing my programs, 
 others are done so that the customizations work in the first place! :)
