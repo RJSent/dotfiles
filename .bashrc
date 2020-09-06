@@ -122,3 +122,4 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 eval "$(rbenv init -)" # Rbenv setup
 alias cdiff=colordiff
 alias ccat=bat
+export EDITOR=$'emacs -nw'
