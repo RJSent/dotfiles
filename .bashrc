@@ -123,3 +123,4 @@ eval "$(rbenv init -)" # Rbenv setup
 alias cdiff=colordiff
 alias ccat=bat
 export EDITOR=$'emacs -nw'
+alias gdb="gdb -tui"
