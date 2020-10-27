@@ -20,7 +20,10 @@
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
-
+(use-package ace-window
+  :ensure t
+  :bind ("M-o" . 'ace-window)
+  :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 (use-package flycheck
   :ensure t
   :config (global-flycheck-mode))
@@ -54,6 +57,13 @@
   :hook (prog-mode . smartparens-mode) ; FIXME not working for enh-ruby-mode although that is part of prog-mode
   :config (require 'smartparens-config))
 
+;; C-c C-c to execute source blocks
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (ruby . t)
+   (C . t)))
+
 
 ;;; Mode definitions that don't fit in with use-package yet
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
@@ -83,8 +93,8 @@
 ;; Disable tool bar.
 (tool-bar-mode -1)
 ;; Make the initial frame maximized and fullscreen. If you exit fullscreen the frame is still maximized
-(toggle-frame-maximized)
 (toggle-frame-fullscreen)
+(toggle-frame-maximized)
 ;; Disable scroll bar
 (scroll-bar-mode -1)
 ;; Disable hidden text in info files
