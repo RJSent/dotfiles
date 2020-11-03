@@ -24,6 +24,9 @@
   :ensure t
   :bind ("M-o" . 'ace-window)
   :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+(use-package highlight-parentheses
+  :ensure t
+  :hook (prog-mode . highlight-parentheses-mode))
 (use-package flycheck
   :ensure t
   :config (global-flycheck-mode))
