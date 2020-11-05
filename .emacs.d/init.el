@@ -101,6 +101,29 @@
   :config (global-flycheck-mode))
 (use-package diminish
   :ensure t)
+(use-package doom-modeline ; Later, replace with custom following similar process to https://www.gonsie.com/blorg/modeline.html
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :custom    
+  (doom-modeline-height 20)
+  (doom-modeline-bar-width 1)
+  (doom-modeline-icon t)
+  (doom-modeline-major-mode-icon t)
+  (doom-modeline-major-mode-color-icon t)
+  (doom-modeline-buffer-file-name-style 'truncate-upto-project)
+  (doom-modeline-buffer-state-icon t)
+  (doom-modeline-buffer-modification-icon t)
+  (doom-modeline-minor-modes nil)
+  (doom-modeline-enable-word-count nil)
+  (doom-modeline-buffer-encoding t)
+  (doom-modeline-indent-info nil)
+  (doom-modeline-checker-simple-format t)
+  (doom-modeline-vcs-max-length 12)
+  (doom-modeline-env-version t)
+  (doom-modeline-irc-stylize 'identity)
+  (doom-modeline-github-timer nil)
+  (doom-modeline-gnus-timer nil))
+
 
 (use-package ivy
   :demand
