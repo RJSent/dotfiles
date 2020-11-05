@@ -22,7 +22,7 @@
   (require 'use-package))
 (use-package ace-window
   :ensure t
-  :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o
+  :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o. Consider adjusting as M-o is used for ivy-dispatching done
   :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 (use-package which-key
   :ensure t
@@ -57,13 +57,19 @@
 		       (ibuffer-do-sort-by-alphabetic))))
   :bind ("C-x C-b" . ibuffer)
   :config
+  ;; Use human readable Size column instead of original one
+  (define-ibuffer-column size-h
+    (:name "Size" :inline t) ; FIXME: file sizes don't match reality, but it's not just a matter of 1024 vs. 1000.
+    ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+    ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
+    ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0))))
   (setq ibuffer-formats
 	'((mark modified read-only vc-status-mini " "
-		(icon 2 2 :left :elide)
+		(icon 2 2 :center :elide)
 		" "
 		(name 18 18 :left :elide)
 		" "
-		(size 9 -1 :right)
+		(size-h 9 -1 :right)
 		" "
 		(mode 20 20 :left :elide)
 		" "
