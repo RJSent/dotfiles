@@ -24,18 +24,88 @@
   :ensure t
   :bind ("M-o" . 'ace-window)
   :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
-(use-package highlight-parentheses
+(use-package which-key
   :ensure t
-  :hook (prog-mode . highlight-parentheses-mode))
-(use-package flycheck
+  :defer 0.2
+  :diminish
+  :config (which-key-mode))
+(use-package all-the-icons
   :ensure t
-  :config (global-flycheck-mode))
-(use-package rbenv
-  :ensure t
-  :hook (enh-ruby-mode . global-rbenv-mode))
+  :defer 0.5)
 (use-package nord-theme
   :ensure t
   :config (load-theme 'nord t))
+(use-package uniquify
+  :ensure nil
+  :config (setq uniquify-buffer-name-style 'forward))
+
+(use-package company
+  :ensure t
+  :diminish
+  :hook (prog-mode . company-mode)
+  :config
+  (setq company-minimum-prefix-length 1)
+  (setq company-frontends '(company-pseudo-tooltip-frontend
+			    company-echo-metadata-frontend))
+  (setq company-idle-delay 1))
+(use-package smartparens
+  :ensure t
+  :diminish
+  :hook (prog-mode . smartparens-mode) ; FIXME not working for enh-ruby-mode although that is part of prog-mode
+  :config (require 'smartparens-config))
+(use-package highlight-parentheses
+  :ensure t
+  :diminish
+  :hook (prog-mode . highlight-parentheses-mode))
+(use-package flycheck
+  :ensure t
+  :diminish
+  :config (global-flycheck-mode))
+(use-package diminish
+  :ensure t)
+
+(use-package ivy
+  :demand
+  :ensure t
+  :diminish
+  :config
+  (setq ivy-use-virtual-buffers t
+        ivy-count-format "%d/%d ")
+  (ivy-mode 1))
+(use-package ivy-rich
+  :ensure t
+  :after ivy
+  ;; :custom
+  ;; (ivy-virtual-abbreviate 'full
+  ;;                         ivy-rich-switch-buffer-align-virtual-buffer t
+  ;;                         ivy-rich-path-style 'abbrev)
+  :config (ivy-rich-mode 1)
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
+  ;; (ivy-set-display-transformer 'ivy-switch-buffer
+  ;;                              'ivy-rich-switch-buffer-transformer))
+(use-package counsel
+  :ensure t
+  :diminish
+  :after ivy
+  :config (counsel-mode))
+(use-package swiper
+  :ensure t
+  :after ivy
+  :bind (("C-s" . swiper)
+	 ("C-r" . swiper)))
+;; (use-package all-the-icons-ivy
+;;   :ensure t
+;;   :after (all-the-icons ivy)
+;;   :config (all-the-icons-ivy-setup))
+(use-package all-the-icons-ivy-rich
+  :ensure t
+  :after (all-the-icons ivy-rich)
+  :init (all-the-icons-ivy-rich-mode 1))
+
+(use-package rbenv
+  :ensure t
+  :diminish
+  :hook (enh-ruby-mode . global-rbenv-mode))
 (use-package enh-ruby-mode
   :ensure t
   :mode "\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\|Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'"
@@ -45,20 +115,10 @@
   :hook (enh-ruby-mode . inf-ruby-minor-mode))
 (use-package robe
   :ensure t
+  :diminish
   :hook (enh-ruby-mode . robe-mode)
   :config (push 'company-robe company-backends))
-(use-package company
-  :ensure t
-  :hook (prog-mode . company-mode)
-  :config
-  (setq company-minimum-prefix-length 1)
-  (setq company-frontends '(company-pseudo-tooltip-frontend
-			    company-echo-metadata-frontend))
-  (setq company-idle-delay 1))
-(use-package smartparens
-  :ensure t
-  :hook (prog-mode . smartparens-mode) ; FIXME not working for enh-ruby-mode although that is part of prog-mode
-  :config (require 'smartparens-config))
+
 
 ;; C-c C-c to execute source blocks
 (org-babel-do-load-languages
@@ -70,8 +130,9 @@
 
 ;;; Mode definitions that don't fit in with use-package yet
 (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
-  "A mode for my Elisp configs so Flycheck doesn't yell at me.")
+  "A mode for my Elisp configs so Flycheck doesn't yell at me... until I get around to making this pretty....")
 (add-to-list 'auto-mode-alist '("init.el" . mycfg-elisp-mode))
+(diminish 'mycfg-elisp-mode)
 
 ;;; Splitting init.el across multiple files
 (write-region "" "" (expand-file-name "custom.el" (file-name-directory (or load-file-name buffer-file-name))) t)
