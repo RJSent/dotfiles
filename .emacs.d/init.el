@@ -32,9 +32,12 @@
 (use-package all-the-icons
   :ensure t
   :defer 0.5)
-(use-package nord-theme
+(use-package nord-theme ; I prefer Nord but with the hc-zenburn modeline
   :ensure t
   :config (load-theme 'nord t))
+;; (use-package hc-zenburn-theme
+;;   :ensure t
+;;   :config (load-theme 'hc-zenburn t))
 (use-package uniquify
   :ensure nil
   :config (setq uniquify-buffer-name-style 'forward))
