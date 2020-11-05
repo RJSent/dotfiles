@@ -1,4 +1,4 @@
-;; Evaluate a buffer with M-x eval-buffer. Using this in init.el buffer will make Emacs apply any changes without restarting
+; Evaluate a buffer with M-x eval-buffer. Using this in init.el buffer will make Emacs apply any changes without restarting
 ;; Learn about the major mode and any minor modes that are active for the current buffer with C-h m, describe-mode
 ;; Learn about a function with C-h f, describe-function
 ;; Learn about a variable with C-h v, describe-variable
@@ -41,6 +41,34 @@
 (use-package uniquify
   :ensure nil
   :config (setq uniquify-buffer-name-style 'forward))
+(use-package projectile
+  :ensure t
+  :diminish
+  :config (projectile-mode +1)
+  :bind-keymap ("C-c p" . projectile-command-map))
+(use-package ibuffer-projectile ; Look at ibuffer-projectile later as alternative
+  :ensure t
+  :defer 0.5
+  :diminish
+  :config
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-projectile-set-filter-groups)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic))))
+  (setq ibuffer-formats
+        '((mark modified read-only " "
+                (name 18 18 :left :elide)
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " "
+                project-relative-file))))
+(use-package all-the-icons-ibuffer
+  :ensure t
+  :diminish
+  :init (all-the-icons-ibuffer-mode 1))
 
 (use-package company
   :ensure t
@@ -104,6 +132,10 @@
   :ensure t
   :after (all-the-icons ivy-rich)
   :init (all-the-icons-ivy-rich-mode 1))
+(use-package counsel-projectile
+  :ensure t
+  :after (counsel projectile)
+  :config (counsel-projectile-mode))
 
 (use-package rbenv
   :ensure t
@@ -129,6 +161,8 @@
  '((emacs-lisp . t)
    (ruby . t)
    (C . t)))
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 
 ;;; Mode definitions that don't fit in with use-package yet
