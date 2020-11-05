@@ -22,7 +22,7 @@
   (require 'use-package))
 (use-package ace-window
   :ensure t
-  :bind ("M-o" . 'ace-window)
+  :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o
   :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 (use-package which-key
   :ensure t
@@ -30,8 +30,7 @@
   :diminish
   :config (which-key-mode))
 (use-package all-the-icons
-  :ensure t
-  :defer 0.5)
+  :ensure t)
 (use-package nord-theme ; I prefer Nord but with the hc-zenburn modeline
   :ensure t
   :config (load-theme 'nord t))
@@ -46,30 +45,30 @@
   :diminish
   :config (projectile-mode +1)
   :bind-keymap ("C-c p" . projectile-command-map))
-(use-package ibuffer-projectile ; Look at ibuffer-projectile later as alternative
-  :ensure t
-  :defer 0.5
-  :diminish
-  :config
-  (add-hook 'ibuffer-hook
-            (lambda ()
-              (ibuffer-projectile-set-filter-groups)
-              (unless (eq ibuffer-sorting-mode 'alphabetic)
-                (ibuffer-do-sort-by-alphabetic))))
-  (setq ibuffer-formats
-        '((mark modified read-only " "
-                (name 18 18 :left :elide)
-                " "
-                (size 9 -1 :right)
-                " "
-                (mode 16 16 :left :elide)
-                " "
-                project-relative-file))))
 (use-package all-the-icons-ibuffer
   :ensure t
   :diminish
-  :init (all-the-icons-ibuffer-mode 1))
-
+  :after all-the-icons)
+(use-package ibuffer-vc ; Also consider ibuffer-projectile
+  :ensure t
+  :after all-the-icons-ibuffer
+  :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root)
+		     (unless (eq ibuffer-sorting-mode 'alphabetic)
+		       (ibuffer-do-sort-by-alphabetic))))
+  :config
+  (setq ibuffer-formats
+	'((mark modified read-only vc-status-mini " "
+		(icon 2 2 :left :elide)
+		" "
+		(name 18 18 :left :elide)
+		" "
+		(size 9 -1 :right)
+		" "
+		(mode 20 20 :left :elide)
+		" "
+		(vc-status 16 16 :left)
+		" "
+		vc-relative-file))))
 (use-package company
   :ensure t
   :diminish
@@ -219,4 +218,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-
