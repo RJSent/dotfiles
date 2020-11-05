@@ -55,6 +55,7 @@
   :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root)
 		     (unless (eq ibuffer-sorting-mode 'alphabetic)
 		       (ibuffer-do-sort-by-alphabetic))))
+  :bind ("C-x C-b" . ibuffer)
   :config
   (setq ibuffer-formats
 	'((mark modified read-only vc-status-mini " "
@@ -160,8 +161,6 @@
  '((emacs-lisp . t)
    (ruby . t)
    (C . t)))
-
-(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 
 ;;; Mode definitions that don't fit in with use-package yet
