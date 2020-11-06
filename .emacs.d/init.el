@@ -205,11 +205,21 @@
    (ruby . t)
    (C . t)))
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 92242302cab01b15cac53c36b04f49e45791feb9
 ;; Support for custom.el
 (write-region "" "" (expand-file-name "custom.el" (file-name-directory (or load-file-name buffer-file-name))) t)
 (setq custom-file (expand-file-name "custom.el" (file-name-directory (or load-file-name buffer-file-name))))
 (load custom-file)
 
+<<<<<<< HEAD
+=======
+
+;;; Unosrted code goes here
+
+>>>>>>> 92242302cab01b15cac53c36b04f49e45791feb9
 ;; Removes empty space at bottom of screen with maximized emacs.
 (setq frame-resize-pixelwise t) ; emacs.stackexchange.com/questions/34675
 ;; Increases font in default buffer, which all other buffers base off of. May be overwritten by buffer specific fonts
@@ -236,6 +246,10 @@
    kept-old-versions 2					;
    version-control t)			                ; use versioned backups
 
+<<<<<<< HEAD
+=======
+;; SORT ME
+>>>>>>> 92242302cab01b15cac53c36b04f49e45791feb9
 (delete-selection-mode 1)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode 1)
