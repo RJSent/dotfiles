@@ -6,7 +6,7 @@
 ;;
 ;;; Code:
 
-
+(setq straight-fix-flycheck t)		; https://github.com/raxod502/straight.el#integration-with-flycheck
 (defvar bootstrap-version)		; Install straight.el
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -32,7 +32,8 @@
   :straight t
   :defer 0.2
   :diminish
-  :config (which-key-mode))
+  :config (which-key-mode)
+  (setq which-key-add-column-padding 3))
 (use-package all-the-icons
   :straight t)
 (use-package diminish
@@ -132,7 +133,9 @@
 (use-package flycheck
   :straight t
   :diminish
-  :config (global-flycheck-mode))
+  :defer 1
+  :config (setq flycheck-emacs-lisp-load-path 'inherit) ; FIXME: Currently errors pop up after evaluating init buffer
+  (global-flycheck-mode))                               ; (not at first), as if it's not detecting use-package
 
 
 ;;; Packages for ivy and ivy integration
@@ -144,10 +147,11 @@
   :config
   (setq ivy-use-virtual-buffers t
         ivy-count-format "%d/%d ")
+  (ivy-wrap t)
   (ivy-mode 1))
 (use-package ivy-rich
   :straight t
-  :after ivy
+  :after ivy counsel
   :config (ivy-rich-mode 1)
   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
 (use-package counsel
@@ -197,6 +201,12 @@
  '((emacs-lisp . t)
    (ruby . t)
    (C . t)))
+
+;; Readded due to FIXME in flycheck. Disables syntax highlighting in init.el
+(define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
+  "A mode for my Elisp configs so Flycheck doesn't yell at me.")
+(add-to-list 'auto-mode-alist '("init.el" . mycfg-elisp-mode))
+
 
 ;; Support for custom.el
 (write-region "" "" (expand-file-name "custom.el" (file-name-directory (or load-file-name buffer-file-name))) t)
