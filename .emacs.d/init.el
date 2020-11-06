@@ -73,8 +73,8 @@
   :bind ("C-x C-b" . ibuffer)
   :config
   ;; Use human readable Size column instead of original one
-  (define-ibuffer-column size-h
-    (:name "Size" :inline t) ; FIXME: file sizes don't match reality, but it's not just a matter of 1024 vs. 1000.
+  (define-ibuffer-column size-h ; FIXME not working properly in projectile project. Args out of range or wrong type argument stringp nil
+    (:name "Size" :inline t)    ; FIXME: file sizes don't match reality, but it's not just a matter of 1024 vs. 1000.
     (cond
      ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
      ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
@@ -85,7 +85,7 @@
 		" "
 		(name 18 18 :left :elide)
 		" "
-		(size-h 9 -1 :right)
+		;; (size-h 9 -1 :right)
 		" "
 		(mode 20 20 :left :elide)
 		" "
