@@ -6,31 +6,36 @@
 ;;
 ;;; Code:
 
-(setq straight-fix-flycheck t)		; https://github.com/raxod502/straight.el#integration-with-flycheck
-(defvar bootstrap-version)		; Install straight.el
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-(straight-use-package 'use-package)	; Install use-package
+(eval-and-compile			; https://old.reddit.com/r/emacs/comments/gwupwt/noob_please_help_to_resolve_the_flycheck_error/ft1kk2j/
+  (setq straight-fix-flycheck t)        ; https://github.com/raxod502/straight.el#integration-with-flycheck
+  (defvar bootstrap-version)		; Install straight.el
+  (let ((bootstrap-file
+	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	(bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+	(goto-char (point-max))
+	(eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  (straight-use-package 'use-package))	; Install use-package
 
 
 ;;; Navigation, aesthetic, and other global packages
 
 (use-package ace-window
   :straight t
+  :defines aw-keys
+  :functions ace-window
   :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o. Consider adjusting as M-o is used for ivy-dispatching done
   :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 (use-package which-key
   :straight t
-  :defer 0.2
+  :defines which-key-add-column-padding
+  :functions which-key-mode
+  :defer 1
   :diminish
   :config (which-key-mode)
   (setq which-key-add-column-padding 3))
@@ -48,6 +53,7 @@
   :config (setq uniquify-buffer-name-style 'forward))
 (use-package projectile
   :straight t
+  :functions projectile-mode
   :diminish
   :config (projectile-mode +1)
   :bind-keymap ("C-c p" . projectile-command-map))
@@ -57,6 +63,8 @@
   :after all-the-icons)
 (use-package ibuffer-vc ; Also consider ibuffer-projectile
   :straight t
+  :defines ibuffer-sorting-mode ibuffer-inline-columns ibuffer-formats
+  :functions ibuffer-vc-set-filter-groups-by-vc-root ibuffer-do-sort-by-alphabetic
   :after all-the-icons-ibuffer
   :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root)
 		     (unless (eq ibuffer-sorting-mode 'alphabetic)
@@ -118,6 +126,7 @@
 
 (use-package company
   :straight t
+  :defines company-minimum-prefix-length company-frontends company-idle-delay
   :diminish
   :hook (prog-mode . company-mode)
   :config
@@ -132,30 +141,35 @@
   :config (require 'smartparens-config))
 (use-package flycheck
   :straight t
+  :functions global-flycheck-mode
   :diminish
   :defer 1
-  :config (setq flycheck-emacs-lisp-load-path 'inherit) ; FIXME: Currently errors pop up after evaluating init buffer
+  :config ;(setq flycheck-emacs-lisp-load-path 'inherit) ; FIXME: Currently errors pop up after evaluating init buffer
   (global-flycheck-mode))                               ; (not at first), as if it's not detecting use-package
 
 
 ;;; Packages for ivy and ivy integration
 
 (use-package ivy
-  :demand
   :straight t
+  :defines ivy-use-virtual-buffers ivy-count-format ivy-wrap ivy-format-functions-alist ivy-format-functions-alist
+  :functions ivy-mode ivy-format-function-line
+  :demand
   :diminish
   :config
   (setq ivy-use-virtual-buffers t
         ivy-count-format "%d/%d ")
-  (ivy-wrap t)
+  (setq ivy-wrap t)
   (ivy-mode 1))
 (use-package ivy-rich
   :straight t
+  :functions ivy-rich-mode
   :after ivy counsel
   :config (ivy-rich-mode 1)
   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
 (use-package counsel
   :straight t
+  :functions counsel-mode
   :diminish
   :after ivy
   :config (counsel-mode))
@@ -166,11 +180,13 @@
 	 ("C-r" . swiper)))
 (use-package all-the-icons-ivy-rich
   :straight t
-  :after (all-the-icons ivy-rich)
-  :init (all-the-icons-ivy-rich-mode 1))
+  :after all-the-icons ivy-rich
+  :functions all-the-icons-ivy-rich-mode
+  :config (all-the-icons-ivy-rich-mode 1))
 (use-package counsel-projectile
   :straight t
   :after (counsel projectile)
+  :functions counsel-projectile-mode
   :config (counsel-projectile-mode))
 
 
@@ -189,6 +205,7 @@
   :hook (enh-ruby-mode . inf-ruby-minor-mode))
 (use-package robe
   :straight t
+  :defines company-backends
   :diminish
   :hook (enh-ruby-mode . robe-mode)
   :config (push 'company-robe company-backends))
@@ -203,9 +220,9 @@
    (C . t)))
 
 ;; Readded due to FIXME in flycheck. Disables syntax highlighting in init.el
-(define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
-  "A mode for my Elisp configs so Flycheck doesn't yell at me.")
-(add-to-list 'auto-mode-alist '("init.el" . mycfg-elisp-mode))
+;; (define-derived-mode mycfg-elisp-mode emacs-lisp-mode "MyConfig Elisp Mode"
+;;   "A mode for my Elisp configs so Flycheck doesn't yell at me.")
+;; (add-to-list 'auto-mode-alist '("init.el" . mycfg-elisp-mode))
 
 
 ;; Support for custom.el
