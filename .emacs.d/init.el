@@ -73,13 +73,47 @@
   :bind ("C-x C-b" . ibuffer)
   :config
   ;; Use human readable Size column instead of original one
-  (define-ibuffer-column size-h ; FIXME not working properly in projectile project. Args out of range or wrong type argument stringp nil
-    (:name "Size" :inline t)    ; FIXME: file sizes don't match reality, but it's not just a matter of 1024 vs. 1000.
+  ;; Code from emacs wiki
+  (defun ajv/human-readable-file-sizes-to-bytes (string)
+    "Convert a human-readable file size into bytes."
+    (interactive)
     (cond
-     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-     ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
-     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-     (t (format "%8d" (buffer-size)))))
+     ((string-suffix-p "G" string t)
+      (* 1000000000 (string-to-number (substring string 0 (- (length string) 1)))))
+     ((string-suffix-p "M" string t)
+      (* 1000000 (string-to-number (substring string 0 (- (length string) 1)))))
+     ((string-suffix-p "K" string t)
+      (* 1000 (string-to-number (substring string 0 (- (length string) 1)))))
+     (t
+      (string-to-number (substring string 0 (- (length string) 1))))
+     )
+    )
+  (defun ajv/bytes-to-human-readable-file-sizes (bytes)
+    "Convert number of bytes to human-readable file size."
+    (interactive)
+    (cond
+     ((> bytes 1000000000) (format "%10.1fG" (/ bytes 1000000000.0)))
+     ((> bytes 100000000) (format "%10.0fM" (/ bytes 1000000.0)))
+     ((> bytes 1000000) (format "%10.1fM" (/ bytes 1000000.0)))
+     ((> bytes 100000) (format "%10.0fk" (/ bytes 1000.0)))
+     ((> bytes 1000) (format "%10.1fk" (/ bytes 1000.0)))
+     (t (format "%10d" bytes)))
+    )
+  ;; Use human readable Size column instead of original one
+  (define-ibuffer-column size-h
+    (:name "Size"
+	   :inline t
+	   :summarizer
+	   (lambda (column-strings)
+	     (let ((total 0))
+	       (dolist (string column-strings)
+		 (setq total
+		       ;; like, ewww ...
+		       (+ (float (ajv/human-readable-file-sizes-to-bytes string))
+			  total)))
+	       (ajv/bytes-to-human-readable-file-sizes total)))	 ;; :summarizer nil
+	   )
+    (ajv/bytes-to-human-readable-file-sizes (buffer-size)))
   (setq ibuffer-formats
 	'((mark modified read-only vc-status-mini " "
 		(icon 2 2 :center :elide)
