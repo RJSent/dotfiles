@@ -6,8 +6,9 @@
 ;;
 ;;; Code:
 
-(eval-and-compile			; https://old.reddit.com/r/emacs/comments/gwupwt/noob_please_help_to_resolve_the_flycheck_error/ft1kk2j/
-  (setq straight-fix-flycheck t)        ; https://github.com/raxod502/straight.el#integration-with-flycheck
+
+(eval-and-compile			; old.reddit.com/r/emacs/comments/gwupwt/noob_please_help_to_resolve_the_flycheck_error/ft1kk2j
+  (defvar straight-fix-flycheck t)      ; github.com/raxod502/straight.el#integration-with-flycheck
   (defvar bootstrap-version)		; Install straight.el
   (let ((bootstrap-file
 	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
