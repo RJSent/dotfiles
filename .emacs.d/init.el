@@ -108,6 +108,9 @@
   :straight t
   :diminish
   :hook (prog-mode . highlight-parentheses-mode))
+(use-package wgrep
+  :straight t
+  :defer 1)
 
 
 ;;; Packages for general purpose programming and editing

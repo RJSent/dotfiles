@@ -1,4 +1,5 @@
-(("ace-window" . "c7cb315c14e36fded5ac4096e158497ae974bec9")
+(("Emacs-wgrep" . "f0ef9bfa44db503cdb2f83fcfbd2fa4e2382ef1f")
+ ("ace-window" . "c7cb315c14e36fded5ac4096e158497ae974bec9")
  ("all-the-icons-ibuffer" . "c41e12033712969bfa2e3e9f1c62feae866a48ac")
  ("all-the-icons-ivy-rich" . "6428cb39729b7290368c5b95f563a320c98f972d")
  ("all-the-icons.el" . "6917b08f64dd8487e23769433d6cb9ba11f4152f")
