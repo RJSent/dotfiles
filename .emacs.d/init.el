@@ -244,6 +244,9 @@
 ;; SORT ME
 (delete-selection-mode 1)
 (defalias 'yes-or-no-p 'y-or-n-p)
+(global-auto-revert-mode 1)
+(global-hl-line-mode 1)
+
 
 (provide 'init)
 ;;; init.el ends here
