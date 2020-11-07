@@ -24,6 +24,12 @@
   (straight-use-package 'use-package))	; Install use-package
 
 
+;;; Constants. See centaur emacs, init-const.el.
+(defconst sys/win32p
+  (eq system-type 'windows-nt)
+  "Are we running on a WinTel system?")
+
+
 ;;; Navigation, aesthetic, and other global packages
 
 (use-package ace-window
@@ -40,8 +46,18 @@
   :diminish
   :config (which-key-mode)
   (setq which-key-add-column-padding 3))
+(defun aorst/font-installed-p (font-name)
+  "Check if font with FONT-NAME is available."
+  (if (find-font (font-spec :name font-name))
+      t
+    nil))
 (use-package all-the-icons
-  :straight t)
+  :straight t
+  :config
+  ;; seagle0128's approach in https://github.com/domtronn/all-the-icons.el/issues/120 attempts to install for terminals
+  (when (and (not (aorst/font-installed-p "all-the-icons"))
+             (window-system))
+    (all-the-icons-install-fonts t)))
 (use-package diminish
   :straight t)
 (use-package nord-theme ; I prefer Nord but with the hc-zenburn modeline
