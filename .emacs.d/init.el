@@ -25,7 +25,8 @@
 
 
 ;;; Constants. See centaur emacs, init-const.el.
-(defconst sys/win32p
+
+(defconst sys/win32p                    ; Boy, I hope I don't need this constant
   (eq system-type 'windows-nt)
   "Are we running on a WinTel system?")
 
@@ -60,9 +61,9 @@
     (all-the-icons-install-fonts t)))
 (use-package diminish
   :straight t)
-(use-package nord-theme ; I prefer Nord but with the hc-zenburn modeline
+(use-package doom-themes
   :straight t
-  :config (load-theme 'nord t))
+  :config (load-theme 'doom-nord t))
 ;; (use-package hc-zenburn-theme
 ;;   :straight t
 ;;   :config (load-theme 'hc-zenburn t))
@@ -193,8 +194,8 @@
 (use-package smartparens
   :straight t
   :diminish
-  :hook (prog-mode . smartparens-mode) ; FIXME not working for enh-ruby-mode although that is part of prog-mode
-  :config (require 'smartparens-config))
+  :hook (prog-mode . smartparens-mode)   ; FIXME not working for enh-ruby-mode although that is part of prog-mode
+  :config (require 'smartparens-config)) ; Seems fixed now?
 (use-package flycheck
   :straight t
   :functions global-flycheck-mode
@@ -202,9 +203,9 @@
   :defer 1
   :config (setq flycheck-emacs-lisp-load-path 'inherit)  ; Fixes "org-mode-map" in comment-dwin-2 from being undefined
   (global-flycheck-mode))                                ; Does not fix issues with functions may not be defined
-(use-package comment-dwim-2				 ; FIXME: Bug with enh-ruby-mode. No end of line comments
-  :straight t						 ; are inserted. ruby-mode does not have this issue. Will
-  :config						 ; look more into what's causing it.
+(use-package comment-dwim-2                          ; FIXME: Bug with enh-ruby-mode. No end of line comments
+  :straight t                                        ; are inserted. ruby-mode does not have this issue. Will
+  :config                                            ; look more into what's causing it.
   (defadvice comment-indent (around comment-indent-with-spaces activate) ; Not the cause of enh-ruby-mode issue
      (let ((orig-indent-tabs-mode indent-tabs-mode))
        (when orig-indent-tabs-mode
@@ -228,7 +229,9 @@
 (use-package org-superstar
   :straight t
   :hook (org-mode . org-superstar-mode)
-  :config (org-superstar-configure-like-org-bullets))
+  :config
+  (org-superstar-configure-like-org-bullets) ; FIXME stars are still visible despite below line
+  (setq org-superstar-leading-bullet ?\s))   ; As active line is different than others, stars would be visible without this
 
 
 ;;; Packages for ivy and ivy integration
