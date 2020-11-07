@@ -143,11 +143,12 @@
 		(vc-status 16 16 :left)
 		" "
 		vc-relative-file))))
+
 (use-package doom-modeline ; Later, replace with custom following similar process to https://www.gonsie.com/blorg/modeline.html
   :straight t
   :hook (after-init . doom-modeline-mode)
-  :custom
-  (doom-modeline-height 20)
+  :custom				; Could use more use-package-ifying
+  (doom-modeline-height 20)		; To better employ its features.
   (doom-modeline-bar-width 1)
   (doom-modeline-icon t)
   (doom-modeline-major-mode-icon t)
@@ -172,6 +173,9 @@
 (use-package wgrep
   :straight t
   :defer 1)
+(use-package all-the-icons-dired
+  :straight t
+  :hook (dired-mode . all-the-icons-dired-mode))
 
 
 ;;; Packages for general purpose programming and editing
@@ -261,6 +265,9 @@
   :diminish
   :hook (enh-ruby-mode . robe-mode)
   :config (push 'company-robe company-backends))
+(use-package yaml-mode
+  :straight t
+  :mode "\\.yml\\'")
 
 
 ;;; Some less well organized code.
@@ -311,6 +318,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode 1)
 (global-hl-line-mode 1)
+(setq scroll-preserve-screen-position t)
+(setq next-screen-context-lines 6)
 
 
 (provide 'init)
