@@ -83,10 +83,10 @@
   :defines ibuffer-sorting-mode ibuffer-inline-columns ibuffer-formats
   :functions ibuffer-vc-set-filter-groups-by-vc-root ibuffer-do-sort-by-alphabetic
   :after all-the-icons-ibuffer
-  :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root)
-                     (unless (eq ibuffer-sorting-mode 'alphabetic)
-                       (ibuffer-do-sort-by-alphabetic))))
-  :bind ("C-x C-b" . ibuffer)
+  :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root) ; Look at combining with custom ibuffer groups with 'biffuer-projectile-generate-filter-groups
+                     (unless (eq ibuffer-sorting-mode 'alphabetic)      ; Obviously that's an ibuffer-projectile exclusive, not ibuffer-vc
+                       (ibuffer-do-sort-by-alphabetic))))               ; https://emacs.stackexchange.com/questions/2181/ibuffer-how-to-automatically-create-groups-per-project
+  :bind ("C-x C-b" . ibuffer)                                           ; shows some of code behind projectile filter groups
   :config
   ;; Use human readable Size column instead of original one
   ;; Code from emacs wiki
@@ -212,12 +212,14 @@
        ad-do-it
        (when orig-indent-tabs-mode
          (setq indent-tabs-mode t))))
-;; Disabled for now. I want to remove line comment, keeping the
-;; end of line comment unless I press M-; again.
-;; (defun cd2/inline-comment-command () ; this is the function called when you repeat the command
-;;   ;; do nothing (not killing the end-of-line comment)
-;;   (setq this-command nil) ; This is just a trick so that the command can still be called indefinitely
-;;   )
+  ;; Disabled for now. I want to remove line comment, keeping the
+  ;; end of line comment unless I press M-; again.
+  ;; Note though, text is killed, not deleted. You can always just
+  ;; use C-e C-y to yank the text back at end of line
+  ;; (defun cd2/inline-comment-command () ; this is the function called when you repeat the command
+  ;;   ;; do nothing (not killing the end-of-line comment)
+  ;;   (setq this-command nil) ; This is just a trick so that the command can still be called indefinitely
+  ;;   )
   (define-key org-mode-map (kbd "M-;") 'org-comment-dwim-2)
   :bind ("M-;" . comment-dwim-2))
 
