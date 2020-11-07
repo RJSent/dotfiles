@@ -7,21 +7,21 @@
 ;;; Code:
 
 
-(eval-and-compile			; old.reddit.com/r/emacs/comments/gwupwt/noob_please_help_to_resolve_the_flycheck_error/ft1kk2j
+(eval-and-compile                       ; old.reddit.com/r/emacs/comments/gwupwt/noob_please_help_to_resolve_the_flycheck_error/ft1kk2j
   (defvar straight-fix-flycheck t)      ; github.com/raxod502/straight.el#integration-with-flycheck
-  (defvar bootstrap-version)		; Install straight.el
+  (defvar bootstrap-version)            ; Install straight.el
   (let ((bootstrap-file
-	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-	(bootstrap-version 5))
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
           (url-retrieve-synchronously
            "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
            'silent 'inhibit-cookies)
-	(goto-char (point-max))
-	(eval-print-last-sexp)))
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
-  (straight-use-package 'use-package))	; Install use-package
+  (straight-use-package 'use-package))  ; Install use-package
 
 
 ;;; Constants. See centaur emacs, init-const.el.
@@ -84,8 +84,8 @@
   :functions ibuffer-vc-set-filter-groups-by-vc-root ibuffer-do-sort-by-alphabetic
   :after all-the-icons-ibuffer
   :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root)
-		     (unless (eq ibuffer-sorting-mode 'alphabetic)
-		       (ibuffer-do-sort-by-alphabetic))))
+                     (unless (eq ibuffer-sorting-mode 'alphabetic)
+                       (ibuffer-do-sort-by-alphabetic))))
   :bind ("C-x C-b" . ibuffer)
   :config
   ;; Use human readable Size column instead of original one
@@ -118,37 +118,37 @@
   ;; Use human readable Size column instead of original one
   (define-ibuffer-column size-h
     (:name "Size"
-	   :inline t
-	   :summarizer
-	   (lambda (column-strings)
-	     (let ((total 0))
-	       (dolist (string column-strings)
-		 (setq total
-		       ;; like, ewww ...
-		       (+ (float (ajv/human-readable-file-sizes-to-bytes string))
-			  total)))
-	       (ajv/bytes-to-human-readable-file-sizes total)))	 ;; :summarizer nil
-	   )
+           :inline t
+           :summarizer
+           (lambda (column-strings)
+             (let ((total 0))
+               (dolist (string column-strings)
+                 (setq total
+                       ;; like, ewww ...
+                       (+ (float (ajv/human-readable-file-sizes-to-bytes string))
+                          total)))
+               (ajv/bytes-to-human-readable-file-sizes total)))  ;; :summarizer nil
+           )
     (ajv/bytes-to-human-readable-file-sizes (buffer-size)))
   (setq ibuffer-formats
-	'((mark modified read-only vc-status-mini " "
-		(icon 2 2 :center :elide)
-		" "
-		(name 18 18 :left :elide)
-		" "
-		(size-h 9 -1 :right)
-		" "
-		(mode 20 20 :left :elide)
-		" "
-		(vc-status 16 16 :left)
-		" "
-		vc-relative-file))))
+        '((mark modified read-only vc-status-mini " "
+                (icon 2 2 :center :elide)
+                " "
+                (name 18 18 :left :elide)
+                " "
+                (size-h 9 -1 :right)
+                " "
+                (mode 20 20 :left :elide)
+                " "
+                (vc-status 16 16 :left)
+                " "
+                vc-relative-file))))
 
 (use-package doom-modeline ; Later, replace with custom following similar process to https://www.gonsie.com/blorg/modeline.html
   :straight t
   :hook (after-init . doom-modeline-mode)
-  :custom				; Could use more use-package-ifying
-  (doom-modeline-height 20)		; To better employ its features.
+  :custom                               ; Could use more use-package-ifying
+  (doom-modeline-height 20)             ; To better employ its features.
   (doom-modeline-bar-width 1)
   (doom-modeline-icon t)
   (doom-modeline-major-mode-icon t)
@@ -188,7 +188,7 @@
   :config
   (setq company-minimum-prefix-length 1)
   (setq company-frontends '(company-pseudo-tooltip-frontend
-			    company-echo-metadata-frontend))
+                            company-echo-metadata-frontend))
   (setq company-idle-delay 1))
 (use-package smartparens
   :straight t
@@ -200,8 +200,27 @@
   :functions global-flycheck-mode
   :diminish
   :defer 1
-  :config ;(setq flycheck-emacs-lisp-load-path 'inherit) ; FIXME: Currently errors pop up after evaluating init buffer
-  (global-flycheck-mode))                               ; (not at first), as if it's not detecting use-package
+  :config (setq flycheck-emacs-lisp-load-path 'inherit)  ; Fixes "org-mode-map" in comment-dwin-2 from being undefined
+  (global-flycheck-mode))                                ; Does not fix issues with functions may not be defined
+(use-package comment-dwim-2				 ; FIXME: Bug with enh-ruby-mode. No end of line comments
+  :straight t						 ; are inserted. ruby-mode does not have this issue. Will
+  :config						 ; look more into what's causing it.
+  (defadvice comment-indent (around comment-indent-with-spaces activate) ; Not the cause of enh-ruby-mode issue
+     (let ((orig-indent-tabs-mode indent-tabs-mode))
+       (when orig-indent-tabs-mode
+         (setq indent-tabs-mode nil))
+       ad-do-it
+       (when orig-indent-tabs-mode
+         (setq indent-tabs-mode t))))
+;; Disabled for now. I want to remove line comment, keeping the
+;; end of line comment unless I press M-; again.
+;; (defun cd2/inline-comment-command () ; this is the function called when you repeat the command
+;;   ;; do nothing (not killing the end-of-line comment)
+;;   (setq this-command nil) ; This is just a trick so that the command can still be called indefinitely
+;;   )
+  (define-key org-mode-map (kbd "M-;") 'org-comment-dwim-2)
+  :bind ("M-;" . comment-dwim-2))
+
 
 
 ;;; Packages for ivy and ivy integration
@@ -233,7 +252,7 @@
   :straight t
   :after ivy
   :bind (("C-s" . swiper)
-	 ("C-r" . swiper)))
+         ("C-r" . swiper)))
 (use-package all-the-icons-ivy-rich
   :straight t
   :after all-the-icons ivy-rich
@@ -307,13 +326,13 @@
 (setq ring-bell-function 'ignore)
 ;; https://www.emacswiki.org/emacs/BackupDirectory
 (setq
-   backup-by-copying t			                ; don't clobber symlinks
-   backup-directory-alist				;
-    `(("." . ,(concat user-emacs-directory "backups")))	; don't litter my fs tree
-   delete-old-versions t				;
-   kept-new-versions 6					;
-   kept-old-versions 2					;
-   version-control t)			                ; use versioned backups
+   backup-by-copying t                                  ; don't clobber symlinks
+   backup-directory-alist                               ;
+    `(("." . ,(concat user-emacs-directory "backups"))) ; don't litter my fs tree
+   delete-old-versions t                                ;
+   kept-new-versions 6                                  ;
+   kept-old-versions 2                                  ;
+   version-control t)                                   ; use versioned backups
 (delete-selection-mode 1)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode 1)
