@@ -224,6 +224,12 @@
   :bind ("M-;" . comment-dwim-2))
 
 
+;;; Packages for org-mode
+(use-package org-superstar
+  :straight t
+  :hook (org-mode . org-superstar-mode)
+  :config (org-superstar-configure-like-org-bullets))
+
 
 ;;; Packages for ivy and ivy integration
 
