@@ -10,4 +10,3 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 
 export IRBRC="$XDG_CONFIG_HOME"/irb/irbrc # FIXME: default to ~/.config if $XDG.. is unset instead of setting $XDG
 
-export PAGER=bat
