@@ -226,6 +226,11 @@
 
 
 ;;; Packages for org-mode
+(use-package org
+  :straight t
+  :mode (("\\.org$" . org-mode))
+  :config
+  (setq org-log-done 'time))
 (use-package org-superstar
   :straight t
   :hook (org-mode . org-superstar-mode)
