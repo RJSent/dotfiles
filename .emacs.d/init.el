@@ -22,6 +22,7 @@
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
   (straight-use-package 'use-package))  ; Install use-package
+(setq straight-use-package-by-default t)
 
 
 ;;; Constants. See centaur emacs, init-const.el.
@@ -34,13 +35,11 @@
 ;;; Navigation, aesthetic, and other global packages
 
 (use-package ace-window
-  :straight t
   :defines aw-keys
   :functions ace-window
   :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o. Consider adjusting as M-o is used for ivy-dispatching done
   :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 (use-package which-key
-  :straight t
   :defines which-key-add-column-padding
   :functions which-key-mode
   :defer 1
@@ -53,34 +52,29 @@
       t
     nil))
 (use-package all-the-icons
-  :straight t
   :config
   ;; seagle0128's approach in https://github.com/domtronn/all-the-icons.el/issues/120 attempts to install for terminals
   (when (and (not (aorst/font-installed-p "all-the-icons"))
              (window-system))
     (all-the-icons-install-fonts t)))
-(use-package diminish
-  :straight t)
+(use-package diminish)
 (use-package doom-themes
-  :straight t
   :config (load-theme 'doom-nord t))
 ;; (use-package hc-zenburn-theme
 ;;   :straight t
 ;;   :config (load-theme 'hc-zenburn t))
 (use-package uniquify
+  :straight nil
   :config (setq uniquify-buffer-name-style 'forward))
 (use-package projectile
-  :straight t
   :functions projectile-mode
   :diminish
   :config (projectile-mode +1)
   :bind-keymap ("C-c p" . projectile-command-map))
 (use-package all-the-icons-ibuffer
-  :straight t
   :diminish
   :after all-the-icons)
 (use-package ibuffer-vc ; Also consider ibuffer-projectile
-  :straight t
   :defines ibuffer-sorting-mode ibuffer-inline-columns ibuffer-formats
   :functions ibuffer-vc-set-filter-groups-by-vc-root ibuffer-do-sort-by-alphabetic
   :after all-the-icons-ibuffer
@@ -146,7 +140,6 @@
                 vc-relative-file))))
 
 (use-package doom-modeline ; Later, replace with custom following similar process to https://www.gonsie.com/blorg/modeline.html
-  :straight t
   :hook (after-init . doom-modeline-mode)
   :custom                               ; Could use more use-package-ifying
   (doom-modeline-height 20)             ; To better employ its features.
@@ -168,21 +161,17 @@
   (doom-modeline-github-timer nil)
   (doom-modeline-gnus-timer nil))
 (use-package highlight-parentheses
-  :straight t
   :diminish
   :hook (prog-mode . highlight-parentheses-mode))
 (use-package wgrep
-  :straight t
   :defer 1)
 (use-package all-the-icons-dired
-  :straight t
   :hook (dired-mode . all-the-icons-dired-mode))
 
 
 ;;; Packages for general purpose programming and editing
 
 (use-package company
-  :straight t
   :defines company-minimum-prefix-length company-frontends company-idle-delay
   :diminish
   :hook (prog-mode . company-mode)
@@ -192,19 +181,17 @@
                             company-echo-metadata-frontend))
   (setq company-idle-delay 1))
 (use-package smartparens
-  :straight t
   :diminish
   :hook (prog-mode . smartparens-mode)   ; FIXME not working for enh-ruby-mode although that is part of prog-mode
   :config (require 'smartparens-config)) ; Seems fixed now?
 (use-package flycheck
-  :straight t
   :functions global-flycheck-mode
   :diminish
   :defer 1
   :config (setq flycheck-emacs-lisp-load-path 'inherit)  ; Fixes "org-mode-map" in comment-dwin-2 from being undefined
   (global-flycheck-mode))                                ; Does not fix issues with functions may not be defined
 (use-package comment-dwim-2                          ; FIXME: Bug with enh-ruby-mode. No end of line comments
-  :straight t                                        ; are inserted. ruby-mode does not have this issue. Will
+                                                    ; are inserted. ruby-mode does not have this issue. Will
   :config                                            ; look more into what's causing it.
   (defadvice comment-indent (around comment-indent-with-spaces activate) ; Not the cause of enh-ruby-mode issue
      (let ((orig-indent-tabs-mode indent-tabs-mode))
@@ -227,12 +214,10 @@
 
 ;;; Packages for org-mode
 (use-package org
-  :straight t
   :mode (("\\.org$" . org-mode))
   :config
   (setq org-log-done 'time))
 (use-package org-superstar
-  :straight t
   :hook (org-mode . org-superstar-mode)
   :config
   (org-superstar-configure-like-org-bullets) ; FIXME stars are still visible despite below line
@@ -242,7 +227,6 @@
 ;;; Packages for ivy and ivy integration
 
 (use-package ivy
-  :straight t
   :defines ivy-use-virtual-buffers ivy-count-format ivy-wrap ivy-format-functions-alist ivy-format-functions-alist
   :functions ivy-mode ivy-format-function-line
   :demand
@@ -253,29 +237,24 @@
   (setq ivy-wrap t)
   (ivy-mode 1))
 (use-package ivy-rich
-  :straight t
   :functions ivy-rich-mode
   :after ivy counsel
   :config (ivy-rich-mode 1)
   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
 (use-package counsel
-  :straight t
   :functions counsel-mode
   :diminish
   :after ivy
   :config (counsel-mode))
 (use-package swiper
-  :straight t
   :after ivy
   :bind (("C-s" . swiper)
          ("C-r" . swiper)))
 (use-package all-the-icons-ivy-rich
-  :straight t
   :after all-the-icons ivy-rich
   :functions all-the-icons-ivy-rich-mode
   :config (all-the-icons-ivy-rich-mode 1))
 (use-package counsel-projectile
-  :straight t
   :after (counsel projectile)
   :functions counsel-projectile-mode
   :config (counsel-projectile-mode))
@@ -284,7 +263,6 @@
 ;;; Ruby programming packages
 
 (use-package rbenv
-  :straight t
   :diminish
   :hook (enh-ruby-mode . global-rbenv-mode))
 (use-package enh-ruby-mode
@@ -292,16 +270,13 @@
   :mode "\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\|Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'"
   :interpreter "ruby")
 (use-package inf-ruby ; Latest version has --nomultline by default, but not for bundle console, only ruby
-  :straight t
   :hook (enh-ruby-mode . inf-ruby-minor-mode))
 (use-package robe
-  :straight t
   :defines company-backends
   :diminish
   :hook (enh-ruby-mode . robe-mode)
   :config (push 'company-robe company-backends))
 (use-package yaml-mode
-  :straight t
   :mode "\\.yml\\'")
 
 
