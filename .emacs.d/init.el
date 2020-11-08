@@ -265,10 +265,9 @@
 (use-package rbenv
   :diminish
   :hook (enh-ruby-mode . global-rbenv-mode))
-(use-package enh-ruby-mode
-  :straight t
-  :mode "\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\|Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'"
-  :interpreter "ruby")
+;; (use-package enh-ruby-mode ; Disabled due to issues & syntax highlighting issue in comments was inexplicably reverted (???)
+;;   :mode "\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\|Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'"
+;;   :interpreter "ruby")
 (use-package inf-ruby ; Latest version has --nomultline by default, but not for bundle console, only ruby
   :hook (enh-ruby-mode . inf-ruby-minor-mode))
 (use-package robe
