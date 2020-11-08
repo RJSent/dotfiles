@@ -1,0 +1,6 @@
+[user]
+name = RJSent
+email = richard.j.sent@tutamail.com
+
+[pull]
+	rebase = false
