@@ -1,3 +1,7 @@
 IRB.conf[:USE_MULTILINE] = false if ENV['INSIDE_EMACS']
 IRB.conf[:SAVE_HISTORY] ||= 1000
-IRB.conf[:HISTORY_FILE] ||= File.join(ENV["XDG_DATA_HOME"], "irb", "history") 
+# I'd love if the next line worked with Ruby, but unfortunately history_dir is out of scope
+# https://bugs.ruby-lang.org/issues/1141 has a comment from Matz about it.
+# Dir.mkdir(history_dir) unless Dir.exist?(history_dir = File.join(ENV['XDG_DATA_HOME'], 'irb'))
+unless Dir.exist?(history_dir = File.join(ENV['XDG_DATA_HOME'], 'irb')) then Dir.mkdir(history_dir) end
+IRB.conf[:HISTORY_FILE] ||= File.join(history_dir, 'irb_history') 
