@@ -7,7 +7,7 @@ This is my personal Emacs configuration, now with 100% more =Org=!
 * Installation
 
 
-* List of TODOs
+* COMMENT List of TODOs
 
 ** TODO Move to solargrph and lsp-mode
 ** TODO move functions to :preface in =use-package=
