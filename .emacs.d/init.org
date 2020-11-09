@@ -689,6 +689,7 @@ Tested 11 2020.
 #+begin_src emacs-lisp
   (use-package org
     :mode (("\\.org$" . org-mode))
+    :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
     :config
     (setq org-log-done 'time)
     (setq org-adapt-indentation nil))
@@ -762,8 +763,8 @@ Pretty much only one package for YAML.
 
 ** Utility
 
-This is meant for utility packages that aren't meant to assist with
-editing, navigation, or similar, but still provide a benefit.
+This is meant for utility packages that don't assist with editing,
+navigation, or similar, but still provide a benefit.
 
 *** Esup
 
@@ -774,10 +775,14 @@ with some combination of =straight=, =esup= and byte-compiling that
 causes =Esup= to fail to run, either showing =Symbolic link to Git...=
 or another error message. [[https://github.com/jschaf/esup/issues/54#issuecomment-651247749][This]] contains a fix.
 
+It seems the fix isn't perfect, Esup is largely underestimating my
+startup time. When I look in the breakdown, large sections of the code
+are unaccounted for.
+
 #+begin_src emacs-lisp
   (use-package esup
     :commands esup
-    :config (setq esup-depth 0))          ;
+    :config (setq esup-depth 0))
 #+end_src
 
 * List of TODOs
