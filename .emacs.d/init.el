@@ -216,7 +216,8 @@
 (use-package org
   :mode (("\\.org$" . org-mode))
   :config
-  (setq org-log-done 'time))
+  (setq org-log-done 'time)
+  (setq org-adapt-indentation nil))     ; Swap to 'headline-data once it works properly. (Tested 11/8/2020)
 (use-package org-superstar
   :hook (org-mode . org-superstar-mode)
   :config
