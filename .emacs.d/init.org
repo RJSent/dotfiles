@@ -7,21 +7,6 @@ This is my personal Emacs configuration, now with 100% more =Org=!
 * Installation
 
 
-* COMMENT List of TODOs
-
-** TODO Move to solargrph and lsp-mode
-** TODO move functions to :preface in =use-package=
-** TODO Make an actual TODO list.
-** TODO Alphabetize sensible defaults
-** TODO Some sort of solution to prevent needing to initialize straight in init
-Don't want to do that.
-https://jonathanabennett.github.io/blog/2019/05/28/emacs.org-~-may-2019/
-might have a solution with tangling.
-** TODO Do we need straight in init.el?
-Any drawbacks from loading with old org version then upgrading?
-** TODO Can we move speedup into =early-init.el=?
-
-
 * Configuration
 
 ** Meta
@@ -772,3 +757,21 @@ Pretty much only one package for YAML.
   (use-package yaml-mode
     :mode "\\.yml\\'")
 #+end_src
+
+* List of TODOs
+
+** TODO Move to solargrph and lsp-mode
+** TODO move functions to :preface in =use-package=
+** TODO Make an actual TODO list.
+** TODO Alphabetize sensible defaults
+** DONE Some sort of solution to prevent needing to initialize straight in init
+CLOSED: [2020-11-09 Mon 11:02]
+Don't want to do that.
+https://jonathanabennett.github.io/blog/2019/05/28/emacs.org-~-may-2019/
+might have a solution with tangling.
+** DONE Do we need straight in init.el?
+CLOSED: [2020-11-09 Mon 11:02]
+Any drawbacks from loading with old org version then upgrading?
+** TODO Can we move speedup into =early-init.el=?
+
+
