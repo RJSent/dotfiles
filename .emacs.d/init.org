@@ -207,7 +207,7 @@ much, I want to create a blank one if it doesn't already exist.
 
 *** Constants
 A slowly growing list of constants. [[https://github.com/seagle0128/.emacs.d][Centaur Emacs]] has a comprehensive
-list that I haven't ~stolen~ proactively borrowed yet.
+list that I haven't +stolen+ proactively borrowed yet.
 
 #+begin_src emacs-lisp
   (defconst sys/win32p                    ; Boy, I hope I don't need this constant
@@ -757,6 +757,27 @@ Pretty much only one package for YAML.
 #+begin_src emacs-lisp
   (use-package yaml-mode
     :mode "\\.yml\\'")
+#+end_src
+
+
+** Utility
+
+This is meant for utility packages that aren't meant to assist with
+editing, navigation, or similar, but still provide a benefit.
+
+*** Esup
+
+| =Esup= | https://github.com/jschaf/esup |
+
+Profile Emacs startup times with =M-x esup=. There's an apparent issue
+with some combination of =straight=, =esup= and byte-compiling that
+causes =Esup= to fail to run, either showing =Symbolic link to Git...=
+or another error message. [[https://github.com/jschaf/esup/issues/54#issuecomment-651247749][This]] contains a fix.
+
+#+begin_src emacs-lisp
+  (use-package esup
+    :commands esup
+    :config (setq esup-depth 0))          ;
 #+end_src
 
 * List of TODOs
