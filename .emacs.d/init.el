@@ -1,33 +1,22 @@
-;;; init.el --- Emacs config initialization
-;;
+;;; init.el --- Initialization
+;; This file replaces itself with the actual configuration at first run.
+
+;; We can't tangle without org!
+
 ;;; Commentary:
 ;; 
-;;
+
+(require 'org)
+;; Open the configuration
 ;;; Code:
 
-;; Setup straight so we can use the most recent org version ASAP
-;; Don't want to org-babel load file with an older org version,
-;; then use straight to install new version. (I think?)
-(eval-and-compile
-  (defvar straight-fix-flycheck t)
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-  (straight-use-package 'use-package))      ; Install use-package
-(setq straight-use-package-by-default t)    ; I don't want to type :straight t a billion times
-
-(straight-use-package 'org)
-
-(org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+(find-file (concat user-emacs-directory "init.org"))
+;; tangle it
+(org-babel-tangle)
+;; load it
+(load-file (concat user-emacs-directory "init.el"))
+;; finally byte-compile it
+(byte-compile-file (concat user-emacs-directory "init.el"))
 
 (provide 'init)
 
