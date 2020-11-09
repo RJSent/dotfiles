@@ -6,6 +6,7 @@ This is my personal Emacs configuration, now with 100% more =Org=!
 
 * Installation
 
+I'll write this up later.
 
 * Configuration
 
@@ -94,7 +95,6 @@ the =after-save-hook= ensuring to always tangle and byte-compile the
 
 ** Basics
 
-
 *** Speedup
 
 We want to keep the garbage collector from running while we initialize
@@ -181,6 +181,7 @@ And now for a bunch of one liner configurations.
   (put 'downcase-region 'disabled nil)           ; Is it really that confusing?
   (put 'upcase-region 'disabled nil)             ; I reiterate. Is it really that confusing?
   (set-default-coding-systems 'utf-8)            ; Default to utf-8 encoding
+  (menu-bar-mode 0)                              ; Disable the menu bar
 #+end_src
 
 Start Emacs in fullscreen.
