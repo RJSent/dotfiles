@@ -1,0 +1,19 @@
+#+TITLE: DotEmacs
+#+AUTHOR: Richard Sent
+
+This subfolder contains my personal Emacs configuration.
+
+* Installation
+
+** Dependencies
+
+| =ripgrep=             | Used by =projectile-ripgrep= |
+|-----------------------+------------------------------|
+| =the_silver-searcher= | Used by =projectile-ag=      |
+
+** Troubleshooting
+
+If icons are missing for files, run
+#+begin_src emacs-lisp
+(all-the-icons-install-fonts)
+#+end_src
