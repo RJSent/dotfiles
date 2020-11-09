@@ -6,6 +6,7 @@ This is my personal Emacs configuration, now with 100% more =Org=!
 
 * Installation
 
+
 * List of TODOs
 
 ** TODO Move to solargrph and lsp-mode
@@ -92,7 +93,7 @@ the =after-save-hook= ensuring to always tangle and byte-compile the
 =org=-document after changes.
 
 #+BEGIN_SRC emacs-lisp
-  (defun tangle-init ()
+  (defun my/tangle-init ()
     "If the current buffer is 'init.org' the code-blocks are
   tangled, and the tangled file is compiled."
     (when (equal (buffer-file-name)
@@ -102,11 +103,12 @@ the =after-save-hook= ensuring to always tangle and byte-compile the
 	(org-babel-tangle)
 	(byte-compile-file (concat user-emacs-directory "init.el")))))
 
-  (add-hook 'after-save-hook 'tangle-init)
+  (add-hook 'after-save-hook 'my/tangle-init)
 #+END_SRC
 
 
 ** Basics
+
 
 *** Speedup
 
@@ -141,9 +143,10 @@ value Doom uses.
 #+end_src
 
 Garbage-collect on focus-out. Emacs /should/ feel snappier overall.
+With Emacs 27.1, focus-out-hook is deprecated.
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'focus-out-hook #'garbage-collect)
+  (add-function :after after-focus-change-function (unless (frame-focus-state) #'garbage-collect))
 #+END_SRC
 
 *** Sensible Defaults
@@ -481,7 +484,6 @@ To help me when I actually do customize the modeline myself, I'll have
 | =ivy=                    | https://github.com/abo-abo/swiper                    |
 | =counsel=                | https://github.com/abo-abo/swiper                    |
 | =swiper=                 | https://github.com/abo-abo/swiper                    |
-| =counsel-projectile=     | https://github.com/ericdanan/counsel-projectile      |
 | =ivy-rich=               | https://github.com/Yevgnen/ivy-rich                  |
 | =all-the-icons-ivy-rich= | https://github.com/seagle0128/all-the-icons-ivy-rich |
 
@@ -519,15 +521,6 @@ like =isearch=.
            ("C-r" . swiper)))
 #+end_src
 
-=counsel-projectile= provides integration between the two tools.
-
-#+begin_src emacs-lisp
-  (use-package counsel-projectile
-    :after (counsel projectile)
-    :functions counsel-projectile-mode
-    :config (counsel-projectile-mode))
-#+end_src
-
 =ivy-rich= makes things look purdy.
 
 #+begin_src emacs-lisp
@@ -549,7 +542,8 @@ like =isearch=.
 
 *** Projectile
 
-| =projectile= | https://github.com/bbatsov/projectile |
+| =projectile=         | https://github.com/bbatsov/projectile           |
+| =counsel-projectile= | https://github.com/ericdanan/counsel-projectile |
 
 #+begin_src emacs-lisp
   (use-package projectile
@@ -557,6 +551,15 @@ like =isearch=.
     :diminish
     :config (projectile-mode +1)
     :bind-keymap ("C-c p" . projectile-command-map))
+#+end_src
+
+=counsel-projectile= provides integration between the two tools.
+
+#+begin_src emacs-lisp
+  (use-package counsel-projectile
+    :after (counsel projectile)
+    :functions counsel-projectile-mode
+    :config (counsel-projectile-mode))
 #+end_src
 
 *** Window Management
