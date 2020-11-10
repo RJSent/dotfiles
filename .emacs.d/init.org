@@ -152,10 +152,9 @@ Don't randomly litter my filesystem with backups and autosaves.
 I don't need no fancy user interface! These ones are only active when in a window.
 
 #+begin_src emacs-lisp
-    (when window-system
-      (scroll-bar-mode 0)
-      (tool-bar-mode 0)
-      (tooltip-mode 0))
+  (push '(menu-bar-lines . 1) default-frame-alist)
+  (push '(tool-bar-lines . 0) default-frame-alist)
+  (push '(vertical-scroll-bars) default-frame-alist)
 #+end_src
 
 And now for a bunch of one liner configurations.
