@@ -865,7 +865,8 @@ are unaccounted for.
 ** TODO Move to solargrph and lsp-mode
 ** TODO move functions to :preface in =use-package=
 ** TODO Make an actual TODO list.
-** TODO Alphabetize sensible defaults
+** DONE Alphabetize sensible defaults
+CLOSED: [2020-11-10 Tue 14:49]
 ** DONE Some sort of solution to prevent needing to initialize straight in init
 CLOSED: [2020-11-09 Mon 11:02]
 Don't want to do that.
@@ -882,4 +883,7 @@ blocks in one file and other code blocks in another file.
 If I do this, I should set package-enable-at-startup to nil as well.
 
 And loading org in early init wouldn't be a bad idea either.
+** TODO Compatibility with tty
+It had previous failed to load in a tty, complaining about listp nil.
+I'm not reproducing the error now, just keep an eye out?
 
