@@ -1,4 +1,4 @@
-IRB.conf[:USE_MULTILINE] = false if ENV['INSIDE_EMACS']
+IRB.conf[:USE_MULTILINE] = false if ENV['INSIDE_EMACS'] && ENV['INSIDE_EMACS'] != 'vterm'
 IRB.conf[:SAVE_HISTORY] ||= 1000
 # I'd love if the next line worked with Ruby, but unfortunately history_dir is out of scope
 # https://bugs.ruby-lang.org/issues/1141 has a comment from Matz about it.
