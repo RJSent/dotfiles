@@ -149,7 +149,9 @@ Don't randomly litter my filesystem with backups and autosaves.
    version-control t)                                   ; use versioned backups
 #+end_src
 
-I don't need no fancy user interface! These ones are only active when in a window.
+I don't need no fancy user interface! These ones are only active when
+in a window. Apparently putting this in early-init.el will speed up
+startup even more.
 
 #+begin_src emacs-lisp
   (push '(menu-bar-lines . 1) default-frame-alist)
@@ -861,5 +863,11 @@ might have a solution with tangling.
 CLOSED: [2020-11-09 Mon 11:02]
 Any drawbacks from loading with old org version then upgrading?
 ** TODO Can we move speedup into =early-init.el=?
+[[https://old.reddit.com/r/emacs/comments/dppmqj/do_i_even_need_to_leverage_earlyinitel_if_i_have/][This]] talks about how disabling certain decorations in early init is
+faster. I'm curious how I can get org-tangle to export some code
+blocks in one file and other code blocks in another file.
 
+If I do this, I should set package-enable-at-startup to nil as well.
+
+And loading org in early init wouldn't be a bad idea either.
 
