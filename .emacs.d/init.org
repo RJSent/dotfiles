@@ -836,7 +836,7 @@ Pretty much only one package for YAML.
 #+end_src
 
 
-** Utility
+** Utilities
 
 This is meant for utility packages that don't assist with editing,
 navigation, or similar, but still provide a benefit.
@@ -858,6 +858,18 @@ are unaccounted for.
   (use-package esup
     :commands esup
     :config (setq esup-depth 0))
+#+end_src
+
+*** vterm
+
+| =vterm= | https://github.com/akermu/emacs-libvterm |
+
+A capable terminal emulator. This is compatible with =irb= multiline.
+Projectile also supports creating a named vterm with =projectile-run-vterm=.
+
+#+begin_src emacs-lisp
+  (use-package vterm
+    :commands vterm)
 #+end_src
 
 * List of TODOs
