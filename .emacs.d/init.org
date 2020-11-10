@@ -134,6 +134,13 @@ With Emacs 27.1, focus-out-hook is deprecated.
   (add-function :after after-focus-change-function (unless (frame-focus-state) #'garbage-collect))
 #+END_SRC
 
+Apparently this can result in a significant speedup when using fonts
+larger or smaller than the system default.
+
+#+begin_src emacs-lisp
+  (setq frame-inhibit-implied-resize t)
+#+end_src
+
 *** Sensible Defaults
 
 Don't randomly litter my filesystem with backups and autosaves.
@@ -193,6 +200,12 @@ Start Emacs in fullscreen.
       (set-frame-parameter nil 'fullscreen 'maximized)
     (set-frame-parameter nil 'fullscreen 'fullboth))
 #+END_SRC
+
+I already know about Emacs, thank you.
+
+#+begin_src emacs-lisp
+  (fset 'display-startup-echo-area-message 'ignore)
+#+end_src
 
 *** Support =custom.el=
 
