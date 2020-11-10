@@ -418,6 +418,7 @@ Why install one theme when many will do? Yeah, that sounds right.
     :config (load-theme 'doom-nord t))
 #+end_src
 
+
 *** Font
 
 I like being able to see the text on my screen.
@@ -425,6 +426,7 @@ I like being able to see the text on my screen.
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "Fira Code-12"))
 #+end_src
+
 
 *** Ibuffer
 
@@ -499,6 +501,7 @@ use a tool to remember every keybinding for me.
     :config (which-key-mode)
     (setq which-key-add-column-padding 3)) ; Easier to visually seperate columns
 #+end_src
+
 
 *** Modeline
 
@@ -625,6 +628,7 @@ like =isearch=.
     :config (counsel-projectile-mode))
 #+end_src
 
+
 *** Window Management
 
 | =ace-window= | https://github.com/abo-abo/ace-window |
@@ -680,6 +684,7 @@ Apparently =rainbow-delimiters= provides similar functionality to
     :defer 1)
 #+end_src
 
+
 *** Company
 
 | =company= | https://github.com/company-mode/company-mode |
@@ -699,6 +704,7 @@ A text-completion framework. Would like to replace RET with C-j like
     (setq company-idle-delay 1))
 #+end_src
 
+
 *** Flycheck
 
 | =flycheck= | https://github.com/flycheck/flycheck |
@@ -713,6 +719,7 @@ Syntax checking for Emacs.
     :config (setq flycheck-emacs-lisp-load-path 'inherit)  ; Fixes "org-mode-map" in comment-dwin-2 from being undefined
     (global-flycheck-mode))                                ; Does not fix issues with functions may not be defined
 #+end_src
+
 
 *** Comments
 
@@ -766,6 +773,8 @@ Currently =org-adapt-identation= does not work with ='headline-data=.
     :mode (("\\.org$" . org-mode))
     :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
     :config
+    (setq org-startup-folded t)
+    (setq org-cycle-separator-lines 1)
     (setq org-log-done 'time)
     (setq org-adapt-indentation nil))
 #+end_src
@@ -860,6 +869,7 @@ are unaccounted for.
     :config (setq esup-depth 0))
 #+end_src
 
+
 *** vterm
 
 | =vterm= | https://github.com/akermu/emacs-libvterm |
@@ -871,6 +881,7 @@ Projectile also supports creating a named vterm with =projectile-run-vterm=.
   (use-package vterm
     :commands vterm)
 #+end_src
+
 
 * List of TODOs
 
