@@ -423,7 +423,7 @@ Why install one theme when many will do? Yeah, that sounds right.
 I like being able to see the text on my screen.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :height 110)
+  (add-to-list 'default-frame-alist '(font . "Fira Code-12"))
 #+end_src
 
 *** Ibuffer
