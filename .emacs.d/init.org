@@ -543,10 +543,10 @@ completion engine that =counsel= and =swiper= build off of.
 #+begin_src emacs-lisp
   (use-package ivy
     :diminish
-    :defer 1
+    :hook (after-init . ivy-mode)
     :config
     (setq ivy-use-virtual-buffers t       ; Recent files and bookmarks in ivy-switch-buffer
-          ivy-count-format "%d/%d ")
+	  ivy-count-format "%d/%d ")
     (setq ivy-wrap t)                     ; Wrap around with next-line and previous-line
     (ivy-mode 1))
 #+end_src
