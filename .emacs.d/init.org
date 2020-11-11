@@ -355,16 +355,16 @@ Unfontify the last line of a subtree if it's the end of a source
 block. This is the line responsible for the bleeding.
 
 #+begin_src emacs-lisp
-  (defun dwim-unfontify-last-line-of-subtree (&rest _)
-    "Unfontify last line of subtree if it's a source block."
-    (save-excursion
-      (org-end-of-subtree)
-      (beginning-of-line)
-      (when (looking-at-p (rx "#+end_src"))
-	(font-lock-unfontify-region
-	 (line-end-position) (1+ (line-end-position))))))
+  ;; (defun dwim-unfontify-last-line-of-subtree (&rest _)
+  ;;   "Unfontify last line of subtree if it's a source block."
+  ;;   (save-excursion
+  ;;     (org-end-of-subtree)
+  ;;     (beginning-of-line)
+  ;;     (when (looking-at-p (rx "#+end_src"))
+  ;;       (font-lock-unfontify-region
+  ;;        (line-end-position) (1+ (line-end-position))))))
 
-  (advice-add #'outline-hide-subtree :after #'dwim-unfontify-last-line-of-subtree)
+  ;; (advice-add #'outline-hide-subtree :after #'dwim-unfontify-last-line-of-subtree)
 #+end_src
 
 Now we need to refontify that line at the right time. There’s two
@@ -384,27 +384,27 @@ Looking at the source for =outline-toggle-children=, I thought
 mind I wrote this advising function.
 
 #+begin_src emacs-lisp
-  (defun dwim-fontify-last-line-of-block (&rest _)
-    "Do what I mean: fontify last line of source block.
-   When the heading has a source block as the last item (in the subtree) do the
-     following:
-   If the source block is now visible, fontify the end its last line.
-   If it’s still invisible, unfontify its last line."
-    (let (font-lock-fn point)
-      (save-excursion
-	(org-end-of-subtree)
-	(beginning-of-line)
-	(run-hooks 'outline-view-change-hook)
-	(when (looking-at-p (rx "#+end_src"))
-	  (setq font-lock-fn
-		(if (invisible-p (line-end-position))
-		    #'font-lock-unfontify-region
-		  #'font-lock-fontify-region))
-	  (funcall font-lock-fn
-		   (line-end-position)
-		   (1+ (line-end-position)))))))
+  ;; (defun dwim-fontify-last-line-of-block (&rest _)
+  ;;   "Do what I mean: fontify last line of source block.
+  ;;  When the heading has a source block as the last item (in the subtree) do the
+  ;;    following:
+  ;;  If the source block is now visible, fontify the end its last line.
+  ;;  If it’s still invisible, unfontify its last line."
+  ;;   (let (font-lock-fn point)
+  ;;     (save-excursion
+  ;;       (org-end-of-subtree)
+  ;;       (beginning-of-line)
+  ;;       (run-hooks 'outline-view-change-hook)
+  ;;       (when (looking-at-p (rx "#+end_src"))
+  ;; 	(setq font-lock-fn
+  ;; 	      (if (invisible-p (line-end-position))
+  ;; 		  #'font-lock-unfontify-region
+  ;; 		#'font-lock-fontify-region))
+  ;; 	(funcall font-lock-fn
+  ;; 		 (line-end-position)
+  ;; 		 (1+ (line-end-position)))))))
 
-  (advice-add #'outline-show-heading :after #'dwim-fontify-last-line-of-block)
+  ;; (advice-add #'outline-show-heading :after #'dwim-fontify-last-line-of-block)
 #+end_src
 
 *** Packages
@@ -676,6 +676,7 @@ like =isearch=.
 #+end_src
 
 *** Prescient
+
 | =prescient=         | https://github.com/raxod502/prescient.el |
 | =ivy-prescient=     | https://github.com/raxod502/prescient.el |
 | =company-prescient= | https://github.com/raxod502/prescient.el |
