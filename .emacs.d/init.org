@@ -92,7 +92,6 @@ the =after-save-hook= ensuring to always tangle and byte-compile the
   (add-hook 'after-save-hook 'my/tangle-init)
 #+END_SRC
 
-
 ** Basics
 
 *** Speedup
@@ -336,12 +335,85 @@ Solution found [[https://old.reddit.com/r/emacs/comments/c6fvvr/unable_to_initia
     (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
 #+end_src
 
-
 ** Functions
-Custom functions from various sources that I use later on in the init
-file.
 
-Return t if a font is installed, nil otherwise.
+Custom functions from various sources.
+
+*** Org Heading Fontification
+
+Code and explanations from [[https://reddit.com/r/emacs/comments/cw0499/prevent_folded_headings_from_bleeding_out/][/u/ouroboroslisp]] ([[https://web.archive.org/web/20190925072833/https://www.reddit.com/r/emacs/comments/cw0499/prevent_folded_headings_from_bleeding_out/][archive)]] to try and fix
+font lock face bleeding out into org headings if there's only one
+space. This is most common with source code blocks, although it's not
+visible to everyone as some themes may have the same face for source
+code blocks and the background.
+
+I've disabled these functions for now since they didn't appear to help
+at all with this init.org file. Instead, I found
+=org-fontify-whole-block-delimiter-line= and set that to nil.
+
+Unfontify the last line of a subtree if it's the end of a source
+block. This is the line responsible for the bleeding.
+
+#+begin_src emacs-lisp
+  (defun dwim-unfontify-last-line-of-subtree (&rest _)
+    "Unfontify last line of subtree if it's a source block."
+    (save-excursion
+      (org-end-of-subtree)
+      (beginning-of-line)
+      (when (looking-at-p (rx "#+end_src"))
+	(font-lock-unfontify-region
+	 (line-end-position) (1+ (line-end-position))))))
+
+  (advice-add #'outline-hide-subtree :after #'dwim-unfontify-last-line-of-subtree)
+#+end_src
+
+Now we need to refontify that line at the right time. There’s two
+things we need to account for. We need to make sure that the
+=#+end_src= line is fontified when it’s visible. Also we should keep
+in mind that any newly revealed (ie. By unfolding subtree with
+outline-toggle-children) folded source block headings are also
+bleeders and need to have their =#+end_src= unfontified also.
+
+It’s also important which functions we choose to advice or modify for
+this because we want to minimize the amount of work we want to do.
+Ideally, we’d like a pretty core function so that this behavior would
+propagate to other functions.
+
+Looking at the source for =outline-toggle-children=, I thought
+=outline-show-heading= was a good choice to advise. Keeping all this in
+mind I wrote this advising function.
+
+#+begin_src emacs-lisp
+  (defun dwim-fontify-last-line-of-block (&rest _)
+    "Do what I mean: fontify last line of source block.
+   When the heading has a source block as the last item (in the subtree) do the
+     following:
+   If the source block is now visible, fontify the end its last line.
+   If it’s still invisible, unfontify its last line."
+    (let (font-lock-fn point)
+      (save-excursion
+	(org-end-of-subtree)
+	(beginning-of-line)
+	(run-hooks 'outline-view-change-hook)
+	(when (looking-at-p (rx "#+end_src"))
+	  (setq font-lock-fn
+		(if (invisible-p (line-end-position))
+		    #'font-lock-unfontify-region
+		  #'font-lock-fontify-region))
+	  (funcall font-lock-fn
+		   (line-end-position)
+		   (1+ (line-end-position)))))))
+
+  (advice-add #'outline-show-heading :after #'dwim-fontify-last-line-of-block)
+#+end_src
+
+*** Packages
+
+Functions used by packages I have installed.
+
+Return t if a font is installed, nil otherwise. Used by
+=all-the-icons=.
+
 #+begin_src emacs-lisp
   (defun aorst/font-installed-p (font-name)
     "Check if font with FONT-NAME is available."
@@ -350,7 +422,9 @@ Return t if a font is installed, nil otherwise.
       nil))
 #+end_src
 
-A duo of functions for getting human readable file sizes.
+A duo of functions for getting human readable file sizes. Used by
+=ibuffer-vc=.
+
 #+begin_src emacs-lisp
   (defun ajv/human-readable-file-sizes-to-bytes (string)
     "Convert a human-readable file size into bytes."
@@ -378,7 +452,6 @@ A duo of functions for getting human readable file sizes.
      (t (format "%10d" bytes)))
     )
 #+end_src
-
 
 ** UI
 
@@ -418,7 +491,6 @@ Why install one theme when many will do? Yeah, that sounds right.
     :config (load-theme 'doom-nord t))
 #+end_src
 
-
 *** Font
 
 I like being able to see the text on my screen.
@@ -426,7 +498,6 @@ I like being able to see the text on my screen.
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "Fira Code-12"))
 #+end_src
-
 
 *** Ibuffer
 
@@ -502,7 +573,6 @@ use a tool to remember every keybinding for me.
     (setq which-key-add-column-padding 3)) ; Easier to visually seperate columns
 #+end_src
 
-
 *** Modeline
 
 | =doom-modeline= | https://github.com/seagle0128/doom-modeline |
@@ -541,7 +611,6 @@ To help me when I actually do customize the modeline myself, I'll have
 #+begin_src emacs-lisp
   (use-package diminish)
 #+end_src
-
 
 ** Navigation
 
@@ -640,7 +709,6 @@ and/or selectrum.
     :config (company-prescient-mode))
 #+end_src
 
-
 *** Projectile
 
 | =projectile=         | https://github.com/bbatsov/projectile           |
@@ -663,7 +731,6 @@ and/or selectrum.
     :config (counsel-projectile-mode))
 #+end_src
 
-
 *** Window Management
 
 | =ace-window= | https://github.com/abo-abo/ace-window |
@@ -682,7 +749,6 @@ window.
     :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o. Consider adjusting as M-o is used for ivy-dispatching done
     :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
-
 
 ** Editing
 
@@ -719,7 +785,6 @@ Apparently =rainbow-delimiters= provides similar functionality to
     :defer 1)
 #+end_src
 
-
 *** Company
 
 | =company= | https://github.com/company-mode/company-mode |
@@ -739,7 +804,6 @@ A text-completion framework. Would like to replace RET with C-j like
     (setq company-idle-delay 1))
 #+end_src
 
-
 *** Flycheck
 
 | =flycheck= | https://github.com/flycheck/flycheck |
@@ -754,7 +818,6 @@ Syntax checking for Emacs.
     :config (setq flycheck-emacs-lisp-load-path 'inherit)  ; Fixes "org-mode-map" in comment-dwin-2 from being undefined
     (global-flycheck-mode))                                ; Does not fix issues with functions may not be defined
 #+end_src
-
 
 *** Comments
 
@@ -791,7 +854,6 @@ an entire line.
     :bind ("M-;" . comment-dwim-2))
 #+end_src
 
-
 ** Languages
 
 *** Org
@@ -811,7 +873,8 @@ Currently =org-adapt-identation= does not work with ='headline-data=.
     (setq org-startup-folded t)
     (setq org-cycle-separator-lines 1)
     (setq org-log-done 'time)
-    (setq org-adapt-indentation nil))
+    (setq org-adapt-indentation nil)
+    (setq org-fontify-whole-block-delimiter-line nil))
 #+end_src
 
 I enjoy colored bullets. I might remove
@@ -879,7 +942,6 @@ Pretty much only one package for YAML.
     :mode "\\.yml\\'")
 #+end_src
 
-
 ** Utilities
 
 This is meant for utility packages that don't assist with editing,
@@ -904,7 +966,6 @@ are unaccounted for.
     :config (setq esup-depth 0))
 #+end_src
 
-
 *** vterm
 
 | =vterm= | https://github.com/akermu/emacs-libvterm |
@@ -916,7 +977,6 @@ Projectile also supports creating a named vterm with =projectile-run-vterm=.
   (use-package vterm
     :commands vterm)
 #+end_src
-
 
 * List of TODOs
 
