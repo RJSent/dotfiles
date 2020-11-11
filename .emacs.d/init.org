@@ -606,6 +606,41 @@ like =isearch=.
     :config (all-the-icons-ivy-rich-mode 1))
 #+end_src
 
+*** Prescient
+| =prescient=         | https://github.com/raxod502/prescient.el |
+| =ivy-prescient=     | https://github.com/raxod502/prescient.el |
+| =company-prescient= | https://github.com/raxod502/prescient.el |
+
+=prescient= provide a new completion library for ivy, counsel, and
+and/or selectrum.
+
+#+begin_src emacs-lisp
+  (use-package prescient
+    :after ivy
+    :config (prescient-persist-mode)      ; Save history
+    )
+#+end_src
+
+=ivy-prescient= provides integration between =ivy= and =prescient=. As
+=counsel= modifies user options of =ivy=, we must load it first.
+
+#+begin_src emacs-lisp
+  (use-package ivy-prescient
+    :after counsel
+    :config (ivy-prescient-mode)
+    (setq ivy-prescient-retain-classic-highlighting t)) ; Hard to see matching regions otherwise
+#+end_src
+
+=company-prescient= provides integration between =company= and
+=prescient=.
+
+#+begin_src emacs-lisp
+  (use-package company-prescient
+    :after company
+    :config (company-prescient-mode))
+#+end_src
+
+
 *** Projectile
 
 | =projectile=         | https://github.com/bbatsov/projectile           |
