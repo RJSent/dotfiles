@@ -880,11 +880,13 @@ an entire line.
 *** Org
 
 | =org=           | https://orgmode.org/                              |
-| =org-superstar= | https://github.com/integral-dw/org-superstar-mode |
 
 I use a more up-to-date version of Org than what Emacs ships with.
 Currently =org-adapt-identation= does not work with ='headline-data=.
 (At least, I haven't gotten it work successfully.) Tested 11/2020.
+
+Additionally, I want org to support as many languages as possible
+without needing to add them all to =org-babel-load-languages=.
 
 #+begin_src emacs-lisp
   (use-package org
@@ -895,8 +897,20 @@ Currently =org-adapt-identation= does not work with ='headline-data=.
     (setq org-cycle-separator-lines 1)
     (setq org-log-done 'time)
     (setq org-adapt-indentation nil)
-    (setq org-fontify-whole-block-delimiter-line nil))
+    (setq org-fontify-whole-block-delimiter-line nil)
+    (defadvice org-babel-execute-src-block (around load-language nil activate)
+      "Load language if needed"
+      (let ((language (org-element-property :language (org-element-at-point))))
+	(unless (cdr (assoc (intern language) org-babel-load-languages))
+	  (add-to-list 'org-babel-load-languages (cons (intern language) t))
+	  (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+	ad-do-it)))
 #+end_src
+
+**** Extensions
+
+| =org-superstar= | https://github.com/integral-dw/org-superstar-mode |
+| =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
 
 I enjoy colored bullets. I might remove
 =org-superstar-leading-bullets= since it doesn't bother me too much
@@ -908,6 +922,16 @@ and doesn't seem to work anyway.
     :config
     (org-superstar-configure-like-org-bullets) ; FIXME stars are still visible despite below line
     (setq org-superstar-leading-bullet ?\s))
+#+end_src
+
+A picture is worth a thousand words, even in Org. I should try to make
+it more compatible with other installations.
+
+#+begin_src emacs-lisp
+  (use-package ob-mermaid
+    :after org
+    :config
+    (setq ob-mermaid-cli-path "~/.node_modules/.bin/mmdc"))
 #+end_src
 
 *** Ruby
