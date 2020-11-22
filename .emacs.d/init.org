@@ -614,7 +614,6 @@ To help me when I actually do customize the modeline myself, I'll have
 
 ** Navigation
 
-
 *** Ivy
 
 | =ivy=                    | https://github.com/abo-abo/swiper                    |
@@ -632,17 +631,20 @@ completion engine that =counsel= and =swiper= build off of.
     :hook (after-init . ivy-mode)
     :config
     (setq ivy-use-virtual-buffers t       ; Recent files and bookmarks in ivy-switch-buffer
-	  ivy-count-format "%d/%d ")
-    (setq ivy-wrap t)                     ; Wrap around with next-line and previous-line
-    (ivy-mode 1))
+          ivy-count-format "%d/%d "
+          ivy-wrap t))                     ; Wrap around with next-line and previous-line
 #+end_src
 
 =counsel= provides many custom functions designed to take advantage of
 =ivy=, such as =counsel-find-file=.
 
+FIXME: I'd prefer to find a way to load =counsel= without needing to
+use :demand t. I tried ~ivy-mode-hook~ but that caused issues with prescient.
+
 #+begin_src emacs-lisp
   (use-package counsel
     :diminish
+    :demand t
     :after ivy
     :bind ("C-x b" . counsel-switch-buffer)
     :config (counsel-mode))
@@ -662,8 +664,7 @@ like =isearch=.
 
 #+begin_src emacs-lisp
   (use-package ivy-rich
-    :functions ivy-rich-mode
-    :after ivy counsel
+    :after (ivy counsel)
     :config (ivy-rich-mode 1)
     (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)) ; Recommended in Github repo
 #+end_src
@@ -712,7 +713,6 @@ and/or selectrum.
     :config (company-prescient-mode))
 #+end_src
 
-
 *** Projectile
 
 | =projectile=         | https://github.com/bbatsov/projectile           |
@@ -729,17 +729,11 @@ and/or selectrum.
 =counsel-projectile= provides integration between =projectile= and
 =counsel=.
 
-FIXME: Not properly loaded on startup on time (even when both counsel
-and projectile are loaded), meaning there is no integration between
-the two initially.
-
 #+begin_src emacs-lisp
   (use-package counsel-projectile
     :after (counsel projectile)
-    :functions counsel-projectile-mode
     :config (counsel-projectile-mode))
 #+end_src
-
 
 *** Window Management
 
