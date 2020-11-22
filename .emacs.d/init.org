@@ -496,7 +496,7 @@ Why install one theme when many will do? Yeah, that sounds right.
 I like being able to see the text on my screen.
 
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Fira Code-12"))
+  (add-to-list 'default-frame-alist '(font . "Fira Code-11"))
 #+end_src
 
 *** Ibuffer
@@ -614,6 +614,7 @@ To help me when I actually do customize the modeline myself, I'll have
 
 ** Navigation
 
+
 *** Ivy
 
 | =ivy=                    | https://github.com/abo-abo/swiper                    |
@@ -643,6 +644,7 @@ completion engine that =counsel= and =swiper= build off of.
   (use-package counsel
     :diminish
     :after ivy
+    :bind ("C-x b" . counsel-switch-buffer)
     :config (counsel-mode))
 #+end_src
 
@@ -710,6 +712,7 @@ and/or selectrum.
     :config (company-prescient-mode))
 #+end_src
 
+
 *** Projectile
 
 | =projectile=         | https://github.com/bbatsov/projectile           |
@@ -723,7 +726,12 @@ and/or selectrum.
     :bind-keymap ("C-c p" . projectile-command-map))
 #+end_src
 
-=counsel-projectile= provides integration between =projectile= and =counsel=.
+=counsel-projectile= provides integration between =projectile= and
+=counsel=.
+
+FIXME: Not properly loaded on startup on time (even when both counsel
+and projectile are loaded), meaning there is no integration between
+the two initially.
 
 #+begin_src emacs-lisp
   (use-package counsel-projectile
@@ -731,6 +739,7 @@ and/or selectrum.
     :functions counsel-projectile-mode
     :config (counsel-projectile-mode))
 #+end_src
+
 
 *** Window Management
 
