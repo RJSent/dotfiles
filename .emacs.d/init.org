@@ -174,7 +174,7 @@ And now for a bunch of one liner configurations.
    inhibit-startup-screen t                      ; Emacs really could use a more "welcoming" welcome screen
    initial-scratch-message ""                    ; Clear scratch buffer
    next-screen-context-lines 6                   ; Keep 6 lines of context when using scroll-up/down-command
-   ring-bell-bunction 'ignore                    ; My ears!
+   ring-bell-function 'ignore                    ; My ears!
    scroll-conservatively most-positive-fixnum    ; Always scroll by one line
    scroll-preserve-screen-position t             ; Try to keep point in the same location visually
    sentence-end-double-space nil                 ; Use a single space after dots
