@@ -221,8 +221,8 @@ one.
 
 *** Constants
 
-A slowly growing list of constants. [[https://github.com/seagle0128/.emacs.d][Centaur Emacs]] has a comprehensive
-list that I haven't +stolen+ proactively borrowed yet.
+A slowly growing list of constants. Many of these are thanks to
+[[https://github.com/seagle0128/.emacs.d][Centaur Emacs]].
 
 #+begin_src emacs-lisp
   (defconst sys/win32p                    ; I hope I don't need this constant
@@ -293,31 +293,22 @@ list that I haven't +stolen+ proactively borrowed yet.
 I use [[https://github.com/raxod502/straight.el][straight.el]] for package management. This is boostrap code from
 the Github repo to set up straight.
 
-I wrapped it in an =eval-and-compile= because =flycheck= thought every
-variable I configured in =use-package= didn't exist. Credit to
-[[https://reddit.com/r/emacs/comments/gwupwt/noob_please_help_to_resolve_the_flycheck_error/ft1kk2j/][/u/cpitclaudel]] on Reddit for the solution! It's not perfect; functions
-are still recognized as undefined, but at least that is condensed into
-one warning at the end.
-
-Now that I'm byte compiling my init file as a whole, this wrapper
-might not be needed.
-
 #+begin_src emacs-lisp
   (defvar straight-fix-flycheck t)
   (defvar bootstrap-version)
   (let ((bootstrap-file
-	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-	(bootstrap-version 5))
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
-	  (url-retrieve-synchronously
-	   "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-	   'silent 'inhibit-cookies)
-	(goto-char (point-max))
-	(eval-print-last-sexp)))
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
-  (straight-use-package 'use-package)       ; Install use-package
-  (setq straight-use-package-by-default t)    ; I don't want to type :straight t a billion times
+  (straight-use-package 'use-package)      ; Install use-package
+  (setq straight-use-package-by-default t) ; I don't want to type :straight t a billion times
 #+end_src
 
 *** Bind-keys Bootstrap
@@ -463,7 +454,6 @@ A duo of functions for getting human readable file sizes. Used by
 I like having pretty icons next to a lot of things. I also don't like
 remembering to install them on a new machine.
 
-
 #+begin_src emacs-lisp
   (use-package all-the-icons
     :config
@@ -491,7 +481,7 @@ Why install one theme when many will do? Yeah, that sounds right.
     :config (load-theme 'doom-nord t))
 #+end_src
 
-*** Font
+*** Fontq
 
 I like being able to see the text on my screen.
 
@@ -524,7 +514,7 @@ control groups.
 #+begin_src emacs-lisp
   (use-package ibuffer-vc ; Also consider ibuffer-projectile
     :after all-the-icons-ibuffer
-    :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root) ; Look at combining with custom ibuffer groups with 'ibffuer-projectile-generate-filter-groups
+    :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root) ; Look at combining with custom ibuffer groups with 'ibuffer-projectile-generate-filter-groups
                        (unless (eq ibuffer-sorting-mode 'alphabetic)      ; Obviously that's an ibuffer-projectile exclusive, not ibuffer-vc
                          (ibuffer-do-sort-by-alphabetic))))               ; https://emacs.stackexchange.com/questions/2181/ibuffer-how-to-automatically-create-groups-per-project
     :bind ("C-x C-b" . ibuffer)                                           ; shows some of code behind projectile filter groups
@@ -570,7 +560,7 @@ use a tool to remember every keybinding for me.
     :defer 1
     :diminish
     :config (which-key-mode)
-    (setq which-key-add-column-padding 3)) ; Easier to visually seperate columns
+    (setq which-key-add-column-padding 3)) ; Easier to visually separate columns
 #+end_src
 
 *** Modeline
@@ -639,7 +629,7 @@ completion engine that =counsel= and =swiper= build off of.
 =ivy=, such as =counsel-find-file=.
 
 FIXME: I'd prefer to find a way to load =counsel= without needing to
-use :demand t. I tried ~ivy-mode-hook~ but that caused issues with prescient.
+use ~:demand t~. I tried ~ivy-mode-hook~ but that caused issues with =prescient=.
 
 #+begin_src emacs-lisp
   (use-package counsel
@@ -684,8 +674,8 @@ like =isearch=.
 | =ivy-prescient=     | https://github.com/raxod502/prescient.el |
 | =company-prescient= | https://github.com/raxod502/prescient.el |
 
-=prescient= provide a new completion library for ivy, counsel, and
-and/or selectrum.
+=prescient= provide a new completion library for =ivy=, =counsel=, and
+and/or =selectrum=.
 
 #+begin_src emacs-lisp
   (use-package prescient
@@ -739,8 +729,8 @@ and/or selectrum.
 
 | =ace-window= | https://github.com/abo-abo/ace-window |
 
-Running =other-window= a billion times isn't exactly enjoyable. What
-is enjoyable is executing =ace-window= once and typing 1-2 keys to
+Running ~other-window~ a billion times isn't exactly enjoyable. What
+is enjoyable is executing ~ace-window~ once and typing 1-2 keys to
 select a window.
 
 Instead of 0-9, =ace-window= will use the home row keys to select a
@@ -750,7 +740,7 @@ window.
   (use-package ace-window
     :defines aw-keys
     :functions ace-window
-    :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o. Consider adjusting as M-o is used for ivy-dispatching done
+    :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o. Consider adjusting as M-o is used for ivy-dispatching-done
     :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
 
@@ -758,11 +748,12 @@ window.
 
 | =avy= | https://github.com/abo-abo/avy |
 
-Easier navigation within a buffer.
+Easier navigation within a buffer. Run ~avy-goto-char-2~, type two
+characters, then use the home row to select where to move the cursor.
 
 #+begin_src emacs-lisp
   (use-package avy
-  :bind ("C-;" . avy-goto-char-2))
+    :bind ("C-;" . avy-goto-char-2))
 #+end_src
 
 ** Editing
@@ -838,7 +829,7 @@ Syntax checking for Emacs.
 
 | =comment-dwim-2= | https://github.com/remyferre/comment-dwim-2 |
 
-I don't enjoy how =comment-dwim= and =comment-line= are two different
+I don't enjoy how ~comment-dwim~ and ~comment-line~ are two different
 keys for very similar functionality. =comment-dwim-2= provides that
 and a bit more. Sometimes indentation seems weird in elisp with
 comments not lining up.
@@ -873,32 +864,32 @@ an entire line.
 
 *** Org
 
-| =org=           | https://orgmode.org/                              |
+| =org= | https://orgmode.org/ |
 
 I use a more up-to-date version of Org than what Emacs ships with.
-Currently =org-adapt-identation= does not work with ='headline-data=.
+Currently ~org-adapt-identation~ does not work with ~'headline-data~.
 (At least, I haven't gotten it work successfully.) Tested 11/2020.
 
 Additionally, I want org to support as many languages as possible
-without needing to add them all to =org-babel-load-languages=.
+without needing to add them all to ~org-babel-load-languages~.
 
 #+begin_src emacs-lisp
   (use-package org
     :mode (("\\.org$" . org-mode))
     :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
     :config
-    (setq org-startup-folded t)
-    (setq org-cycle-separator-lines 1)
-    (setq org-log-done 'time)
-    (setq org-adapt-indentation nil)
-    (setq org-fontify-whole-block-delimiter-line nil)
+    (setq org-startup-folded t
+          org-cycle-separator-lines 1
+          org-log-done 'time
+          org-adapt-indentation nil
+          org-fontify-whole-block-delimiter-line nil)
     (defadvice org-babel-execute-src-block (around load-language nil activate)
       "Load language if needed"
       (let ((language (org-element-property :language (org-element-at-point))))
-	(unless (cdr (assoc (intern language) org-babel-load-languages))
-	  (add-to-list 'org-babel-load-languages (cons (intern language) t))
-	  (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-	ad-do-it)))
+        (unless (cdr (assoc (intern language) org-babel-load-languages))
+          (add-to-list 'org-babel-load-languages (cons (intern language) t))
+          (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+        ad-do-it)))
 #+end_src
 
 **** Extensions
@@ -907,7 +898,7 @@ without needing to add them all to =org-babel-load-languages=.
 | =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
 
 I enjoy colored bullets. I might remove
-=org-superstar-leading-bullets= since it doesn't bother me too much
+~org-superstar-leading-bullets~ since it doesn't bother me too much
 and doesn't seem to work anyway.
 
 #+begin_src emacs-lisp
