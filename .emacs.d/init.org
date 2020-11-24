@@ -889,6 +889,19 @@ an entire line.
     :bind ("M-;" . comment-dwim-2))
 #+end_src
 
+*** zzz to char
+
+| =zzz to char= | https://github.com/mrkkrp/zzz-to-char |
+
+Replace ~zap-to-char~ and ~zap-up-to-char~ with ~zzz~ equivalents. I
+can select a  specific character, either forward or back, with the
+home row. As opposed to the closest character.
+
+#+begin_src emacs-lisp
+  (use-package zzz-to-char
+    :bind ("M-z" . zzz-to-char))
+#+end_src
+
 ** Languages
 
 *** Org
