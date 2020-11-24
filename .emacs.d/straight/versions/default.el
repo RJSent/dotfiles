@@ -5,6 +5,7 @@
  ("all-the-icons-ivy-rich" . "6428cb39729b7290368c5b95f563a320c98f972d")
  ("all-the-icons.el" . "6917b08f64dd8487e23769433d6cb9ba11f4152f")
  ("avy" . "bbf1e7339eba06784dfe86643bb0fbddf5bb0342")
+ ("beacon" . "bde78180c678b233c94321394f46a81dc6dce1da")
  ("comment-dwim-2" . "396b03c67684461e194a45ce751508d37088469d")
  ("company-mode" . "dd925936f7c0bf00319c81e8caea1b3db63bb8b5")
  ("counsel-projectile" . "06b03c1080d3ccc3fa9b9c41b1ccbcf13f058e4b")
@@ -36,6 +37,7 @@
  ("prescient.el" . "41443e1c9f794b569dafdad4c0b64a608df64b99")
  ("projectile" . "d1daf274e8ca2eb0f20475b8f314bb955167c6a1")
  ("rbenv.el" . "2ea1a5bdc1266caef1dd77700f2c8f42429b03f1")
+ ("restart-emacs" . "9aa90d3df9e08bc420e1c9845ee3ff568e911bd9")
  ("robe" . "082da38797d247f9c64568ad712a345e041d5c84")
  ("s.el" . "43ba8b563bee3426cead0e6d4ddc09398e1a349d")
  ("shrink-path.el" . "c14882c8599aec79a6e8ef2d06454254bb3e1e41")
@@ -43,5 +45,6 @@
  ("straight.el" . "f6663b1de0fb5d9c64528e4f7f8bb914f49bb6d2")
  ("swiper" . "8ff6975ad0d241626dc670c972d6032ced13eaa2")
  ("use-package" . "4fb1f9a68f1e7e7d614652afc017a6652fd029f1")
- ("yaml-mode" . "fc5e1c58f94472944c4aa838f00f6adcac6fa992"))
+ ("yaml-mode" . "fc5e1c58f94472944c4aa838f00f6adcac6fa992")
+ ("zzz-to-char" . "b0a50b8cb6925c3184405f81be9ef9be9da69f09"))
 :beta
