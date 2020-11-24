@@ -630,6 +630,18 @@ Show a dashboard on startup.
               (lambda (&rest _) (browse-url "https://gitlab.com/RJSent")))))))
 #+end_src
 
+*** Beacon
+
+| =beacon= | https://github.com/Malabarba/beacon |
+
+Highlight the line the cursor is on when scrolling.
+
+#+begin_src emacs-lisp
+  (use-package beacon
+    :defer 1
+    :config (beacon-mode 1))
+#+end_src
+
 ** Navigation
 
 *** Ivy
@@ -1226,8 +1238,9 @@ what the issue is.
 A small package to restart Emacs within Emacs.
 
 #+begin_src emacs-lisp
-  (use-package restart-emacs
-    :commands restart-emacs)
+      (use-package restart-emacs
+        :commands restart-emacs
+        :config (setq restart-emacs-restore-frames t))
 #+end_src
 
 * List of TODOs
