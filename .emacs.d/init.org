@@ -1219,6 +1219,17 @@ what the issue is.
     ;;; unbound.el ends here
 #+end_src
 
+*** Restart Emacs
+
+| =restart-emacs= | https://github.com/iqbalansari/restart-emacs |
+
+A small package to restart Emacs within Emacs.
+
+#+begin_src emacs-lisp
+  (use-package restart-emacs
+    :commands restart-emacs)
+#+end_src
+
 * List of TODOs
 
 ** TODO Move to solargrph and lsp-mode
