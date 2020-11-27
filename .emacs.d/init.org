@@ -1093,11 +1093,21 @@ are unaccounted for.
 | =vterm= | https://github.com/akermu/emacs-libvterm |
 
 A capable terminal emulator. This is compatible with =irb= multiline.
-Projectile also supports creating a named vterm with =projectile-run-vterm=.
+Projectile also supports creating a named vterm with ~projectile-run-vterm~.
 
 #+begin_src emacs-lisp
-  (use-package vterm
-    :commands vterm)
+    (use-package vterm
+      :commands vterm vterm-ssh-tramp
+      :config
+      (defun vterm-ssh (host)
+        (vterm)
+        (vterm-send-string (concat "ssh " host "\n")))
+      (defun vterm-ssh-tramp ()
+        (interactive)
+        (let ((host (file-remote-p default-directory 'host)))
+          (if host
+              (vterm-ssh host)
+            (message "Not in a TRAMP buffer")))))
 #+end_src
 
 *** Unbound
