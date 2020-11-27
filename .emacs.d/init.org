@@ -724,6 +724,22 @@ like =isearch=.
     :config (all-the-icons-ivy-rich-mode 1))
 #+end_src
 
+**** Counsel-Tramp
+
+| =counsel-tramp= | https://github.com/masasam/emacs-counsel-tramp |
+
+Provides a interface for using =counsel= completion with SSH. Entries
+are populated from ~/.ssh/config~. Connections can also be added using
+~counsel-tramp-custom-connections~.
+
+Support for =docker= and =vagrant= is also provided if you are using
+=docker-tramp= or =vagrant-tramp=.
+
+#+begin_src emacs-lisp
+  (use-package counsel-tramp
+    :bind ("C-c t" . counsel-tramp))
+#+end_src
+
 *** Prescient
 
 | =prescient=         | https://github.com/raxod502/prescient.el |
