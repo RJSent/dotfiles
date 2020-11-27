@@ -193,7 +193,7 @@ I already know about Emacs, thank you.
   (fset 'display-startup-echo-area-message 'ignore)
 #+end_src
 
-**** Autosaves and Backups
+*** Autosaves and Backups
 
 Don't randomly litter my filesystem with autosaves and backups.
 
@@ -301,7 +301,9 @@ A slowly growing list of constants. Many of these are thanks to
     "Emacs is 25.2 or above.")
 #+end_src
 
-*** Straight Bootstrap
+*** Bootstrap
+
+**** Straight Bootstrap
 
 I use [[https://github.com/raxod502/straight.el][straight.el]] for package management. This is boostrap code from
 the Github repo to set up straight.
@@ -324,7 +326,7 @@ the Github repo to set up straight.
   (setq straight-use-package-by-default t) ; I don't want to type :straight t a billion times
 #+end_src
 
-*** Bind-keys Bootstrap
+**** Bind-keys Bootstrap
 
 I'm not entirely sure why this is necessary, and more importantly,
 what better solutions there are. But when byte-compiling Emacs,
