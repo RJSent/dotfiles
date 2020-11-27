@@ -845,7 +845,7 @@ Apparently =rainbow-delimiters= provides similar functionality to
 #+begin_src emacs-lisp
   (use-package highlight-parentheses
     :diminish
-    :hook (prog-mode . highlight-parentheses-mode))
+    :hook ((prog-mode org-mode) . highlight-parentheses-mode))
 #+end_src
 
 #+begin_src emacs-lisp
