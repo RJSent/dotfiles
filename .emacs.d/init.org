@@ -662,8 +662,6 @@ Highlight the line the cursor is on when scrolling.
 | =ivy=                    | https://github.com/abo-abo/swiper                    |
 | =counsel=                | https://github.com/abo-abo/swiper                    |
 | =swiper=                 | https://github.com/abo-abo/swiper                    |
-| =ivy-rich=               | https://github.com/Yevgnen/ivy-rich                  |
-| =all-the-icons-ivy-rich= | https://github.com/seagle0128/all-the-icons-ivy-rich |
 
 Let's start with the backbone of it all. =Ivy= provides a
 completion engine that =counsel= and =swiper= build off of. 
@@ -702,6 +700,11 @@ like =isearch=.
     :bind (("C-s" . swiper)
            ("C-r" . swiper)))
 #+end_src
+
+**** Ivy Rich
+
+| =ivy-rich=               | https://github.com/Yevgnen/ivy-rich                  |
+| =all-the-icons-ivy-rich= | https://github.com/seagle0128/all-the-icons-ivy-rich |
 
 =ivy-rich= makes things look purdy.
 
