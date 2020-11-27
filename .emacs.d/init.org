@@ -713,8 +713,12 @@ like =isearch=.
 #+begin_src emacs-lisp
   (use-package ivy-rich
     :after (ivy counsel)
-    :config (ivy-rich-mode 1)
-    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)) ; Recommended in Github repo
+    :config
+    (ivy-rich-mode 1)
+    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line) ; Recommended in Github repo
+    (setq ivy-rich-parse-remote-buffer nil ; https://github.com/Yevgnen/ivy-rich/issues/47
+          ivy-rich-parse-remote-file-path nil
+          ivy-rich-path-style (quote full)))
 #+end_src
 
 =all-the-icons-ivy-rich= makes the purdy thing look purdy.
