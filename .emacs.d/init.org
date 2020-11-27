@@ -1095,21 +1095,27 @@ are unaccounted for.
 | =vterm= | https://github.com/akermu/emacs-libvterm |
 
 A capable terminal emulator. This is compatible with =irb= multiline.
-Projectile also supports creating a named vterm with ~projectile-run-vterm~.
+Projectile also supports creating a named vterm with
+~projectile-run-vterm~.
 
 #+begin_src emacs-lisp
-    (use-package vterm
-      :commands vterm vterm-ssh-tramp
-      :config
-      (defun vterm-ssh (host)
-        (vterm)
-        (vterm-send-string (concat "ssh " host "\n")))
-      (defun vterm-ssh-tramp ()
-        (interactive)
-        (let ((host (file-remote-p default-directory 'host)))
-          (if host
-              (vterm-ssh host)
-            (message "Not in a TRAMP buffer")))))
+  (use-package vterm
+    :commands vterm vterm-ssh-tramp)
+#+end_src
+
+**** vterm-toggle
+
+| =vterm-toggle= | https://github.com/jixiuf/vterm-toggle |
+
+#+begin_quote
+This package provides the command vterm-toggle which toggles between
+the vterm buffer and whatever buffer you are editing.
+#+end_quote
+
+#+begin_src emacs-lisp
+  (use-package vterm-toggle
+    :commands vterm-toggle vterm-toggle-cd vterm-toggle-select
+    :bind ("C-c v" . vterm-toggle))
 #+end_src
 
 *** Unbound
