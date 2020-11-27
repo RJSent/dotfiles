@@ -142,21 +142,8 @@ larger or smaller than the system default.
 
 *** Sensible Defaults
 
-Don't randomly litter my filesystem with backups and autosaves.
-
-#+begin_src emacs-lisp
-  (setq
-   backup-by-copying t                                  ; don't clobber symlinks
-   backup-directory-alist                               ;
-   `(("." . ,(concat user-emacs-directory "backups")))  ; don't litter my fs tree
-   delete-old-versions t                                ;
-   kept-new-versions 6                                  ;
-   kept-old-versions 2                                  ;
-   version-control t)                                   ; use versioned backups
-#+end_src
-
 I don't need no fancy user interface! These ones are only active when
-in a window. Apparently putting this in early-init.el will speed up
+in a window. Apparently putting this in ~early-init.el~ will speed up
 startup even more.
 
 #+begin_src emacs-lisp
@@ -204,6 +191,32 @@ I already know about Emacs, thank you.
 
 #+begin_src emacs-lisp
   (fset 'display-startup-echo-area-message 'ignore)
+#+end_src
+
+**** Autosaves and Backups
+
+Don't randomly litter my filesystem with autosaves and backups.
+
+#+begin_src emacs-lisp
+  (setq
+   auto-save-file-name-transforms                           ; 
+   `((".*" ,(concat user-emacs-directory "autosaves/") t))  ; still don't litter my fs tree
+   backup-by-copying t                                      ; don't clobber symlinks
+   backup-directory-alist                                   ; 
+   `(("." . ,(concat user-emacs-directory "backups")))      ; don't litter my fs tree
+   delete-old-versions t                                    ; 
+   kept-new-versions 6                                      ; 
+   kept-old-versions 2                                      ; 
+   version-control t)                                       ; use versioned backups
+#+end_src
+
+*Especially* don't litter remote servers!
+
+#+begin_src emacs-lisp
+  (setq
+   tramp-auto-save-directory                                ; don't litter remote machines 
+   (concat user-emacs-directory "autosaves")                ;
+   tramp-backup-directory-alist backup-directory-alist)     ; still don't litter remote machines 
 #+end_src
 
 *** Support =custom.el=
