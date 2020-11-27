@@ -1101,7 +1101,7 @@ Projectile also supports creating a named vterm with
 
 #+begin_src emacs-lisp
   (use-package vterm
-    :commands vterm vterm-ssh-tramp)
+    :commands vterm)
 #+end_src
 
 **** vterm-toggle
@@ -1115,7 +1115,7 @@ the vterm buffer and whatever buffer you are editing.
 
 #+begin_src emacs-lisp
   (use-package vterm-toggle
-    :commands vterm-toggle vterm-toggle-cd vterm-toggle-select
+    :commands vterm-toggle vterm-toggle-cd
     :bind ("C-c v" . vterm-toggle))
 #+end_src
 
