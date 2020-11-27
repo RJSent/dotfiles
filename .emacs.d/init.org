@@ -156,6 +156,7 @@ And now for a bunch of one liner configurations.
 
 #+begin_src emacs-lisp
   (setq-default
+   auth-source-save-behavior nil                 ; Not interested in auth-source
    frame-resize-pixelwise t                      ; Removes empty space at bottom of screen when maximized
    help-window-select t                          ; Select help windows when they appear
    inhibit-startup-screen t                      ; Emacs really could use a more "welcoming" welcome screen
