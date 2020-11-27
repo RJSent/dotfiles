@@ -526,6 +526,8 @@ Next, I'll set up some pretty icons.
 Time to actually make =Ibuffer= functional by setting up automatic version
 control groups.
 
+FIXME: Currently the ~*Help*~ buffer is not properly aligned with the others.
+
 #+begin_src emacs-lisp
   (use-package ibuffer-vc ; Also consider ibuffer-projectile
     :after all-the-icons-ibuffer
@@ -689,7 +691,7 @@ use ~:demand t~. I tried ~ivy-mode-hook~ but that caused issues with =prescient=
     :diminish
     :demand t
     :after ivy
-    :bind ("C-x b" . counsel-switch-buffer)
+    ;; :bind ("C-x b" . counsel-switch-buffer) ; Disabled due to slowdowns
     :config (counsel-mode))
 #+end_src
 
