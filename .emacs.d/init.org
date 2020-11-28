@@ -977,7 +977,11 @@ without needing to add them all to ~org-babel-load-languages~.
           org-cycle-separator-lines 1
           org-log-done 'time
           org-adapt-indentation nil
-          org-fontify-whole-block-delimiter-line nil)
+          org-fontify-whole-block-delimiter-line nil
+          org-hide-emphasis-markers t)
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
     (defadvice org-babel-execute-src-block (around load-language nil activate)
       "Load language if needed"
       (let ((language (org-element-property :language (org-element-at-point))))
@@ -987,10 +991,9 @@ without needing to add them all to ~org-babel-load-languages~.
         ad-do-it)))
 #+end_src
 
-**** Extensions
+**** org-superstar
 
 | =org-superstar= | https://github.com/integral-dw/org-superstar-mode |
-| =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
 
 I enjoy colored bullets. I might remove
 ~org-superstar-leading-bullets~ since it doesn't bother me too much
@@ -1004,6 +1007,10 @@ and doesn't seem to work anyway.
     (setq org-superstar-leading-bullet ?\s))
 #+end_src
 
+**** ob-mermaid
+
+| =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
+
 A picture is worth a thousand words, even in Org. I should try to make
 it more compatible with other installations.
 
@@ -1012,6 +1019,24 @@ it more compatible with other installations.
     :after org
     :config
     (setq ob-mermaid-cli-path "~/.node_modules/.bin/mmdc"))
+#+end_src
+
+**** mixed-pitch
+
+| =mixed-pitch= | https://gitlab.com/jabranham/mixed-pitch |
+
+#+begin_quote
+Mixed pitch is a minor mode that enables mixing fixed-pitch (also known as
+fixed-width or monospace) and variable-pitch (AKA “proportional”) fonts. It
+tries to be smart about which fonts get which face. Fonts that look like code,
+org-tables, and such remain fixed-pitch and everything else becomes
+variable-pitch. The variable ~mixed-pitch-fixed-pitch-faces~ is a list of faces
+that will remain fixed-pitch in ~mixed-pitch-mode~.
+#+end_quote
+
+#+begin_src emacs-lisp
+  (use-package mixed-pitch
+    :hook (org-mode . mixed-pitch-mode))
 #+end_src
 
 *** Ruby
