@@ -639,13 +639,7 @@ Show a dashboard on startup.
                             (recents . 5)
                             (agenda . 5))
           dashboard-set-heading-icons t
-          dashboard-set-file-icons t
-          dashboard-navigator-buttons
-          `(;; line1
-            ((,(all-the-icons-faicon "gitlab" :height 1.1 :v-adjust -0.1)
-              ""
-              ""
-              (lambda (&rest _) (browse-url "https://gitlab.com/RJSent")))))))
+          dashboard-set-file-icons t))
 #+end_src
 
 *** Beacon
