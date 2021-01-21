@@ -1355,4 +1355,5 @@ blocks on the first attempt when launching emacs, requiring two attempts.
 ** TODO Restore autosave transform
 Currently files fail to save and a warning periodically appears with
 it enabled.
+** TODO ltximg folder no littering
 
