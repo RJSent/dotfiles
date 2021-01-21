@@ -200,8 +200,8 @@ Don't randomly litter my filesystem with autosaves and backups.
 
 #+begin_src emacs-lisp
   (setq
-   auto-save-file-name-transforms                           ; 
-   `((".*" ,(concat user-emacs-directory "autosaves/") t))  ; still don't litter my fs tree
+;   auto-save-file-name-transforms                           ; 
+;   `((".*" ,(concat user-emacs-directory "autosaves/") t))  ; still don't litter my fs tree
    backup-by-copying t                                      ; don't clobber symlinks
    backup-directory-alist                                   ; 
    `(("." . ,(concat user-emacs-directory "backups")))      ; don't litter my fs tree
@@ -412,6 +412,23 @@ mind I wrote this advising function.
   ;; 		 (1+ (line-end-position)))))))
 
   ;; (advice-add #'outline-show-heading :after #'dwim-fontify-last-line-of-block)
+#+end_src
+
+*** Sort words
+Sort words in region alphabetically. If arg is negative, sort them in
+reverse.
+
+#+begin_src emacs-lisp
+  (defun sort-words (reverse beg end)
+    "Sort words in region alphabetically, in REVERSE if negative.
+  Prefixed with negative \\[universal-argument], sorts in reverse.
+
+  The variable `sort-fold-case' determines whether alphabetic case
+  affects the sort order.
+
+  See `sort-regexp-fields'."
+    (interactive "*P\nr")
+    (sort-regexp-fields reverse "\\w+" "\\&" beg end))
 #+end_src
 
 *** Packages
@@ -963,28 +980,30 @@ Additionally, I want org to support as many languages as possible
 without needing to add them all to ~org-babel-load-languages~.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :mode (("\\.org$" . org-mode))
-    :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
-    :config
-    (setq org-startup-folded t
-          org-cycle-separator-lines 1
-          org-log-done 'time
-          org-adapt-indentation nil
-          org-fontify-whole-block-delimiter-line nil)
-    (defadvice org-babel-execute-src-block (around load-language nil activate)
-      "Load language if needed"
-      (let ((language (org-element-property :language (org-element-at-point))))
-        (unless (cdr (assoc (intern language) org-babel-load-languages))
-          (add-to-list 'org-babel-load-languages (cons (intern language) t))
-          (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-        ad-do-it)))
+    (use-package org
+      :mode (("\\.org$" . org-mode))
+      :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
+      :config
+      (setq org-startup-folded t
+            org-cycle-separator-lines 1
+            org-log-done 'time
+            org-adapt-indentation nil
+            org-fontify-whole-block-delimiter-line nil
+            org-confirm-babel-evaluate nil)
+      (defadvice org-babel-execute-src-block (around load-language nil activate)
+        "Load language if needed"
+        (let ((language (org-element-property :language (org-element-at-point))))
+          (unless (cdr (assoc (intern language) org-babel-load-languages))
+            (add-to-list 'org-babel-load-languages (cons (intern language) t))
+            (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+          ad-do-it)))
 #+end_src
 
 **** Extensions
 
 | =org-superstar= | https://github.com/integral-dw/org-superstar-mode |
 | =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
+| =gnuplot=       | https://github.com/emacsorphanage/gnuplot         |
 
 I enjoy colored bullets. I might remove
 ~org-superstar-leading-bullets~ since it doesn't bother me too much
@@ -1006,6 +1025,15 @@ it more compatible with other installations.
     :after org
     :config
     (setq ob-mermaid-cli-path "~/.node_modules/.bin/mmdc"))
+#+end_src
+
+While not quite a picture, graphs are also nice to have. This allows
+for gnuplot src blocks in org mode. The =gnuplot= emacs package might also be
+required, although I think it comes built in with recent versions of
+=org=.
+
+#+begin_src emacs-lisp
+    (use-package gnuplot)
 #+end_src
 
 *** Ruby
@@ -1320,4 +1348,11 @@ And loading org in early init wouldn't be a bad idea either.
 ** TODO Compatibility with tty
 It had previous failed to load in a tty, complaining about listp nil.
 I'm not reproducing the error now, just keep an eye out?
+** TODO Better loading on gnuplot and fix two attempts to execute src blocks.
+I would like to have it delay until either opening a gnuplot file or when
+executing gnuplot source blocks. Additionally it fails to execute src
+blocks on the first attempt when launching emacs, requiring two attempts.
+** TODO Restore autosave transform
+Currently files fail to save and a warning periodically appears with
+it enabled.
 
