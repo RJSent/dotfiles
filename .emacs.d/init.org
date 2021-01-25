@@ -199,8 +199,8 @@ Don't randomly litter my filesystem with autosaves and backups.
 
 #+begin_src emacs-lisp
   (setq
-   auto-save-file-name-transforms                           ; 
-   `((".*" ,(concat user-emacs-directory "autosaves/") t))  ; still don't litter my fs tree
+;   auto-save-file-name-transforms                           ; 
+;   `((".*" ,(concat user-emacs-directory "autosaves/") t))  ; still don't litter my fs tree
    backup-by-copying t                                      ; don't clobber symlinks
    backup-directory-alist                                   ; 
    `(("." . ,(concat user-emacs-directory "backups")))      ; don't litter my fs tree
@@ -411,6 +411,23 @@ mind I wrote this advising function.
   ;; 		 (1+ (line-end-position)))))))
 
   ;; (advice-add #'outline-show-heading :after #'dwim-fontify-last-line-of-block)
+#+end_src
+
+*** Sort words
+Sort words in region alphabetically. If arg is negative, sort them in
+reverse.
+
+#+begin_src emacs-lisp
+  (defun sort-words (reverse beg end)
+    "Sort words in region alphabetically, in REVERSE if negative.
+  Prefixed with negative \\[universal-argument], sorts in reverse.
+
+  The variable `sort-fold-case' determines whether alphabetic case
+  affects the sort order.
+
+  See `sort-regexp-fields'."
+    (interactive "*P\nr")
+    (sort-regexp-fields reverse "\\w+" "\\&" beg end))
 #+end_src
 
 *** Packages
@@ -964,101 +981,6 @@ home row. As opposed to the closest character.
 
 ** Languages
 
-*** Org
-
-| =org= | https://orgmode.org/ |
-
-I use a more up-to-date version of Org than what Emacs ships with.
-Currently ~org-adapt-identation~ does not work with ~'headline-data~.
-(At least, I haven't gotten it work successfully.) Tested 11/2020.
-
-Additionally, I want org to support as many languages as possible
-without needing to add them all to ~org-babel-load-languages~.
-
-#+begin_src emacs-lisp
-    (use-package org
-      :mode (("\\.org$" . org-mode))
-      :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
-      :config
-      (setq org-startup-folded t
-            org-cycle-separator-lines 1
-            org-log-done 'time
-            org-adapt-indentation nil
-            org-fontify-whole-block-delimiter-line nil
-            org-hide-emphasis-markers t)
-      (font-lock-add-keywords 'org-mode
-                              '(("^ *\\([-]\\) "
-                                 (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-      ;; Decrease heading size based on level
-      (let ((i 2.0))                
-        (dolist (face '(org-level-1
-                        org-level-2
-                        org-level-3
-                        org-level-4
-                        org-level-5
-                        org-level-6
-                        org-level-7
-                        org-level-8))
-          (set-face-attribute face nil :weight 'semi-bold :height i)
-          (setq i (- i 0.12))))
-      ;; Automatically add used languages to org-babel
-      (defadvice org-babel-execute-src-block (around load-language nil activate)
-        "Load language if needed"
-        (let ((language (org-element-property :language (org-element-at-point))))
-          (unless (cdr (assoc (intern language) org-babel-load-languages))
-            (add-to-list 'org-babel-load-languages (cons (intern language) t))
-            (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-          ad-do-it)))
-#+end_src
-
-**** org-superstar
-
-| =org-superstar= | https://github.com/integral-dw/org-superstar-mode |
-
-I enjoy colored bullets. I might remove
-~org-superstar-leading-bullets~ since it doesn't bother me too much
-and doesn't seem to work anyway.
-
-#+begin_src emacs-lisp
-  (use-package org-superstar
-    :hook (org-mode . org-superstar-mode)
-    :config
-    (org-superstar-configure-like-org-bullets) ; FIXME stars are still visible despite below line
-    (setq org-superstar-leading-bullet ?\s))
-#+end_src
-
-**** ob-mermaid
-
-| =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
-
-A picture is worth a thousand words, even in Org. I should try to make
-it more compatible with other installations.
-
-#+begin_src emacs-lisp
-  (use-package ob-mermaid
-    :after org
-    :config
-    (setq ob-mermaid-cli-path "~/.node_modules/.bin/mmdc"))
-#+end_src
-
-**** mixed-pitch
-
-| =mixed-pitch= | https://gitlab.com/jabranham/mixed-pitch |
-
-#+begin_quote
-Mixed pitch is a minor mode that enables mixing fixed-pitch (also known as
-fixed-width or monospace) and variable-pitch (AKA “proportional”) fonts. It
-tries to be smart about which fonts get which face. Fonts that look like code,
-org-tables, and such remain fixed-pitch and everything else becomes
-variable-pitch. The variable ~mixed-pitch-fixed-pitch-faces~ is a list of faces
-that will remain fixed-pitch in ~mixed-pitch-mode~.
-#+end_quote
-
-#+begin_src emacs-lisp
-  (use-package mixed-pitch
-    :hook (org-mode . mixed-pitch-mode))
-#+end_src
-
 *** Ruby
 
 | =rbenv=    | https://github.com/senny/rbenv.el        |
@@ -1110,6 +1032,111 @@ Pretty much only one package for YAML.
 #+begin_src emacs-lisp
   (use-package yaml-mode
     :mode "\\.yml\\'")
+#+end_src
+
+** Org
+
+| =org= | https://orgmode.org/ |
+
+I use a more up-to-date version of Org than what Emacs ships with.
+Currently ~org-adapt-identation~ does not work with ~'headline-data~.
+(At least, I haven't gotten it work successfully.) Tested 11/2020.
+
+Additionally, I want org to support as many languages as possible
+without needing to add them all to ~org-babel-load-languages~.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :mode (("\\.org$" . org-mode))
+    :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
+    :config
+    (setq org-startup-folded t
+          org-cycle-separator-lines 1
+          org-log-done 'time
+          org-adapt-indentation nil
+          org-fontify-whole-block-delimiter-line nil
+          org-hide-emphasis-markers t
+          org-confirm-babel-evaluate nil
+          org-agenda-files '("~/org")
+          org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+    ;; Decrease heading size based on level
+    (let ((i 2.0))                
+      (dolist (face '(org-level-1
+                      org-level-2
+                      org-level-3
+                      org-level-4
+                      org-level-5
+                      org-level-6
+                      org-level-7
+                      org-level-8))
+        (set-face-attribute face nil :weight 'semi-bold :height i)
+        (setq i (- i 0.12))))
+    ;; Automatically add used languages to org-babel
+    (defadvice org-babel-execute-src-block (around load-language nil activate)
+      "Load language if needed"
+      (let ((language (org-element-property :language (org-element-at-point))))
+        (unless (cdr (assoc (intern language) org-babel-load-languages))
+          (add-to-list 'org-babel-load-languages (cons (intern language) t))
+          (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+        ad-do-it)))
+#+end_src
+
+*** Extensions
+
+| =org-superstar= | https://github.com/integral-dw/org-superstar-mode |
+| =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
+| =gnuplot=       | https://github.com/emacsorphanage/gnuplot         |
+
+I enjoy colored bullets. I might remove
+~org-superstar-leading-bullets~ since it doesn't bother me too much
+and doesn't seem to work anyway.
+
+#+begin_src emacs-lisp
+  (use-package org-superstar
+    :hook (org-mode . org-superstar-mode)
+    :config
+    (org-superstar-configure-like-org-bullets) ; FIXME stars are still visible despite below line
+    (setq org-superstar-leading-bullet ?\s))
+#+end_src
+
+A picture is worth a thousand words, even in Org. I should try to make
+it more compatible with other installations.
+
+#+begin_src emacs-lisp
+  (use-package ob-mermaid
+    :after org
+    :config
+    (setq ob-mermaid-cli-path "~/.node_modules/.bin/mmdc"))
+#+end_src
+
+While not quite a picture, graphs are also nice to have. This allows
+for gnuplot src blocks in org mode. The =gnuplot= emacs package might also be
+required, although I think it comes built in with recent versions of
+=org=.
+
+#+begin_src emacs-lisp
+    (use-package gnuplot)
+#+end_src
+
+**** mixed-pitch
+
+| =mixed-pitch= | https://gitlab.com/jabranham/mixed-pitch |
+
+#+begin_quote
+Mixed pitch is a minor mode that enables mixing fixed-pitch (also known as
+fixed-width or monospace) and variable-pitch (AKA “proportional”) fonts. It
+tries to be smart about which fonts get which face. Fonts that look like code,
+org-tables, and such remain fixed-pitch and everything else becomes
+variable-pitch. The variable ~mixed-pitch-fixed-pitch-faces~ is a list of faces
+that will remain fixed-pitch in ~mixed-pitch-mode~.
+#+end_quote
+
+#+begin_src emacs-lisp
+  (use-package mixed-pitch
+    :hook (org-mode . mixed-pitch-mode))
 #+end_src
 
 ** Utilities
@@ -1371,4 +1398,12 @@ And loading org in early init wouldn't be a bad idea either.
 ** TODO Compatibility with tty
 It had previous failed to load in a tty, complaining about listp nil.
 I'm not reproducing the error now, just keep an eye out?
+** TODO Better loading on gnuplot and fix two attempts to execute src blocks.
+I would like to have it delay until either opening a gnuplot file or when
+executing gnuplot source blocks. Additionally it fails to execute src
+blocks on the first attempt when launching emacs, requiring two attempts.
+** TODO Restore autosave transform
+Currently files fail to save and a warning periodically appears with
+it enabled.
+** TODO ltximg folder no littering
 
