@@ -1050,7 +1050,7 @@ without needing to add them all to ~org-babel-load-languages~.
       :mode (("\\.org$" . org-mode))
       :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
       :config
-      (setq org-startup-folded 'content
+      (setq org-startup-folded t
             org-cycle-separator-lines 1
             org-log-done 'time
             org-adapt-indentation nil
