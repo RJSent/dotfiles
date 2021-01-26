@@ -1046,42 +1046,43 @@ Additionally, I want org to support as many languages as possible
 without needing to add them all to ~org-babel-load-languages~.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :mode (("\\.org$" . org-mode))
-    :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
-    :config
-    (setq org-startup-folded 'content
-          org-cycle-separator-lines 1
-          org-log-done 'time
-          org-adapt-indentation nil
-          org-fontify-whole-block-delimiter-line nil
-          org-hide-emphasis-markers t
-          org-confirm-babel-evaluate nil
-          org-agenda-files '("~/org")
-          org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
-    (font-lock-add-keywords 'org-mode
-                            '(("^ *\\([-]\\) "
-                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-    ;; Decrease heading size based on level
-    (let ((i 1.6))                
-      (dolist (face '(org-level-1
-                      org-level-2
-                      org-level-3
-                      org-level-4
-                      org-level-5
-                      org-level-6
-                      org-level-7
-                      org-level-8))
-        (set-face-attribute face nil :weight 'semi-bold :height i)
-        (setq i (- i 0.07))))
-    ;; Automatically add used languages to org-babel
-    (defadvice org-babel-execute-src-block (around load-language nil activate)
-      "Load language if needed"
-      (let ((language (org-element-property :language (org-element-at-point))))
-        (unless (cdr (assoc (intern language) org-babel-load-languages))
-          (add-to-list 'org-babel-load-languages (cons (intern language) t))
-          (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-        ad-do-it)))
+    (use-package org
+      :mode (("\\.org$" . org-mode))
+      :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
+      :config
+      (setq org-startup-folded 'content
+            org-cycle-separator-lines 1
+            org-log-done 'time
+            org-adapt-indentation nil
+            org-fontify-whole-block-delimiter-line nil
+            org-hide-emphasis-markers t
+            org-confirm-babel-evaluate nil
+            org-agenda-files '("~/org")
+            org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
+            org-blank-before-new-entry '((heading . t) (plain-list-item . t)))
+      (font-lock-add-keywords 'org-mode
+                              '(("^ *\\([-]\\) "
+                                 (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+      ;; Decrease heading size based on level
+      (let ((i 1.6))                
+        (dolist (face '(org-level-1
+                        org-level-2
+                        org-level-3
+                        org-level-4
+                        org-level-5
+                        org-level-6
+                        org-level-7
+                        org-level-8))
+          (set-face-attribute face nil :weight 'semi-bold :height i)
+          (setq i (- i 0.07))))
+      ;; Automatically add used languages to org-babel
+      (defadvice org-babel-execute-src-block (around load-language nil activate)
+        "Load language if needed"
+        (let ((language (org-element-property :language (org-element-at-point))))
+          (unless (cdr (assoc (intern language) org-babel-load-languages))
+            (add-to-list 'org-babel-load-languages (cons (intern language) t))
+            (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+          ad-do-it)))
 #+end_src
 
 *** Extensions
