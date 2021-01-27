@@ -931,6 +931,8 @@ Syntax checking for Emacs.
     (global-flycheck-mode))                                ; Does not fix issues with functions may not be defined
 #+end_src
 
+**** TODO Replace keybinding C-c ! so it doesn't conflict with org-time-stamp-inactive
+
 *** Comments
 
 | =comment-dwim-2= | https://github.com/remyferre/comment-dwim-2 |
