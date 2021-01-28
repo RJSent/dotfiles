@@ -1047,44 +1047,56 @@ Currently ~org-adapt-identation~ does not work with ~'headline-data~.
 Additionally, I want org to support as many languages as possible
 without needing to add them all to ~org-babel-load-languages~.
 
+I added a function from [[https:emacs.stackexchange.com/questions/3387][StackExchange]] to update \( \LaTeX \) symbols
+as I zoom in. For time sake, the code that toggles the preview was
+removed, as Emacs takes quite a while to regenerate the images. When
+rapidly zooming (e.g. C-mouse-4), Emacs could even halt entirely. I do
+let it remove existing previews so I don't have a mix of small and big previews.
+
 #+begin_src emacs-lisp
-    (use-package org
-      :mode (("\\.org$" . org-mode))
-      :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
-      :config
-      (setq org-startup-folded t
-            org-cycle-separator-lines 1
-            org-log-done 'time
-            org-adapt-indentation nil
-            org-fontify-whole-block-delimiter-line nil
-            org-hide-emphasis-markers t
-            org-confirm-babel-evaluate nil
-            org-agenda-files '("~/org")
-            org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
-            org-blank-before-new-entry '((heading . t) (plain-list-item . t)))
-      (font-lock-add-keywords 'org-mode
-                              '(("^ *\\([-]\\) "
-                                 (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-      ;; Decrease heading size based on level
-      (let ((i 1.6))                
-        (dolist (face '(org-level-1
-                        org-level-2
-                        org-level-3
-                        org-level-4
-                        org-level-5
-                        org-level-6
-                        org-level-7
-                        org-level-8))
-          (set-face-attribute face nil :weight 'semi-bold :height i)
-          (setq i (- i 0.07))))
-      ;; Automatically add used languages to org-babel
-      (defadvice org-babel-execute-src-block (around load-language nil activate)
-        "Load language if needed"
-        (let ((language (org-element-property :language (org-element-at-point))))
-          (unless (cdr (assoc (intern language) org-babel-load-languages))
-            (add-to-list 'org-babel-load-languages (cons (intern language) t))
-            (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-          ad-do-it)))
+  (use-package org
+    :mode (("\\.org$" . org-mode))
+    :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
+    :config
+    (setq org-startup-folded t
+          org-cycle-separator-lines 1
+          org-log-done 'time
+          org-adapt-indentation nil
+          org-fontify-whole-block-delimiter-line nil
+          org-hide-emphasis-markers t
+          org-confirm-babel-evaluate nil
+          org-agenda-files '("~/org")
+          org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
+          org-blank-before-new-entry '((heading . t) (plain-list-item . t)))
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+    ;; Decrease heading size based on level
+    (let ((i 1.6))                
+      (dolist (face '(org-level-1
+                      org-level-2
+                      org-level-3
+                      org-level-4
+                      org-level-5
+                      org-level-6
+                      org-level-7
+                      org-level-8))
+        (set-face-attribute face nil :weight 'semi-bold :height i)
+        (setq i (- i 0.05))))
+    ;; Automatically add used languages to org-babel
+    (defadvice org-babel-execute-src-block (around load-language nil activate)
+      "Load language if needed"
+      (let ((language (org-element-property :language (org-element-at-point))))
+        (unless (cdr (assoc (intern language) org-babel-load-languages))
+          (add-to-list 'org-babel-load-languages (cons (intern language) t))
+          (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+        ad-do-it))
+    (defun update-org-latex-fragment-scale ()
+    (org-latex-preview '(64))
+      (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
+        (plist-put org-format-latex-options :scale (* 2.3 text-scale-factor)))
+      )
+    (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale))
 #+end_src
 
 *** Extensions
