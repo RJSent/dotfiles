@@ -1412,6 +1412,17 @@ A small package to restart Emacs within Emacs.
         :config (setq restart-emacs-restore-frames t))
 #+end_src
 
+*** 0xc
+
+| =0xc= |  https://github.com/AdamNiederer/0xc |
+
+A package that provides easy base conversions inside of Emacs.
+
+#+begin_src emacs-lisp
+  (use-package 0xc
+    :commands (0xc-convert 0xc-convert-point 0xc-live-convert))
+#+end_src
+
 * List of TODOs
 
 ** TODO Move to solargrph and lsp-mode
