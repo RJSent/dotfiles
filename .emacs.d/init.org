@@ -174,8 +174,6 @@ And now for a bunch of one liner configurations.
   (global-auto-revert-mode 1)                    ; If I edit something elsewhere, I probably want to reload
   (global-hl-line-mode)                          ; Highlight the active line
   (menu-bar-mode 0)                              ; Disable the menu bar
-  (put 'downcase-region 'disabled nil)           ; Is it really that confusing?
-  (put 'upcase-region 'disabled nil)             ; I reiterate. Is it really that confusing?
   (set-default-coding-systems 'utf-8)            ; Default to utf-8 encoding
 #+end_src
 
@@ -191,6 +189,18 @@ I already know about Emacs, thank you.
 
 #+begin_src emacs-lisp
   (fset 'display-startup-echo-area-message 'ignore)
+#+end_src
+
+**** Disabled Commands
+
+While I could use ~(setq disabled-command-function nil)~, I'd prefer to
+disable them piecemeal in the off-chance there's a disabled command I
+actually want to be disabled.
+
+#+begin_src emacs-lisp
+  (put 'downcase-region 'disabled nil)           ; Is it really that confusing?
+  (put 'erase-buffer 'disabled nil)              ; It's literally in the name
+  (put 'upcase-region 'disabled nil)             ; I reiterate. Is it really that confusing?
 #+end_src
 
 *** Autosaves and Backups
@@ -1049,12 +1059,12 @@ code farther to the right. Therefore I suggest using the following
 config which resets ‘tab-always-indent’ back to the default:
 #+end_quote
 
+~asm-comment-char~ seems to have been deprecated, so I removed it.
+
 [[https://www.emacswiki.org/emacs/AsmMode]]
 
 #+begin_src emacs-lisp
   (defun my-asm-mode-hook ()
-    ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway
-    (local-unset-key (vector asm-comment-char))
     ;; asm-mode sets it locally to nil, to "stay closer to the old TAB behaviour".
     (setq tab-always-indent (default-value 'tab-always-indent)))
 
