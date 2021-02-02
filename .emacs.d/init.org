@@ -1462,7 +1462,11 @@ I'm not reproducing the error now, just keep an eye out?
 ** TODO Better loading on gnuplot and fix two attempts to execute src blocks.
 I would like to have it delay until either opening a gnuplot file or when
 executing gnuplot source blocks. Additionally it fails to execute src
-blocks on the first attempt when launching emacs, requiring two attempts.
+blocks on the first attempt when launching emacs, requiring two
+attempts.
+
+Failing to execute gnuplot on the first attempt doesn't seem to just
+be limited to gnuplot, but C as well. Probably an issue with my babel advice.
 ** TODO Restore autosave transform
 Currently files fail to save and a warning periodically appears with
 it enabled.
