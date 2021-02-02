@@ -938,10 +938,15 @@ Syntax checking for Emacs.
     :diminish
     :defer 1
     :config (setq flycheck-emacs-lisp-load-path 'inherit)  ; Fixes "org-mode-map" in comment-dwin-2 from being undefined
+    (define-key flycheck-mode-map flycheck-keymap-prefix nil)
+    (setq flycheck-keymap-prefix (kbd "C-c f"))
+    (define-key flycheck-mode-map flycheck-keymap-prefix
+      flycheck-command-map)
     (global-flycheck-mode))                                ; Does not fix issues with functions may not be defined
 #+end_src
 
-**** TODO Replace keybinding C-c ! so it doesn't conflict with org-time-stamp-inactive
+**** DONE Replace keybinding C-c ! so it doesn't conflict with org-time-stamp-inactive
+CLOSED: [2021-02-02 Tue 14:14]
 
 *** Comments
 
