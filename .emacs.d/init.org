@@ -1438,6 +1438,16 @@ A package that provides easy base conversions inside of Emacs.
     :commands (0xc-convert 0xc-convert-point 0xc-live-convert))
 #+end_src
 
+** Games
+
+*** Zone
+
+A neat little screensaver for buffers.
+
+#+begin_src emacs-lisp
+  (zone-when-idle 120)
+#+end_src
+
 * List of TODOs
 
 ** TODO Move to solargrph and lsp-mode
