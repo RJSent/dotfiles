@@ -763,7 +763,6 @@ like =isearch=.
 #+begin_src emacs-lisp
   (use-package all-the-icons-ivy-rich
     :after all-the-icons ivy-rich
-    :functions all-the-icons-ivy-rich-mode
     :config (all-the-icons-ivy-rich-mode 1))
 #+end_src
 
@@ -825,7 +824,6 @@ and/or =selectrum=.
 
 #+begin_src emacs-lisp
   (use-package projectile
-    :functions projectile-mode
     :diminish
     :config (projectile-mode +1)
     (setq projectile-completion-system 'ivy) ; Dashboard support
@@ -855,7 +853,7 @@ window.
 #+begin_src emacs-lisp
   (use-package ace-window
     :defines aw-keys
-    :functions ace-window
+    :commands ace-window
     :bind* ("M-o" . 'ace-window) ; * as ibuffer overrides M-o. Consider adjusting as M-o is used for ivy-dispatching-done
     :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
@@ -934,7 +932,6 @@ Syntax checking for Emacs.
 
 #+begin_src emacs-lisp
   (use-package flycheck
-    :functions global-flycheck-mode
     :diminish
     :defer 1
     :config (setq flycheck-emacs-lisp-load-path 'inherit)  ; Fixes "org-mode-map" in comment-dwin-2 from being undefined
@@ -1445,7 +1442,20 @@ A package that provides easy base conversions inside of Emacs.
 A neat little screensaver for buffers.
 
 #+begin_src emacs-lisp
-  (zone-when-idle 120)
+  (use-package zone
+    :commands (zone-when-idle zone-choose)
+    :defer 5
+    :config
+    (zone-when-idle 120)
+    (defun zone-choose (pgm)
+      "Choose a PGM to run for `zone'."
+      (interactive
+       (list
+        (completing-read
+         "Program: "
+         (mapcar 'symbol-name zone-programs))))
+      (let ((zone-programs (list (intern pgm))))
+        (zone))))
 #+end_src
 
 * List of TODOs
