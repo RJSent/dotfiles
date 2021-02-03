@@ -1446,7 +1446,7 @@ A neat little screensaver for buffers.
     :commands (zone-when-idle zone-choose)
     :defer 5
     :config
-    (zone-when-idle 120)
+    (zone-when-idle 600)
     (defun zone-choose (pgm)
       "Choose a PGM to run for `zone'."
       (interactive
