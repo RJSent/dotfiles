@@ -1497,3 +1497,5 @@ Currently files fail to save and a warning periodically appears with
 it enabled.
 ** TODO ltximg folder no littering
 
+** TODO Add float package to ~org-latex-packages-alist~
+
