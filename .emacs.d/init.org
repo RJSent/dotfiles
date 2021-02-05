@@ -168,6 +168,7 @@ And now for a bunch of one liner configurations.
    sentence-end-double-space nil                 ; Use a single space after dots
    show-help-function nil                        ; Disable help text on most UI elements
    uniquify-buffer-name-style 'forward           ; Make buffer names unique
+   use-dialog-box nil                            ; Apparently compile reverting buffers counts as a mouse command
    )
   (defalias 'yes-or-no-p 'y-or-n-p)              ; y is shorter than yes
   (delete-selection-mode 1)                      ; If I selected something, I probably want to edit it.
@@ -1197,6 +1198,17 @@ that will remain fixed-pitch in ~mixed-pitch-mode~.
 This is meant for utility packages that don't assist with editing,
 navigation, or similar, but still provide a benefit.
 
+*** 0xc
+
+| =0xc= |  https://github.com/AdamNiederer/0xc |
+
+A package that provides easy base conversions inside of Emacs.
+
+#+begin_src emacs-lisp
+  (use-package 0xc
+    :commands (0xc-convert 0xc-convert-point 0xc-live-convert))
+#+end_src
+
 *** Esup
 
 | =Esup= | https://github.com/jschaf/esup |
@@ -1216,32 +1228,41 @@ are unaccounted for.
     :config (setq esup-depth 0))
 #+end_src
 
-*** vterm
+*** PDF Tools
 
-| =vterm= | https://github.com/akermu/emacs-libvterm |
-
-A capable terminal emulator. This is compatible with =irb= multiline.
-Projectile also supports creating a named vterm with
-~projectile-run-vterm~.
-
-#+begin_src emacs-lisp
-  (use-package vterm
-    :commands vterm)
-#+end_src
-
-**** vterm-toggle
-
-| =vterm-toggle= | https://github.com/jixiuf/vterm-toggle |
+| =PDF Tools= | https://github.com/politza/pdf-tools |
 
 #+begin_quote
-This package provides the command vterm-toggle which toggles between
-the vterm buffer and whatever buffer you are editing.
+PDF Tools is, among other things, a replacement of DocView for PDF
+files. The key difference is that pages are not pre-rendered by e.g.
+ghostscript and stored in the file-system, but rather created
+on-demand and stored in memory.
+
+[…]
+
+Actually, displaying PDF files is
+just one part of PDF Tools. Since poppler can provide us with all
+kinds of information about a document and is also able to modify it,
+there is a lot more we can do with it.
 #+end_quote
 
+This package requires a Unix-based OS.
+
 #+begin_src emacs-lisp
-  (use-package vterm-toggle
-    :commands vterm-toggle vterm-toggle-cd
-    :bind ("C-c v" . vterm-toggle))
+  (use-package pdf-tools
+    :mode ("\\.pdf\\'" . pdf-tools-install))
+#+end_src
+
+*** Restart Emacs
+
+| =restart-emacs= | https://github.com/iqbalansari/restart-emacs |
+
+A small package to restart Emacs within Emacs.
+
+#+begin_src emacs-lisp
+      (use-package restart-emacs
+        :commands restart-emacs
+        :config (setq restart-emacs-restore-frames t))
 #+end_src
 
 *** Unbound
@@ -1413,27 +1434,32 @@ what the issue is.
     ;;; unbound.el ends here
 #+end_src
 
-*** Restart Emacs
+*** vterm
 
-| =restart-emacs= | https://github.com/iqbalansari/restart-emacs |
+| =vterm= | https://github.com/akermu/emacs-libvterm |
 
-A small package to restart Emacs within Emacs.
+A capable terminal emulator. This is compatible with =irb= multiline.
+Projectile also supports creating a named vterm with
+~projectile-run-vterm~.
 
 #+begin_src emacs-lisp
-      (use-package restart-emacs
-        :commands restart-emacs
-        :config (setq restart-emacs-restore-frames t))
+  (use-package vterm
+    :commands vterm)
 #+end_src
 
-*** 0xc
+**** vterm-toggle
 
-| =0xc= |  https://github.com/AdamNiederer/0xc |
+| =vterm-toggle= | https://github.com/jixiuf/vterm-toggle |
 
-A package that provides easy base conversions inside of Emacs.
+#+begin_quote
+This package provides the command vterm-toggle which toggles between
+the vterm buffer and whatever buffer you are editing.
+#+end_quote
 
 #+begin_src emacs-lisp
-  (use-package 0xc
-    :commands (0xc-convert 0xc-convert-point 0xc-live-convert))
+  (use-package vterm-toggle
+    :commands vterm-toggle vterm-toggle-cd
+    :bind ("C-c v" . vterm-toggle))
 #+end_src
 
 ** Games
