@@ -1094,6 +1094,7 @@ let it remove existing previews so I don't have a mix of small and big previews.
   (use-package org
     :mode (("\\.org$" . org-mode))
     :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
+  :bind ("C-c a" . org-agenda)
     :config
     (setq org-startup-folded t
           org-cycle-separator-lines 1
