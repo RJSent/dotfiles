@@ -1249,8 +1249,9 @@ there is a lot more we can do with it.
 This package requires a Unix-based OS.
 
 #+begin_src emacs-lisp
+(unless sys/win32p
   (use-package pdf-tools
-    :mode ("\\.pdf\\'" . pdf-tools-install))
+    :mode ("\\.pdf\\'" . pdf-tools-install)))
 #+end_src
 
 *** Restart Emacs
