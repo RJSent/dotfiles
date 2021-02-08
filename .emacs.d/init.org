@@ -1464,6 +1464,18 @@ the vterm buffer and whatever buffer you are editing.
     :bind ("C-c v" . vterm-toggle))
 #+end_src
 
+*** Magit
+
+| =magit= | [[https:magit.vc]] |
+
+I'm certainly not at a point where I fully grasp the intricacies of
+=magit= (=git= alone is enough of a pain!), but I can't possibly get
+better without practice!
+
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
+
 ** Games
 
 *** Zone
