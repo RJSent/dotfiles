@@ -1475,7 +1475,8 @@ I'm certainly not at a point where I fully grasp the intricacies of
 better without practice!
 
 #+begin_src emacs-lisp
-  (use-package magit)
+    (use-package magit
+      :after transient)
 #+end_src
 
 ** Games
