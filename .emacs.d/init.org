@@ -1502,6 +1502,16 @@ A neat little screensaver for buffers.
         (zone))))
 #+end_src
 
+*** Fireplace
+
+| =fireplace= | https://github.com/johanvts/emacs-fireplace |
+
+Another screensaver package.
+
+#+begin_src emacs-lisp
+(use-package fireplace)
+#+end_src
+
 * List of TODOs
 
 ** TODO Move to solargrph and lsp-mode
