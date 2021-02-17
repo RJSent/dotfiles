@@ -1097,7 +1097,7 @@ previews.
     :mode (("\\.org$" . org-mode))
     :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
     :bind ("C-c a" . org-agenda)
-    (:map org-mode-map ("C-c j" . counsel-org-goto))
+    (:map org-mode-map ("C-c C-j" . counsel-org-goto))
     :after (counsel)                      ; Not functionally needed, just in case for the binding
     :config
     (setq org-startup-folded t
