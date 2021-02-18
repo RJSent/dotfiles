@@ -94,13 +94,60 @@ the =after-save-hook= ensuring to always tangle and byte-compile the
 
 ** Basics
 
+*** Straight Bootstrap
+
+**** Straight Bootstrap
+
+I use [[https://github.com/raxod502/straight.el][straight.el]] for package management. This is boostrap code from
+the Github repo to set up straight.
+
+#+begin_src emacs-lisp
+  (defvar straight-fix-flycheck t)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  (straight-use-package 'use-package)      ; Install use-package
+  (setq straight-use-package-by-default t) ; I don't want to type :straight t a billion times
+#+end_src
+
+**** Bind-keys Bootstrap
+
+I'm not entirely sure why this is necessary, and more importantly,
+what better solutions there are. But when byte-compiling Emacs,
+bind-keys isn't properly loaded by use-package. This means any
+custom (and most built-in) keybindings are nonfunctional.
+
+Solution found [[https://old.reddit.com/r/emacs/comments/c6fvvr/unable_to_initialize_package_with_usepackage/es92xjd/][here]].
+
+#+begin_src emacs-lisp
+  (use-package bind-key
+    :config
+    (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
+#+end_src
+
+*** no-littering
+
+#+begin_src emacs-lisp
+  (use-package no-littering
+    :demand t)
+#+end_src
+
 *** Speedup
 
 We want to keep the garbage collector from running while we initialize
 everything. We can reset it later to a more reasonable value. If we
 didn't do this, Emacs would hang when running the garbage collector.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle early-init.el
   (setq-default
    gc-cons-threshold most-positive-fixnum ; 8 MiB
    gc-cons-percentage 0.6)
@@ -110,7 +157,7 @@ Replace the file-name-handler-alist to nil, as regexing is cpu
 intensive. We need to keep the original value to restore it later. I
 don't know all the details behind it, but it sounds helpful!
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle early-init.el
   (defvar default-file-name-handler-alist file-name-handler-alist)
   (setq file-name-handler-alist nil)
 #+end_src
@@ -129,14 +176,14 @@ value Doom uses.
 Garbage-collect on focus-out. Emacs /should/ feel snappier overall.
 With Emacs 27.1, focus-out-hook is deprecated.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle early-init.el
   (add-function :after after-focus-change-function (unless (frame-focus-state) #'garbage-collect))
 #+END_SRC
 
 Apparently this can result in a significant speedup when using fonts
 larger or smaller than the system default.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle early-init.el
   (setq frame-inhibit-implied-resize t)
 #+end_src
 
@@ -190,6 +237,17 @@ I already know about Emacs, thank you.
 
 #+begin_src emacs-lisp
   (fset 'display-startup-echo-area-message 'ignore)
+#+end_src
+
+I don't enjoy Emacs messing with my window layouts.
+
+#+begin_src emacs-lisp
+  (setq display-buffer-alist
+	'((".*" (display-buffer-reuse-window display-buffer-same-window))))
+  (add-to-list 'display-buffer-alist           ; reuse windows in other frames
+	       '("." nil (reusable-frames . t)))
+
+  (setq even-window-sizes nil)                 ; display-buffer: avoid resizing
 #+end_src
 
 **** Disabled Commands
@@ -310,46 +368,6 @@ A slowly growing list of constants. Many of these are thanks to
     (or emacs/>=26p
 	(and (= emacs-major-version 25) (>= emacs-minor-version 2)))
     "Emacs is 25.2 or above.")
-#+end_src
-
-*** Bootstrap
-
-**** Straight Bootstrap
-
-I use [[https://github.com/raxod502/straight.el][straight.el]] for package management. This is boostrap code from
-the Github repo to set up straight.
-
-#+begin_src emacs-lisp
-  (defvar straight-fix-flycheck t)
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-  (straight-use-package 'use-package)      ; Install use-package
-  (setq straight-use-package-by-default t) ; I don't want to type :straight t a billion times
-#+end_src
-
-**** Bind-keys Bootstrap
-
-I'm not entirely sure why this is necessary, and more importantly,
-what better solutions there are. But when byte-compiling Emacs,
-bind-keys isn't properly loaded by use-package. This means any
-custom (and most built-in) keybindings are nonfunctional.
-
-Solution found [[https://old.reddit.com/r/emacs/comments/c6fvvr/unable_to_initialize_package_with_usepackage/es92xjd/][here]].
-
-#+begin_src emacs-lisp
-  (use-package bind-key
-    :config
-    (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
 #+end_src
 
 ** Functions
