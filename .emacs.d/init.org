@@ -1136,7 +1136,7 @@ previews.
 			       '(("^ *\\([-]\\) "
 				  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
        ;; Decrease heading size based on level
-       (let ((i 1.6))                
+       (let ((i 1.5))                
 	 (dolist (face '(org-level-1
 			 org-level-2
 			 org-level-3
@@ -1158,8 +1158,7 @@ previews.
        (defun update-org-latex-fragment-scale ()
 	 (org-latex-preview '(64))
 	 (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
-	   (plist-put org-format-latex-options :scale (* 2.3 text-scale-factor)))
-	 )
+	   (plist-put org-format-latex-options :scale (* 2.3 text-scale-factor))))
        (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale))
 #+end_src
 
