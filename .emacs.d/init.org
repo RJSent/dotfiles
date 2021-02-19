@@ -165,7 +165,7 @@ don't know all the details behind it, but it sounds helpful!
   (setq file-name-handler-alist nil)
 #+end_src
 
-And now we revert the changes with a startup hook. 16777216 is the
+And now we revert the changes with a startup hook. ~16777216~ is the
 value Doom uses.
 
 #+begin_src emacs-lisp
@@ -189,6 +189,12 @@ larger or smaller than the system default.
 #+begin_src emacs-lisp :tangle early-init.el
   (setq frame-inhibit-implied-resize t)
 #+end_src
+
+**** Results
+
+***** Early Init
+
+As of [2021-02-18 Thu], tangling everything to early-init.el saved 0.06 seconds.
 
 *** Sensible Defaults
 
