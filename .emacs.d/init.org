@@ -138,7 +138,10 @@ Solution found [[https://old.reddit.com/r/emacs/comments/c6fvvr/unable_to_initia
 
 #+begin_src emacs-lisp
   (use-package no-littering
-    :demand t)
+    :demand t
+    :config
+    (setq auto-save-file-name-transforms
+	  `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 #+end_src
 
 *** Speedup
@@ -260,32 +263,6 @@ actually want to be disabled.
   (put 'downcase-region 'disabled nil)           ; Is it really that confusing?
   (put 'erase-buffer 'disabled nil)              ; It's literally in the name
   (put 'upcase-region 'disabled nil)             ; I reiterate. Is it really that confusing?
-#+end_src
-
-*** Autosaves and Backups
-
-Don't randomly litter my filesystem with autosaves and backups.
-
-#+begin_src emacs-lisp
-  (setq
-;   auto-save-file-name-transforms                           ; 
-;   `((".*" ,(concat user-emacs-directory "autosaves/") t))  ; still don't litter my fs tree
-   backup-by-copying t                                      ; don't clobber symlinks
-   backup-directory-alist                                   ; 
-   `(("." . ,(concat user-emacs-directory "backups")))      ; don't litter my fs tree
-   delete-old-versions t                                    ; 
-   kept-new-versions 6                                      ; 
-   kept-old-versions 2                                      ; 
-   version-control t)                                       ; use versioned backups
-#+end_src
-
-*Especially* don't litter remote servers!
-
-#+begin_src emacs-lisp
-  (setq
-   tramp-auto-save-directory                                ; don't litter remote machines 
-   (concat user-emacs-directory "autosaves")                ;
-   tramp-backup-directory-alist backup-directory-alist)     ; still don't litter remote machines 
 #+end_src
 
 *** ~custom.el~ Support
@@ -1110,56 +1087,65 @@ rapidly zooming (e.g. C-mouse-4), Emacs could even halt entirely. I do
 let it remove existing previews so I don't have a mix of small and big
 previews.
 
+I'm currently trying to write advice for ~org-export-dispatch~ to add
+the org-latex-logfile-extensions when initially exporting the file.
+
 #+begin_src emacs-lisp
-     (use-package org
-       :mode (("\\.org$" . org-mode))
-       :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
-       :bind ("C-c a" . org-agenda)
-       (:map org-mode-map ("C-c C-j" . counsel-org-goto))
-       :after (counsel)                      ; Not functionally needed, just in case for the binding
-       :config
-       (setq org-startup-folded t
-	     org-cycle-separator-lines 1
-	     org-log-done 'time
-	     org-adapt-indentation nil
-	     org-fontify-whole-block-delimiter-line nil
-	     org-hide-emphasis-markers t
-	     org-confirm-babel-evaluate nil
-	     org-agenda-files '("~/org")
-	     org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
-	     org-blank-before-new-entry '((heading . t) (plain-list-item . t))
-	     org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "log"
-						   "out" "toc" "nav" "snm" "vrb" "dvi"
-						   "fdb_latexmk" "blg" "brf" "fls" "entoc"
-						   "ps" "spl" "bbl")))
-       (font-lock-add-keywords 'org-mode
-			       '(("^ *\\([-]\\) "
-				  (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-       ;; Decrease heading size based on level
-       (let ((i 1.5))                
-	 (dolist (face '(org-level-1
-			 org-level-2
-			 org-level-3
-			 org-level-4
-			 org-level-5
-			 org-level-6
-			 org-level-7
-			 org-level-8))
-	   (set-face-attribute face nil :weight 'semi-bold :height i)
-	   (setq i (- i 0.05))))
-       ;; Automatically add used languages to org-babel
-       (defadvice org-babel-execute-src-block (around load-language nil activate)
-	 "Load language if needed"
-	 (let ((language (org-element-property :language (org-element-at-point))))
-	   (unless (cdr (assoc (intern language) org-babel-load-languages))
-	     (add-to-list 'org-babel-load-languages (cons (intern language) t))
-	     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-	   ad-do-it))
-       (defun update-org-latex-fragment-scale ()
-	 (org-latex-preview '(64))
-	 (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
-	   (plist-put org-format-latex-options :scale (* 2.3 text-scale-factor))))
-       (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale))
+  (use-package org
+    :mode (("\\.org$" . org-mode))
+    :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
+    :bind ("C-c a" . org-agenda)
+    (:map org-mode-map ("C-c C-j" . counsel-org-goto))
+    :after (counsel)                      ; Not functionally needed, just in case for the binding
+    :config
+    (setq org-startup-folded t
+	  org-cycle-separator-lines 1
+	  org-log-done 'time
+	  org-adapt-indentation nil
+	  org-fontify-whole-block-delimiter-line nil
+	  org-hide-emphasis-markers t
+	  org-confirm-babel-evaluate nil
+	  org-agenda-files '("~/org")
+	  org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
+	  org-blank-before-new-entry '((heading . t) (plain-list-item . t))
+	  org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "log"
+						"out" "toc" "nav" "snm" "vrb" "dvi"
+						"fdb_latexmk" "blg" "brf" "fls" "entoc"
+						"ps" "spl" "bbl")))
+    (font-lock-add-keywords 'org-mode
+			    '(("^ *\\([-]\\) "
+			       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+    ;; Decrease heading size based on level
+    (let ((i 1.5))                
+      (dolist (face '(org-level-1
+		      org-level-2
+		      org-level-3
+		      org-level-4
+		      org-level-5
+		      org-level-6
+		      org-level-7
+		      org-level-8))
+	(set-face-attribute face nil :weight 'semi-bold :height i)
+	(setq i (- i 0.05))))
+    ;; Automatically add used languages to org-babel
+    (defadvice org-babel-execute-src-block (around load-language nil activate)
+      "Load language if needed"
+      (let ((language (org-element-property :language (org-element-at-point))))
+	(unless (cdr (assoc (intern language) org-babel-load-languages))
+	  (add-to-list 'org-babel-load-languages (cons (intern language) t))
+	  (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+	ad-do-it))
+    (defun update-org-latex-fragment-scale ()
+      (org-latex-preview '(64))
+      (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
+	(plist-put org-format-latex-options :scale (* 2.3 text-scale-factor))))
+    (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale))
+  ;; (define-advice org-export-dispatch (:after nil logfiles-update)
+  ;; (message "hi")))
+  ;; (unless (member "tex" org-latex-logfiles-extensions)
+  ;;   (dolist (extension '("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm"
+  ;; 			 "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl"))
+  ;;     (add-to-list 'org-latex-logfiles-extensions extension)))))
 #+end_src
 
 *** Extensions
