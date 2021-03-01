@@ -522,7 +522,7 @@ Why install one theme when many will do? Yeah, that sounds right.
 
 #+begin_src emacs-lisp
   (use-package doom-themes
-    :config (load-theme 'doom-nord t))
+    :config (load-theme 'doom-monokai-pro t))
 #+end_src
 
 *** Fontq
@@ -1540,7 +1540,8 @@ might have a solution with tangling.
 ** DONE Do we need straight in init.el?
 CLOSED: [2020-11-09 Mon 11:02]
 Any drawbacks from loading with old org version then upgrading?
-** TODO Can we move speedup into =early-init.el=?
+** DONE Can we move speedup into =early-init.el=?
+CLOSED: [2021-02-23 Tue 22:44]
 [[https://old.reddit.com/r/emacs/comments/dppmqj/do_i_even_need_to_leverage_earlyinitel_if_i_have/][This]] talks about how disabling certain decorations in early init is
 faster. I'm curious how I can get org-tangle to export some code
 blocks in one file and other code blocks in another file.
