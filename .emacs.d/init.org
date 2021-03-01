@@ -1522,7 +1522,8 @@ A neat little screensaver for buffers.
 Another screensaver package.
 
 #+begin_src emacs-lisp
-(use-package fireplace)
+  (use-package fireplace
+    :commands fireplace)
 #+end_src
 
 * List of TODOs
