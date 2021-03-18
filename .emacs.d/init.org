@@ -1109,7 +1109,7 @@ the org-latex-logfile-extensions when initially exporting the file.
 	  org-log-done 'time
 	  org-adapt-indentation nil
 	  org-fontify-whole-block-delimiter-line nil
-	  org-hide-emphasis-markers t
+	  ;; org-hide-emphasis-markers t
 	  org-confirm-babel-evaluate nil
 	  org-agenda-files '("~/org")
 	  org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
