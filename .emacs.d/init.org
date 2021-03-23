@@ -613,14 +613,20 @@ use a tool to remember every keybinding for me.
 
 | =linum= | Built-in |
 
+I find the linum foreground color too dim (at least with
+~doom-monokai-pro~), so I set it to match the color of comments. This
+should be generic enough to work well with most themes.
+
 #+begin_src emacs-lisp
   (use-package linum
     :hook (prog-mode . linum-mode)
+    :after (doom-themes)
     :config
     (defun linum-format-func (line)
       (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
-        (propertize (format (format "%%%dd " w) line) 'face 'linum)))
-    (setq linum-format 'linum-format-func))
+	(propertize (format (format "%%%dd " w) line) 'face 'linum)))
+    (setq linum-format 'linum-format-func)
+    (set-face-attribute 'linum nil :foreground (face-attribute 'font-lock-comment-face :foreground)))
 #+end_src
 
 *** Modeline
