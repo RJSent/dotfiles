@@ -1215,6 +1215,25 @@ that will remain fixed-pitch in ~mixed-pitch-mode~.
     :hook (org-mode . mixed-pitch-mode))
 #+end_src
 
+**** ox-hugo
+
+| =ox-hugo= | https://ox-hugo.scripter.co/ |
+
+#+begin_quote
+ox-hugo is an Org exporter backend that exports Org to Hugo-compatible
+Markdown (Blackfriday) and also generates the front-matter (in TOML or
+YAML format).
+#+end_quote
+
+In other words, this is great for blogging. It supports multiple posts
+per =org= file, separated by top level headings. I suspect this'll be
+my preferred way to edit.
+
+#+begin_src emacs-lisp
+(use-package ox-hugo
+  :after ox)
+#+end_src
+
 ** Utilities
 
 This is meant for utility packages that don't assist with editing,
