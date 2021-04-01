@@ -1116,6 +1116,7 @@ the org-latex-logfile-extensions when initially exporting the file.
 	  org-log-done 'time
 	  org-adapt-indentation nil
 	  org-fontify-whole-block-delimiter-line nil
+	  org-latex-prefer-user-labels t
 	  ;; org-hide-emphasis-markers t
 	  org-confirm-babel-evaluate nil
 	  org-agenda-files '("~/org")
@@ -1125,6 +1126,7 @@ the org-latex-logfile-extensions when initially exporting the file.
 						"out" "toc" "nav" "snm" "vrb" "dvi"
 						"fdb_latexmk" "blg" "brf" "fls" "entoc"
 						"ps" "spl" "bbl")))
+    (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
     (font-lock-add-keywords 'org-mode
 			    '(("^ *\\([-]\\) "
 			       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
