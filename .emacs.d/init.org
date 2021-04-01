@@ -735,6 +735,7 @@ use ~:demand t~. I tried ~ivy-mode-hook~ but that caused issues with =prescient=
     :demand t
     :after ivy
     ;; :bind ("C-x b" . counsel-switch-buffer) ; Disabled due to slowdowns
+    :bind ("M-y" . counsel-yank-pop)
     :config (counsel-mode))
 #+end_src
 
