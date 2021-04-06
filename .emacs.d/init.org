@@ -719,8 +719,8 @@ completion engine that =counsel= and =swiper= build off of.
     :hook (after-init . ivy-mode)
     :config
     (setq ivy-use-virtual-buffers t       ; Recent files and bookmarks in ivy-switch-buffer
-          ivy-count-format "%d/%d "
-          ivy-wrap t))                     ; Wrap around with next-line and previous-line
+	  ivy-count-format "%d/%d "
+	  ivy-wrap t))                    ; Wrap around with next-line and previous-line
 #+end_src
 
 =counsel= provides many custom functions designed to take advantage of
@@ -1109,8 +1109,11 @@ the org-latex-logfile-extensions when initially exporting the file.
   (use-package org
     :mode (("\\.org$" . org-mode))
     :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
-    :bind ("C-c a" . org-agenda)
-    (:map org-mode-map ("C-c C-j" . counsel-org-goto))
+    :bind (("C-c a" . org-agenda)
+	   :map org-mode-map
+	   ;; TODO: try to move counsel bindings to use-package counsel
+	   ("C-c C-j" . counsel-org-goto)
+	   ("C-c C-q" . counsel-org-tag))
     :after (counsel)                      ; Not functionally needed, just in case for the binding
     :config
     (setq org-startup-folded t
