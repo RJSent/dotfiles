@@ -677,17 +677,26 @@ Show a dashboard on startup.
 #+begin_src emacs-lisp
   (use-package dashboard
     :hook (after-init . dashboard-setup-startup-hook)
+    :bind (:map dashboard-mode-map
+		("n" . dashboard-next-line)
+		("p" . dashboard-previous-line))
     :config
     (setq dashboard-project-backend 'projectile
-          ;; initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
-          dashboard-set-navigator t
-          dashboard-startup-banner 'logo
-          dashboard-items '((projects  . 8)
-                            (bookmarks . 5)
-                            (recents . 5)
-                            (agenda . 5))
-          dashboard-set-heading-icons t
-          dashboard-set-file-icons t))
+	  ;; initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
+	  dashboard-set-navigator t
+	  dashboard-startup-banner 'logo
+	  dashboard-items '((projects  . 8)
+			    (bookmarks . 5)
+			    (recents . 5)
+			    (agenda . 5))
+	  ;; override "p" binding for projects, can't be done with :bind
+	  dashboard-item-shortcuts '((recents . "r")
+				     (bookmarks . "m")
+				     (projects . "o")
+				     (agenda . "a")
+				     (registers . "e"))
+	  dashboard-set-heading-icons t
+	  dashboard-set-file-icons t))
 #+end_src
 
 *** Beacon
