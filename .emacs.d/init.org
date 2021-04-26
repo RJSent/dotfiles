@@ -1156,14 +1156,21 @@ the org-latex-logfile-extensions when initially exporting the file.
 		      org-level-8))
 	(set-face-attribute face nil :weight 'semi-bold :height i)
 	(setq i (- i 0.05))))
+    (org-babel-do-load-languages
+     'org-babel-load-languages '((C . t)
+				 (emacs-lisp . t)
+				 (ruby . t)
+				 (gnuplot . t)
+				 (mermaid . t)))
     ;; Automatically add used languages to org-babel
-    (defadvice org-babel-execute-src-block (around load-language nil activate)
-      "Load language if needed"
-      (let ((language (org-element-property :language (org-element-at-point))))
-	(unless (cdr (assoc (intern language) org-babel-load-languages))
-	  (add-to-list 'org-babel-load-languages (cons (intern language) t))
-	  (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-	ad-do-it))
+    ;; REMOVED due to incompatibilities when using #+CALL:
+    ;; (defadvice org-babel-execute-src-block (around load-language nil activate)
+    ;;   "Load language if needed"
+    ;;   (let ((language (org-element-property :language (org-element-at-point))))
+    ;;     (unless (cdr (assoc (intern language) org-babel-load-languages))
+    ;; 	(add-to-list 'org-babel-load-languages (cons (intern language) t))
+    ;; 	(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+    ;;     ad-do-it))
     (defun update-org-latex-fragment-scale ()
       (org-latex-preview '(64))
       (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
