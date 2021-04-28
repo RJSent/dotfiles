@@ -1203,13 +1203,20 @@ and doesn't seem to work anyway.
 #+end_src
 
 A picture is worth a thousand words, even in Org. I should try to make
-it more compatible with other installations.
+it more compatible with other installation paths, including the
+default (not hidden). I also include ~mermaid-mode~, making editing a
+lot more tolerable.
 
 #+begin_src emacs-lisp
   (use-package ob-mermaid
     :after org
     :config
     (setq ob-mermaid-cli-path "~/.node_modules/.bin/mmdc"))
+
+  ;; TODO: defer loading
+  (use-package mermaid-mode
+    :config
+    (setq mermaid-mmdc-location "~/.node_modules/.bin/mmdc"))
 #+end_src
 
 While not quite a picture, graphs are also nice to have. This allows
