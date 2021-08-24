@@ -1126,6 +1126,7 @@ the org-latex-logfile-extensions when initially exporting the file.
     :after (counsel)                      ; Not functionally needed, just in case for the binding
     :config
     (setq org-startup-folded t
+	  org-highlight-latex-and-related '(native)
 	  org-cycle-separator-lines 1
 	  org-log-done 'time
 	  org-adapt-indentation nil
