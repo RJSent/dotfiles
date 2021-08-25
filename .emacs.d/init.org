@@ -1124,6 +1124,23 @@ the org-latex-logfile-extensions when initially exporting the file.
 	   ("C-c C-j" . counsel-org-goto)
 	   ("C-c C-q" . counsel-org-tag))
     :after (counsel)                      ; Not functionally needed, just in case for the binding
+    :init
+    ;; Override highlighted headings in minibuffer (projectile, swiper, etc)
+    ;; Use face-remap-add-relative so it's buffer local
+    (defun override-org-level-faces ()
+      (dolist (face '(org-level-1
+		      org-level-2
+		      org-level-3
+		      org-level-4
+		      org-level-5
+		      org-level-6
+		      org-level-7
+		      org-level-8))
+	(face-remap-add-relative face '(:weight 'normal
+						:height 1.0
+						:foreground (face-foreground 'default)
+						:background (face-background 'default)))))
+    (add-hook 'minibuffer-setup-hook 'override-org-level-faces)
     :config
     (setq org-startup-folded t
 	  org-highlight-latex-and-related '(native)
