@@ -1261,14 +1261,14 @@ required, although I think it comes built in with recent versions of
 **** Org Crypt
 
 #+begin_src emacs-lisp
-      (use-package org-crypt
-	:straight nil
-	;; :hook (org-mode
-	:config
-	(org-crypt-use-before-save-magic)
-	(setq org-crypt-key "1982679C"
-	      org-crypt-disable-auto-save 'encrypt
-	      org-tags-exclude-from-inheritance '("crypt")))
+  (use-package org-crypt
+    :straight nil
+    :bind ("C-c d" . org-decrypt-entries)
+    :config
+    (org-crypt-use-before-save-magic)
+    (setq org-crypt-key "1982679C"
+	  org-crypt-disable-auto-save 'encrypt
+	  org-tags-exclude-from-inheritance '("crypt")))
 #+end_src
 
 **** mixed-pitch
