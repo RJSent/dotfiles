@@ -1258,6 +1258,19 @@ required, although I think it comes built in with recent versions of
     (use-package gnuplot)
 #+end_src
 
+**** Org Crypt
+
+#+begin_src emacs-lisp
+      (use-package org-crypt
+	:straight nil
+	;; :hook (org-mode
+	:config
+	(org-crypt-use-before-save-magic)
+	(setq org-crypt-key "1982679C"
+	      org-crypt-disable-auto-save 'encrypt
+	      org-tags-exclude-from-inheritance '("crypt")))
+#+end_src
+
 **** mixed-pitch
 
 | =mixed-pitch= | https://gitlab.com/jabranham/mixed-pitch |
@@ -1611,6 +1624,31 @@ Another screensaver package.
   (use-package fireplace
     :commands fireplace)
 #+end_src
+
+* Encrypted							      :crypt:
+
+-----BEGIN PGP MESSAGE-----
+
+hQIMA341lovNpziwARAAwKikCy2D5g05DQ9gnRCfO5pf/sZE3fnSqunF1ZRYUgcb
+ES4RRfqjptjeDfXWnPXv8bpEPv/osxFqRPhXUB9IBujaVUaYAkKrwRmkNVz6bDuH
+0qu9fwOY/+bBvWJRSoQZkk5X4c3nLanh0gfGQKm8RmBJ35ueAnK+KBhOEy1J3kGc
+1WnSCKYcVsfxpx9mQEyvWisKUey8ybQMr/lFFoeM4Kt8Lryenat9aZ6g9duB2PcZ
+08dJlUcM2NbYqY7IQbIItxHwhwoQmqrN2OoCbbHCKb0kWWts9bzSowbSiZUOZHpA
+yYyCxJzAGYsn8jJTmk38x59HR5lqHpuIeiY4gVtpZehWLRCMx86knC1w5PHeRjwF
+9mq/P4wIvXgiNvm5oXlR5iMaL+tegxKiz9Y0s2z8csJF19RcS2luzaapANMuu3t7
+Tu+lIhds73g98mtqkzIw/+H4SdqtWBhM4jkAZNd3PPpJvmvE9BUKpY1uUuHZuvR0
+vq6v443e8yGKgRSyOXJTATan/WvZOPSA+182a4mvsXASUWFo0YwaoQVShn+1KJDD
+tYfjOWrrdYdtpGm3RwqygzpU1tf0kdXRbB6lT0o3+UeRhww9R8Nv1IeWnQa7pUSV
+4fbxjiT1Kb/RudinUzrvoPmY3S8SgXOfXIIVw4oR7oEWD5/17R7xoImQsgENjPrS
+wH4B5FEI4SKK3y1hyIotXob7hh9TSSJHe0FdhzAqDSIHgSJrPsGx+mx5wNitGgXF
+lCztVmBZ4PfIYCCPwDZkFqOm+cswZKL1E5SEPvsGbUx6iuzATrL5Y+cqfskSBxCR
+nzjfLa29oNrsVjKjFsnpdHxrucksrdqAPFdYOBYdqSamyb9E4ecMMGGzO/ViAsRd
+9I3HxIijx4nGnIMzvPD/LZBXMyZKn732eG1LnXs12ZUM1y6iczhVhtkT5QD4MNXr
+79pgjgRO2NDuNIvRmi8pIr9J45sa3uMKYloAZ1icWT9l+tnwSv3HOQpZ7m4zSxK1
+yPBNCMzHDacfCkKpNCN6OqMzOdZPF/C9axLzwicpoFaa1S9HSTtMBlPsD0tvxRnd
+OzYLQlsfDHfLp4kdaTYp4rA/wV0+Zu50Xa1UBy+nqD8=
+=amkc
+-----END PGP MESSAGE-----
 
 * List of TODOs
 
