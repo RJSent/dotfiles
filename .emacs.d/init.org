@@ -1260,9 +1260,19 @@ required, although I think it comes built in with recent versions of
 
 **** Org Crypt
 
+Confusingly, =Org Crypt= *must* be loaded before =org=.
+~org-crypt-use-before-save-magic~ creates an org-mode hook that
+creates a before-save hook to encrypt the file. When loading is
+deferred, the org hooks will execute before this hook is added,
+meaning headings will not encrypt on save.
+
+I wasn't able to solve this issue, so I just removed the autoload that
+~:bind~ adds with ~:demand~.
+
 #+begin_src emacs-lisp
   (use-package org-crypt
     :straight nil
+    :demand t
     :bind ("C-c d" . org-decrypt-entries)
     :config
     (org-crypt-use-before-save-magic)
@@ -1629,25 +1639,25 @@ Another screensaver package.
 
 -----BEGIN PGP MESSAGE-----
 
-hQIMA341lovNpziwARAAwKikCy2D5g05DQ9gnRCfO5pf/sZE3fnSqunF1ZRYUgcb
-ES4RRfqjptjeDfXWnPXv8bpEPv/osxFqRPhXUB9IBujaVUaYAkKrwRmkNVz6bDuH
-0qu9fwOY/+bBvWJRSoQZkk5X4c3nLanh0gfGQKm8RmBJ35ueAnK+KBhOEy1J3kGc
-1WnSCKYcVsfxpx9mQEyvWisKUey8ybQMr/lFFoeM4Kt8Lryenat9aZ6g9duB2PcZ
-08dJlUcM2NbYqY7IQbIItxHwhwoQmqrN2OoCbbHCKb0kWWts9bzSowbSiZUOZHpA
-yYyCxJzAGYsn8jJTmk38x59HR5lqHpuIeiY4gVtpZehWLRCMx86knC1w5PHeRjwF
-9mq/P4wIvXgiNvm5oXlR5iMaL+tegxKiz9Y0s2z8csJF19RcS2luzaapANMuu3t7
-Tu+lIhds73g98mtqkzIw/+H4SdqtWBhM4jkAZNd3PPpJvmvE9BUKpY1uUuHZuvR0
-vq6v443e8yGKgRSyOXJTATan/WvZOPSA+182a4mvsXASUWFo0YwaoQVShn+1KJDD
-tYfjOWrrdYdtpGm3RwqygzpU1tf0kdXRbB6lT0o3+UeRhww9R8Nv1IeWnQa7pUSV
-4fbxjiT1Kb/RudinUzrvoPmY3S8SgXOfXIIVw4oR7oEWD5/17R7xoImQsgENjPrS
-wH4B5FEI4SKK3y1hyIotXob7hh9TSSJHe0FdhzAqDSIHgSJrPsGx+mx5wNitGgXF
-lCztVmBZ4PfIYCCPwDZkFqOm+cswZKL1E5SEPvsGbUx6iuzATrL5Y+cqfskSBxCR
-nzjfLa29oNrsVjKjFsnpdHxrucksrdqAPFdYOBYdqSamyb9E4ecMMGGzO/ViAsRd
-9I3HxIijx4nGnIMzvPD/LZBXMyZKn732eG1LnXs12ZUM1y6iczhVhtkT5QD4MNXr
-79pgjgRO2NDuNIvRmi8pIr9J45sa3uMKYloAZ1icWT9l+tnwSv3HOQpZ7m4zSxK1
-yPBNCMzHDacfCkKpNCN6OqMzOdZPF/C9axLzwicpoFaa1S9HSTtMBlPsD0tvxRnd
-OzYLQlsfDHfLp4kdaTYp4rA/wV0+Zu50Xa1UBy+nqD8=
-=amkc
+hQIMA341lovNpziwAQ/7BzSGSI6bxmFAymQW6SPa/e7kDzevMJNdTIq9f5yo+AEd
+4YAUfG7Gaf1fKKyB4wWEXD5nty71Q3piy4Htr65N/3EM8XsNgEvSqobLuK4H+/kr
+gTJMTPmCpkS3xf+8wArB2Qa3c0RzET3GVqXvyHqI9FLpvJY+5BQat5pUzCKqPBNg
+YM4zltHT6RZYXzn9uS6X5cU1HyP1uWtqMT1p6v4B/8H00H1UCnCjom4xCJr3Shi+
+uniDn8cG6gXoOB3Z7ML+UsaGEUDxL7qrFYzB1DNrZhcc9vaGmyWwf4XwwdHhS8T2
+tV3jg9hdsJZKv6qwBOjs8Bvt5hBKmvhqL8jPm/lScQOnRQF/y8mOjC75sjLXTtXj
+3iOUub6xr0kv9bfFCpRRDHNF994I9OLVEcI2UaV5G0rIsWy1Ae0oXsq9hHSy8QK4
+11Lml5OQuQPwI3z7fL3AUcBtdJX+TQQf7M19o91Ms7MLhzoIK7qAgmxQ/uSkD2F0
+Sm2TNbi0JvNEitun/ZEt8+raL9FQLnXIzK2rnZy//0ld8jtKNS8inQ4YH+23qTyt
+eRiJEo0ayfwJXVXNr6fVkldmh2sedfEtKuJW0+Kk66f3vZl56vBf55WmsnlH3AdT
+2zs1hyFWKtvG9GniyJT/r24t3OGXTkKyss/VmSAn7oXMcB20BsAezPsYzI1I5y3S
+wH8BYd6VC3plCZBuckh7v7L9nSWjWao8zMdJ4lFk1izJZxgL9ItVqCCCRewjVr+8
+c7nggN9skrbc9LDMk6hmv88hW3ZdpOvMXn6f9jPTTFPreUE3vcslcyoB+oL5peR5
+yZZAoRHTM+fCm0CvkU49otmPr9AyekvPvB9V6HKEJkU9xz+4cLkjCVqpRCGAOF1/
+602w91HTwLUBpEpNhIqttfbpowzqLZ1fZynRMb80awUf9ovh6YLqJYltyi0px89+
+XiBrlgpAvak0XqVSi/9jf4QSK2XgUPhi1EkJKAcArjNQhkMpauSpx23MJt5rX/sB
+mKJ5riey2T3KhD7KEj1vtyCh5nhxwXQ2euX3EaxzRkscmf7ttP4jmqWfuWY4iTCD
+NgQN5MgPbXEGX8RnGqMxdPxx8xH1zIrxXk/WELVmkLHC
+=zLla
 -----END PGP MESSAGE-----
 
 * List of TODOs
