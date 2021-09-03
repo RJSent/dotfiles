@@ -1160,7 +1160,7 @@ the org-latex-logfile-extensions when initially exporting the file.
 						    "out" "toc" "nav" "snm" "vrb" "dvi"
 						    "fdb_latexmk" "blg" "brf" "fls" "entoc"
 						    "ps" "spl" "bbl"))
-	      org-todo-keywords '((sequence "TODO" "WAITING" "|" "CANCELLED" "DONE"))
+	      org-todo-keywords '((sequence "TODO" "WAITING" "|" "DONE" "CANCELLED"))
 	      org-todo-keyword-faces '(("WAITING" . "magenta")
 				       ("CANCELLED" . "orange")
 				       ("DONE" . "darkgrey")) )
