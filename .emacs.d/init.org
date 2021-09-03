@@ -1279,6 +1279,7 @@ I wasn't able to solve this issue, so I just removed the autoload that
     :config
     (org-crypt-use-before-save-magic)
     (setq org-crypt-key "1982679C"
+	  epg-pinentry-mode 'loopback
 	  org-crypt-disable-auto-save 'encrypt
 	  org-tags-exclude-from-inheritance '("crypt")))
 #+end_src
@@ -1641,25 +1642,25 @@ Another screensaver package.
 
 -----BEGIN PGP MESSAGE-----
 
-hQIMA341lovNpziwAQ/7BzSGSI6bxmFAymQW6SPa/e7kDzevMJNdTIq9f5yo+AEd
-4YAUfG7Gaf1fKKyB4wWEXD5nty71Q3piy4Htr65N/3EM8XsNgEvSqobLuK4H+/kr
-gTJMTPmCpkS3xf+8wArB2Qa3c0RzET3GVqXvyHqI9FLpvJY+5BQat5pUzCKqPBNg
-YM4zltHT6RZYXzn9uS6X5cU1HyP1uWtqMT1p6v4B/8H00H1UCnCjom4xCJr3Shi+
-uniDn8cG6gXoOB3Z7ML+UsaGEUDxL7qrFYzB1DNrZhcc9vaGmyWwf4XwwdHhS8T2
-tV3jg9hdsJZKv6qwBOjs8Bvt5hBKmvhqL8jPm/lScQOnRQF/y8mOjC75sjLXTtXj
-3iOUub6xr0kv9bfFCpRRDHNF994I9OLVEcI2UaV5G0rIsWy1Ae0oXsq9hHSy8QK4
-11Lml5OQuQPwI3z7fL3AUcBtdJX+TQQf7M19o91Ms7MLhzoIK7qAgmxQ/uSkD2F0
-Sm2TNbi0JvNEitun/ZEt8+raL9FQLnXIzK2rnZy//0ld8jtKNS8inQ4YH+23qTyt
-eRiJEo0ayfwJXVXNr6fVkldmh2sedfEtKuJW0+Kk66f3vZl56vBf55WmsnlH3AdT
-2zs1hyFWKtvG9GniyJT/r24t3OGXTkKyss/VmSAn7oXMcB20BsAezPsYzI1I5y3S
-wH8BYd6VC3plCZBuckh7v7L9nSWjWao8zMdJ4lFk1izJZxgL9ItVqCCCRewjVr+8
-c7nggN9skrbc9LDMk6hmv88hW3ZdpOvMXn6f9jPTTFPreUE3vcslcyoB+oL5peR5
-yZZAoRHTM+fCm0CvkU49otmPr9AyekvPvB9V6HKEJkU9xz+4cLkjCVqpRCGAOF1/
-602w91HTwLUBpEpNhIqttfbpowzqLZ1fZynRMb80awUf9ovh6YLqJYltyi0px89+
-XiBrlgpAvak0XqVSi/9jf4QSK2XgUPhi1EkJKAcArjNQhkMpauSpx23MJt5rX/sB
-mKJ5riey2T3KhD7KEj1vtyCh5nhxwXQ2euX3EaxzRkscmf7ttP4jmqWfuWY4iTCD
-NgQN5MgPbXEGX8RnGqMxdPxx8xH1zIrxXk/WELVmkLHC
-=zLla
+hQIMA341lovNpziwARAAi8Sk5n7kAG6U+HqsG9OVxIPIILDRnsiJGbODyOIueCDb
+go0E9R4hHj2SozJ0UG5Ajlu+L6P3p0eAiT1h6rpGuGqWv6WbUixCbC9OctwtJqCJ
+uqZVrBDqLZBom83mh5hRNnGu6vvSTfktuc/uNEo4bwWKi17oUrXO/jc4Z1IaopgX
++pUPWUfYbcoIXOvNepIXZ3I4IyCXASapEF69Q/4xYzxqHbl2mhxzZVtbstrn83XY
+vAHmzT52M63weqPeWkNgO/tgcqFbljWkquMg4SBi74KyOe4h2Nin5Uy4UvzrAkpv
+1Z6gvb0c0j1Ck2FqHUeOnJ+JM9BF+ZSr2xaNiro58meoP+sddTNEE/tPqN6/50A2
+xIA9Qabdqt3UxngCgtJ6yZTyRRFNDFgq5x1qTS16gALEATfEYSgGaQ/Hjsp4uD1w
+wWMumh6lkp+gVqjdwSL8pbyi7GPBptduhKA7mlwNkwQ+aayl/DQ6M6Ww5sD+qdT1
+9cM+NwiD8kqOA/bvL/18GoV2IIa4hvJb4I70OtDotE6N8b6QhDOlY12z6HPNKJMl
+fN4NKhDsjl1OYrwbs3p4J4mBgecNk8BldwQEyq9p4amxOHEFuADQ807oLTbl/gxg
+bcgNgThB65lm0pGKDY2up+GQIr7Zem0Vx9FLXAXRNLWtLKkYnq5lMCDNa+R3Yg3S
+wIwBx99BkaFQKQADuDx1f7qclGC9aI63Ris61n+j1yu2B/au5EL1arC7hpwB9s10
+v1s0G6fIbbwEUfNrEeFN0/6xqCYFbphjnJEUofj7LKuh0+moYI35Aw8vYAr2fQ92
+us8RnoAXo5xz2xznEBAYio9vZrt5w0fFleFlYuItKsOPNR3PYFz8CIeUEFiRgGo7
+C0cRvjaUV1dZoyLlqk0jSum5J9spB5T6SyDUX5SofDzdsX6xTi1EhdbRUgkyOBm7
+dqybr9CcD8a6o7VX021irkDHGEvj1MWunZRoVJIYEXMuf5jdyK8QL+h3x+nEmRPb
+096WPLpULzK89hSd2mFsDxvmwHqaXmrFn7ZXf+MclJcDrsWfWbEQzqtu9/GQHx3N
+qZNfEos6kBRmpyPiPgSA8fXOjBmj7LgV8HXPnLBksnENDzo4qt971qrhPQCzOw==
+=lhDa
 -----END PGP MESSAGE-----
 
 * List of TODOs
