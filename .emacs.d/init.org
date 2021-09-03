@@ -1278,7 +1278,7 @@ I wasn't able to solve this issue, so I just removed the autoload that
     :bind ("C-c d" . org-decrypt-entries)
     :config
     (org-crypt-use-before-save-magic)
-    (setq org-crypt-key "1982679C"
+    (setq org-crypt-key "1982679C"        ; Change to your key
 	  epg-pinentry-mode 'loopback
 	  org-crypt-disable-auto-save 'encrypt
 	  org-tags-exclude-from-inheritance '("crypt")))
