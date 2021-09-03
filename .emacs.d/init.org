@@ -150,7 +150,7 @@ We want to keep the garbage collector from running while we initialize
 everything. We can reset it later to a more reasonable value. If we
 didn't do this, Emacs would hang when running the garbage collector.
 
-#+begin_src emacs-lisp :tangle early-init.el
+#+begin_src emacs-lisp
   (setq-default
    gc-cons-threshold most-positive-fixnum ; 8 MiB
    gc-cons-percentage 0.6)
@@ -160,7 +160,7 @@ Replace the file-name-handler-alist to nil, as regexing is cpu
 intensive. We need to keep the original value to restore it later. I
 don't know all the details behind it, but it sounds helpful!
 
-#+begin_src emacs-lisp :tangle early-init.el
+#+begin_src emacs-lisp
   (defvar default-file-name-handler-alist file-name-handler-alist)
   (setq file-name-handler-alist nil)
 #+end_src
@@ -179,14 +179,14 @@ value Doom uses.
 Garbage-collect on focus-out. Emacs /should/ feel snappier overall.
 With Emacs 27.1, focus-out-hook is deprecated.
 
-#+BEGIN_SRC emacs-lisp :tangle early-init.el
+#+BEGIN_SRC emacs-lisp
   (add-function :after after-focus-change-function (unless (frame-focus-state) #'garbage-collect))
 #+END_SRC
 
 Apparently this can result in a significant speedup when using fonts
 larger or smaller than the system default.
 
-#+begin_src emacs-lisp :tangle early-init.el
+#+begin_src emacs-lisp
   (setq frame-inhibit-implied-resize t)
 #+end_src
 
