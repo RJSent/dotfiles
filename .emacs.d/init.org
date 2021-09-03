@@ -1208,9 +1208,9 @@ the org-latex-logfile-extensions when initially exporting the file.
 
 *** Extensions
 
+**** org-superstar
+
 | =org-superstar= | https://github.com/integral-dw/org-superstar-mode |
-| =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
-| =gnuplot=       | https://github.com/emacsorphanage/gnuplot         |
 
 I enjoy colored bullets. I might remove
 ~org-superstar-leading-bullets~ since it doesn't bother me too much
@@ -1223,6 +1223,10 @@ and doesn't seem to work anyway.
     (org-superstar-configure-like-org-bullets) ; FIXME stars are still visible despite below line
     (setq org-superstar-leading-bullet ?\s))
 #+end_src
+
+**** ob-mermaid
+
+| =ob-mermaid=    | https://github.com/arnm/ob-mermaid                |
 
 A picture is worth a thousand words, even in Org. I should try to make
 it more compatible with other installation paths, including the
@@ -1240,6 +1244,10 @@ lot more tolerable.
     :config
     (setq mermaid-mmdc-location "~/.node_modules/.bin/mmdc"))
 #+end_src
+
+**** gnuplot
+
+| =gnuplot=       | https://github.com/emacsorphanage/gnuplot         |
 
 While not quite a picture, graphs are also nice to have. This allows
 for gnuplot src blocks in org mode. The =gnuplot= emacs package might also be
