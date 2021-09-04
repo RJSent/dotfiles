@@ -123,21 +123,22 @@ I use [[https://github.com/raxod502/straight.el][straight.el]] for package manag
 the Github repo to set up straight.
 
 #+begin_src emacs-lisp
+  (setq straight-repository-branch "develop") ; prebuild support for mu4e
   (defvar straight-fix-flycheck t)
   (defvar bootstrap-version)
   (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
+	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	(bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
+	  (url-retrieve-synchronously
+	   "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	   'silent 'inhibit-cookies)
+	(goto-char (point-max))
+	(eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
-  (straight-use-package 'use-package)      ; Install use-package
-  (setq straight-use-package-by-default t) ; I don't want to type :straight t a billion times
+  (straight-use-package 'use-package)         ; Install use-package
+  (setq straight-use-package-by-default t)    ; I don't want to type :straight t a billion times
 #+end_src
 
 **** Bind-keys Bootstrap
@@ -1664,27 +1665,31 @@ Another screensaver package.
 
 -----BEGIN PGP MESSAGE-----
 
-hQIMA341lovNpziwARAAvcm0NHti6Dg1GS81WAbnmiaJdj0r6zEuggG0qoRcfd1u
-IUwCm9ZvBiFvzKmAb/subwX350Jvqpx+L5NcDt+mpcHRfR4LmzFA2AYvFD8LLGQL
-R9easyvelTAaZD6Juz2wkmkSy/WBV4Q7TrT2hQ7yLkBmJ19kmoKwZI26NJoMNhJ3
-YBcO5PXMzBGQvPWsqNb0q/tPPdARBoRRAM0kNky8jdMabM+AGg/X5PUus1uLZClI
-2fsp3Kp8GLhh1ls+0TgAPDEB+IBVR1HFSNnSC/Yjr+ZzIwtv3S5wwigrxmluj7b+
-CRGq/dz0Y+jCxHCI7mapKLrrjqA5UV2doMjAp9g/7kDa0JjS1a3tV9SrH8SIollW
-eJx3etTqCi4TbsFZnqmmI+V7xbPICt4xaoDnPgSyeF0TgkFHBZwTlZFslgIPX8jG
-UvVWC7+TVkgahFg6yvEjKGZb95dH6ykvumCy8zJZuujS3U6bSrKFgCteiQRiDUPV
-MB0raT0h+wrApiBbh2rA/m0h1AdlRLDSlZQq+cAGWTULNJlZFhyc3F9Sqz+mEwNZ
-Pq6ihIiDJXpE/+ThuWPkDkzQGzJyVO1pAxgu/Q77HpownAFhvgDWIH8s8/7s0JFA
-6tjqN3VhoVC4SucylIHUQ0zSCnGItbH1Ae4o6ndIFEhWKiYi/sEOuaufU9KwvujS
-wOwBqqgLo290FHKX3WqTIbqc/RFWu/1gXF/VYyRHokmQYUKJt6tY+Y1niWbZiLgR
-Wh61ndEUKd+aZctBoB1wlD08hR5af0RkcCLz9u43EFsoeIctVqtIfgnLsJWlLJDc
-EPmAcHlscuaojS0tapdzN+hIV54sYlyfGXDo3d1SGhartIvxpXFHPIKJspKyUaGK
-5GDprTPKprOBozXdUgU1ZH5gKNxlJs0hHkPpW4ydu3Ssc2qme9gQIX70PVjojkQX
-K+SBvXf+NCioqOstcTDq3FM/26u4XvlPkNGjUIRguLCotpyffHKd0byN4yK9HTX5
-FmhwKHLHX3co9FbGY6qeiz43nH8y8xUB9rIo0adxSkRKrqLiJim+p/2PZIFgHVSZ
-OwNyGqxmlMfH8xxw7Fih6ToGQR4pP2BFDtl6XLveyX7zky/zt/Dne1hxAy0pPQX5
-EykQhhBJ5iYWwzMwJ6dek+Zyd1c86rB17d4VTBmKvQNccJoKb7GhnsszRk9mPy4U
-2cDH+Yhgwj7tE9m++fZfteJvOFrXVmA6DiYGTZ5SG7AbZ/5vFGWcJgaUGAtdlA==
-=Xiye
+hQIMA341lovNpziwARAAnw1cQ1MPiXDQExY6PrF+7O8+1XluPQSrI5493Qu+Nz/G
+7MFb2lFWpI3v9RHzRSyfvPQo2q7m6v5JLJf3FdnPkreeocXT8vaiT9Xefh07qKDM
+tQxhjJDsePykVAjR88g7Tfne69UHw/5E9tMKWoIl7z0ajDzfpz1rywZWV5rzwKo+
+Jh67DwlDXlWCCOxzzdeDv4dHxazy4kagU4fQGgx4YuNo4vJYKNBwdAXaJEIrwCpD
+vFl+E7zMJk4oC5YQGKfNq6/z0LbOXGHM75T2XeECIXcAICjZ6UfY6uNYEGKcLX8x
+DIuhGe52/R/qzCggmaHGg+smseX7DR0IgEHZdN8A7d2rahB8R7w3+yABJs92GCYt
+tRSsqEgOXRB7yF1uHLnfArqXjU2xtqJDxzoKwgVuwqbdihlX2+xYZFo5+qBlRtZL
+2And8QMFR/Re6P1HHx99FG3h3HyOS0O+YwtiwLO8bfDOxzpbT6rLg/Z+uW3axodt
+kjGgqfsoLIQi/TwMe3nX0tH7JycU32lNUAqh0VzfDazeKLHEE0A4lufGI/Hm5QN6
+CqDvsMi5RwAu9guGjXN4ADeZuRO5XoxA711T0QbRbkOTb0icrodA/ADp2WGR5osw
+2RJTpjqo9l3BcUv6PjcioFjd/zKbxYohGFS+QJ/t7nM8ZyBNpJtmF1fhleRDybrS
+6QHmw3U9iTCi3RVvcL1a//O2DEUtQv53Z8HnO8hSB/1aGiEWv7BBjM7kd0Df3ykp
+YJExlY73wErRmek39QUmGriEPycvU0Q5YxJyZKWc6Tx8Q3wlDmpQIuC7Gla6iSCE
+EPaPWZeAQd3UHJxV5ovCjjqakAdT2aqHalN7tUxVwMdD19c9qKfnhLYxzrWDCXXW
+IfONgHT3abB8jGKaIitEeCOvc/w5B6FkoIzvWuO1awAhaDNjkpSJo3d6FkGuq0Wo
+RBvCDJkcw/bVuN5mVLlxzZxE8stbjOlXgS50XY5yON1ayfptLLgQP42TUNw2EK9O
+DcUp1+nLPf8T+Mq/MeqQyYQOR+GwZAiDXHgqUwIMkUndgdbX8R/bh0BkggEs9Kyq
+/+5E2J4D5UHRrxbVEmrsCrsR2xA8Y6XFXtgH6Rw/fuLNx9ED2CpmqVnL5neaJvzR
+5oX0Fy4GVvRHgaq9aerhYPyrZy+4vkRDVg0JUwBzGEscEAKTjs0NrjBGpEuXk/5R
+NoZ2nCZxxEASI4XLtqOW3P2S8oCaZZRY1fWWhNlq0UPzvkzXcFt5xO43bRleB1rE
+jpSFi9yRB9HGMcr8egvzHRJAP31rVrr+314feta2i7P29tQWPdy93mF3w0mQha+h
+znkDfuuMDU/lKMqxjCZbZrYQJFcC3C9CEMTrTU04YFVSbKxIzbWWBiYEQHMQ8YvP
+Gfn8m/A0R2VSnu3QvOk72MliqKOjvUpqGiSUa3rFjDI1qkNV7T2C+MaOukqZIDKj
+MKubXJoWQFSGBOEA5nIujIxF+DEbqizxX6EsuTqQlt9AFfP6KjfXw0d0HnnbLg==
+=cQEZ
 -----END PGP MESSAGE-----
 
 * List of TODOs
