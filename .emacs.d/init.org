@@ -78,17 +78,11 @@ To avoid doing this each time a change is made we can add a function to
 the =after-save-hook= ensuring to always tangle and byte-compile the
 =org=-document after changes.
 
-I currently have a problem where text is encrypted before tangling, as
-org-crypt encrypts it with before save hook, while this runs after
-saving it. To fix this, I'm going to attempt to modify the function to
-use 'before-save-hook, and do so by saving to a temp file with a
-different name (to avoid infinite recursion), then tangling that file
-(as ~org-babel-tangle~ needs a file)
+I use =Org Crypt=, which has a feature where it will encrypt your
+=org= file when you save. This breaks tangling. I had to modify this
+function to tangle everything first, then encrypt before saving.
 
-Fun fact. If ~org-babel-tangle~ is called on a buffer not visiting a
-file, it will tangle it and then kill the buffer
-
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun my/tangle-init ()
     "If the current buffer is 'init.org' the code-blocks are
   tangled, and the tangled file is compiled."
@@ -99,8 +93,8 @@ file, it will tangle it and then kill the buffer
     ;; then save, so unencrypted content is tangled and re-encrypted
     ;; before saving.
 
-    ;; I also disabled save-buffer locally, as it then runs
-    ;; org-encrypt-entries before tangling anyway. yay.
+    ;; I also disabled org-babel-pre-tangle-hook locally, as it then
+    ;; runs org-encrypt-entries before tangling anyway. yay.
     (let ((temp-buffer "temp-buffer"))
       (when (and (equal (buffer-file-name)
 			(expand-file-name (concat user-emacs-directory "init.org")))
@@ -112,11 +106,12 @@ file, it will tangle it and then kill the buffer
 	    (kill-current-buffer))
 	  (byte-compile-file (concat user-emacs-directory "init.el"))))))
 
+  ;; While not recommended, order matters here since we need to tangle
+  ;; first then encrypt, but both before saving
   (add-hook
    'org-mode-hook
    (lambda () (add-hook 'before-save-hook 'my/tangle-init -2 t)))
-  ;; (add-hook 'before-save-hook 'my/tangle-init)
-#+END_SRC
+#+end_src
 
 ** Basics
 
