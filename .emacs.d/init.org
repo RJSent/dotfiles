@@ -78,18 +78,44 @@ To avoid doing this each time a change is made we can add a function to
 the =after-save-hook= ensuring to always tangle and byte-compile the
 =org=-document after changes.
 
+I currently have a problem where text is encrypted before tangling, as
+org-crypt encrypts it with before save hook, while this runs after
+saving it. To fix this, I'm going to attempt to modify the function to
+use 'before-save-hook, and do so by saving to a temp file with a
+different name (to avoid infinite recursion), then tangling that file
+(as ~org-babel-tangle~ needs a file)
+
+Fun fact. If ~org-babel-tangle~ is called on a buffer not visiting a
+file, it will tangle it and then kill the buffer
+
 #+BEGIN_SRC emacs-lisp
   (defun my/tangle-init ()
     "If the current buffer is 'init.org' the code-blocks are
   tangled, and the tangled file is compiled."
-    (when (equal (buffer-file-name)
-		 (expand-file-name (concat user-emacs-directory "init.org")))
-      ;; Avoid running hooks when tangling.
-      (let ((prog-mode-hook nil))
-	(org-babel-tangle)
-	(byte-compile-file (concat user-emacs-directory "init.el")))))
+    ;; org-babel-tangle runs save-buffer as a hook. Somewhere along the
+    ;; line the current buffer goes back to init.org, leading to an
+    ;; infinite loop when using before-save-hook. Now we create a
+    ;; tempory buffer with unsaved contents, tangle this buffer, and
+    ;; then save, so unencrypted content is tangled and re-encrypted
+    ;; before saving.
 
-  (add-hook 'after-save-hook 'my/tangle-init)
+    ;; I also disabled save-buffer locally, as it then runs
+    ;; org-encrypt-entries before tangling anyway. yay.
+    (let ((temp-buffer "temp-buffer"))
+      (when (and (equal (buffer-file-name)
+			(expand-file-name (concat user-emacs-directory "init.org")))
+		 (not (get-buffer temp-buffer)))
+	;; Avoid running hooks when tangling.
+	(let ((prog-mode-hook nil) (org-babel-pre-tangle-hook nil))
+	  (with-current-buffer (clone-indirect-buffer temp-buffer nil nil)
+	    (org-babel-tangle)
+	    (kill-current-buffer))
+	  (byte-compile-file (concat user-emacs-directory "init.el"))))))
+
+  (add-hook
+   'org-mode-hook
+   (lambda () (add-hook 'before-save-hook 'my/tangle-init -2 t)))
+  ;; (add-hook 'before-save-hook 'my/tangle-init)
 #+END_SRC
 
 ** Basics
