@@ -246,6 +246,7 @@ And now for a bunch of one liner configurations.
    show-help-function nil                        ; Disable help text on most UI elements
    uniquify-buffer-name-style 'forward           ; Make buffer names unique
    use-dialog-box nil                            ; Apparently compile reverting buffers counts as a mouse command
+   auto-save-timeout 1200                        ; Otherwise Org Crypt will encrypt file constantly
    )
   (defalias 'yes-or-no-p 'y-or-n-p)              ; y is shorter than yes
   (delete-selection-mode 1)                      ; If I selected something, I probably want to edit it.
