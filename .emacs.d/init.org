@@ -212,6 +212,19 @@ Solution found [[https://old.reddit.com/r/emacs/comments/c6fvvr/unable_to_initia
     (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
 #+end_src
 
+*** exec-path-from-shell
+
+I don't want to worry about stuff breaking because of environment
+variable weirdness.
+
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :demand t
+    :config
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize)))
+#+end_src
+
 *** no-littering
 
 #+begin_src emacs-lisp
