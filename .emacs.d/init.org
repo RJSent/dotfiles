@@ -115,9 +115,65 @@ function to tangle everything first, then encrypt before saving.
 
 ** Basics
 
-*** Straight Bootstrap
+*** Bootstraps
 
-**** Straight Bootstrap
+**** Guix
+
+Installs =Guix= at the system level. They provide a script to help
+with installation across multiple architectures that I download and
+run.
+
+~sudo~ is broke and won't consistently read properly from stdin with
+-S. See https://serverfault.com/questions/477968. After struggling for
+a long time (check the subheading for how far my plight went), I
+decided to create a Comint process.
+
+#+begin_src emacs-lisp
+  ;; Don't install if already present
+  (let ((guix-present (condition-case nil
+			  (start-process "guix-test" nil "guix" "--version")
+			(error nil))))
+    (unless guix-present
+      (let ((guix-script
+	     (with-current-buffer
+		 (url-retrieve-synchronously
+		  "https://git.savannah.gnu.org/cgit/guix.git/plain/etc/guix-install.sh"
+		  'silent 'inhibit-cookies)
+	       ;; Remove HTTP headers
+	       ;; https://emacs.stackexchange.com/questions/12464
+	       (goto-char (point-min))
+	       (re-search-forward "^$")
+	       (delete-region (point) (point-min))
+	       (buffer-string))))
+	;; root permissions required	
+	;; https://emacs.stackexchange.com/questions/29555
+	(let ((name "guix-install")
+	      (guix-script-file (make-temp-file "guix-" nil ".sh" guix-script)))
+	  (make-comint-in-buffer name nil "sudo" nil "sh" guix-script-file)
+	  (display-buffer (process-buffer (get-process name))
+			  '(display-buffer-pop-up-window . '(('window-height . 1.0)
+							     ('window-width . 0.5)))
+							 nil)))))
+#+end_src
+
+***** COMMENT Emacs-server + sudo entry
+
+There's a neat trick I found with entering passwords within Emacs, but
+it requires using Emacs server. I should modify this to start from
+somewhere else.
+
+https://old.reddit.com/r/emacs/comments/kvvrmx/can_sudo_askpass_use_emacs/gj1l989/
+
+=SUDO_ASKPASS=emacsclient -e '(read-passwd "sudo password: ")' | xargs=
+
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
+
+#+begin_src bash :tangle 
+#+end_src
+
+**** Straight
 
 I use [[https://github.com/raxod502/straight.el][straight.el]] for package management. This is boostrap code from
 the Github repo to set up straight.
@@ -141,7 +197,7 @@ the Github repo to set up straight.
   (setq straight-use-package-by-default t)    ; I don't want to type :straight t a billion times
 #+end_src
 
-**** Bind-keys Bootstrap
+**** Bind-keys
 
 I'm not entirely sure why this is necessary, and more importantly,
 what better solutions there are. But when byte-compiling Emacs,
