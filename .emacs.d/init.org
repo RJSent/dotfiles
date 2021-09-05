@@ -1372,7 +1372,7 @@ I wasn't able to solve this issue, so I just removed the autoload that
     (org-crypt-use-before-save-magic)
     (setq org-crypt-key "1982679C"        ; Change to your key
 	  epg-pinentry-mode 'loopback
-	  org-crypt-disable-auto-save 'encrypt
+	  org-crypt-disable-auto-save t
 	  org-tags-exclude-from-inheritance '("crypt")))
 #+end_src
 
