@@ -1667,7 +1667,8 @@ Projectile also supports creating a named vterm with
 
 #+begin_src emacs-lisp
   (use-package vterm
-    :commands vterm)
+    :commands vterm
+    :config (setq vterm-timer-delay 0.01))
 #+end_src
 
 **** vterm-toggle
