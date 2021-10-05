@@ -938,7 +938,8 @@ and/or =selectrum=.
   (use-package projectile
     :diminish
     :config (projectile-mode +1)
-    (setq projectile-completion-system 'ivy) ; Dashboard support
+    (setq projectile-completion-system 'ivy     ; Dashboard support
+	  projectile-git-submodule-command nil) ; prevent slowdowns with large submodules
     :bind-keymap ("C-c p" . projectile-command-map))
 #+end_src
 
