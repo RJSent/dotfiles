@@ -105,7 +105,8 @@ shopt -s histappend
 ###########################################################################
 ######################## BEGIN USER CUSTOMIZATIONS ########################
 ###########################################################################
-set -o noclobber # Don't overwrite files with > unless >|
+# set -o noclobber # Don't overwrite files with > unless >|
+# Disabled due to esp-idf annoyance, setup-env script didn't seem to stick
 
 # Color output from less
 export LESS_TERMCAP_mb=$'\e[1;32m'
