@@ -760,6 +760,11 @@ To help me when I actually do customize the modeline myself, I'll have
   (use-package diminish)
 #+end_src
 
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config (display-time))
+#+end_src
+
 *** Dashboard
 
 | =dashboard= | https://github.com/emacs-dashboard/emacs-dashboard |
