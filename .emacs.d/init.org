@@ -98,8 +98,6 @@ function to tangle everything first, then encrypt before saving.
     ;; then save, so unencrypted content is tangled and re-encrypted
     ;; before saving.
 
-    ;; I also disabled org-babel-pre-tangle-hook locally, as it then
-    ;; runs org-encrypt-entries before tangling anyway. yay.
     (let ((temp-buffer "temp-buffer"))
       (when (and (equal (buffer-file-name)
 			(expand-file-name (concat user-emacs-directory "init.org")))
@@ -113,11 +111,9 @@ function to tangle everything first, then encrypt before saving.
 	    (kill-current-buffer))
 	  (byte-compile-file (concat user-emacs-directory "init.el"))))))
 
-  ;; While not recommended, order matters here since we need to tangle
-  ;; first then encrypt, but both before saving
   (add-hook
    'org-mode-hook
-   (lambda () (add-hook 'before-save-hook 'my/tangle-init -2 t)))
+   (lambda () (add-hook 'before-save-hook 'my/tangle-init nil t)))
 #+end_src
 
 ** Basics
