@@ -1,4 +1,4 @@
-# -*- eval: (remove-hook 'before-save-hook 'org-encrypt-entries t); buffer-auto-save-file-name: nil; -*-
+# -*- eval: (remove-hook 'before-save-hook 'org-encrypt-entries t); eval: (auto-save-mode 0); -*-
 #+TITLE: DotEmacs
 #+AUTHOR: Richard Sent
 #+PROPERTY: header-args :results silent :tangle yes
@@ -105,7 +105,7 @@ function to tangle everything first, then encrypt before saving.
 			(expand-file-name (concat user-emacs-directory "init.org")))
 		 (not (get-buffer temp-buffer)))
 	;; Avoid running hooks when tangling.
-	(let ((prog-mode-hook nil) (org-babel-pre-tangle-hook nil))
+	(let ((prog-mode-hook nil))
 	  (with-current-buffer (clone-indirect-buffer temp-buffer nil nil)
 	    (org-decrypt-entries)
 	    (org-babel-tangle)
@@ -214,9 +214,7 @@ custom (and most built-in) keybindings are nonfunctional.
 Solution found [[https://old.reddit.com/r/emacs/comments/c6fvvr/unable_to_initialize_package_with_usepackage/es92xjd/][here]].
 
 #+begin_src emacs-lisp
-  (use-package bind-key
-    :config
-    (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
+  (use-package bind-key)
 #+end_src
 
 *** exec-path-from-shell
@@ -358,6 +356,35 @@ I don't enjoy Emacs messing with my window layouts.
 	       '("." nil (reusable-frames . t)))
 
   (setq even-window-sizes nil)                 ; display-buffer: avoid resizing
+#+end_src
+
+**** Compilation
+
+When byte compiling, Emacs will go crazy about references to free
+variables. Often these are just ~(use-package)~ macros. Not all packages
+behave like this, but enough do that I'm putting this in to hope it
+will help.
+
+For context the error looks like
+
+#+begin_quote
+init.el:77:14: Warning: reference to free variable ‘bind-key’
+#+end_quote
+
+where ~bind-key~ can be the name of many different (but not all)
+packages.
+
+#+begin_src emacs-lisp
+  ;; This has no effect. (Actually, it removed the all-the-icons
+  ;;  warning, but caused another)
+  ; (eval-when-compile (straight-use-package 'use-package))
+#+end_src
+
+To hide (but not disable) compilation warnings with native-comp, I'll
+change ~warning-suppress-types~.
+
+#+begin_src emacs-lisp
+  (setq warning-suppress-types '((comp)))
 #+end_src
 
 **** Disabled Commands
@@ -1754,62 +1781,53 @@ Another screensaver package.
     :commands fireplace)
 #+end_src
 
-** Test
-
-#+begin_src emacs-lisp
-  (add-to-list 'safe-local-variable-values
-             '(buffer-auto-save-file-name . nil))
-#+end_src
-
 * Encrypted							      :crypt:
 
 -----BEGIN PGP MESSAGE-----
 
-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
-CMMOUtSYCRqgGhE9hJYXVeA=
-=KTlZ
+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
+=qjDt
 -----END PGP MESSAGE-----
 
 * List of TODOs
