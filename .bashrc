@@ -50,4 +50,4 @@ fi
 alias cdiff=colordiff
 alias ccat=bat
 
-export EDITOR=$'emacs -nw'
+export EDITOR=$'jove'
