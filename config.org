@@ -1,0 +1,111 @@
+# -*- eval: (remove-hook 'before-save-hook 'org-encrypt-entries t); eval: (auto-save-mode 0); -*-
+#+TITLE: Configuration
+#+AUTHOR: Richard Sent
+#+PROPERTY: header-args :results silent :tangle yes :mkdirp yes
+
+This is a comprehensive configuration file for my system.
+
+* TODO Migrate init.org to here
+
+As part of this I need to modify ~my/tangle-hook~ .
+
+* Sway
+
+* Bash
+
+** .bashrc
+
+An incomplete =.bashrc= file. I plan on breaking it up across the
+config file.
+
+#+begin_src bash :tangle ~/.bashrc
+  # /etc/skel/.bashrc
+  #
+  # This file is sourced by all *interactive* bash shells on startup,
+  # including some apparently interactive shells such as scp and rcp
+  # that can't tolerate any output.  So make sure this doesn't display
+  # anything or bad things will happen !
+
+  export PATH=~/bin:$PATH
+
+  # Test for an interactive shell.  There is no need to set anything
+  # past this point for scp and rcp, and it's important to refrain from
+  # outputting anything in those cases.
+  if [[ $- != *i* ]] ; then
+      # Shell is non-interactive.  Be done now!
+      return
+  fi
+
+  # Put your fun stuff here.
+  alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+  # Color output from less
+  export LESS_TERMCAP_mb=$'\e[1;32m'
+  export LESS_TERMCAP_md=$'\e[1;32m'
+  export LESS_TERMCAP_me=$'\e[0m'
+  export LESS_TERMCAP_se=$'\e[0m'
+  export LESS_TERMCAP_so=$'\e[01;33m'
+  export LESS_TERMCAP_ue=$'\e[0m'
+  export LESS_TERMCAP_us=$'\e[1;4;31m'
+
+  # Rbenv setup, trying new method to only run if rbenv is installed
+  # "$(rbenv init -)"
+  if type rbenv >/dev/null 2>&1
+  then
+      $(rbenv init -)
+  fi
+
+  # Use ssh-agent to temporarily store passphrases in RAM
+  if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+      ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+  fi
+  if [[ ! "$SSH_AUTH_SOCK" ]]; then
+      source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+  fi
+
+  # Colored diffs and colored cats (meow)
+  alias cdiff=colordiff
+  alias ccat=bat
+
+  export EDITOR=$'jove'
+#+end_src
+
+* Encrypted							      :crypt:
+
+
+-----BEGIN PGP MESSAGE-----
+
+hQIMA341lovNpziwAQ//TlLW2cNb5MGhJtAWah5X91u6F67aOXvvnQB9seazO1k1
+zTUXbaV1QHxL2t8u/Jp2pKwRA9n7qO3QnFGqRNGmq97N6wAhb1pTckeD5KHOkpB8
+6rgqk9HIpRlw2JJkNjF0vLAeGeOfDUAmzAOXlbT+Uq0sPkDSMpxVfzpWBxU4HZ+X
+M3Ny9QPdMpjQ8rawQYnZ5vUrUEBhE8SnDZIRCAxq6jupCGX78fDAzc4DHbJ79kHZ
+zpJglrlKSMRlJKGmHQAQBFc2t0/m8poTbCDtJTpFG7+B6w+D1LIcqEiRFB2GHcxb
+Ku+2vXuBn4ZL/9SFDWaaQIW7wOEFlLexRPS4xG5UinvbIPjrwnIP56MvJtbkJgIV
+32VHnO5KGLGtOzZpCaMMj1C3XjfLHZiHYl3KXEG+c79suJuFocxd/TLbLIvcKYYH
+wgf+uvUdZlheRLaulmpdoxCxX+Ubyz3mSGUq2kIrbk3JWFhiDThu0zfSQaVB+SSk
+0dkxOiWIuWrdIYpXpAjFg8ShX55L1xnpeoSd7cklG8N4Xjg4NC8PVBCdoCaqO00y
+SzA466ozVzNZ9nQ0kYietGkY67l46ojyNbGNLCCFCWrWO9wK0QMTVDg8WyAQ8wvN
+rLjktMXzSwYBnVHupT6TfloGbHQQi2CHeavtzm7cggnTJpWRPVJ7K2XzvoB7nU3S
+6QHhWSbEJPW5rRQsrYjO1NyuAtqR9QSf3Oq/Uw/c0/I24b7fTeBBjPlqVwQmeFYD
+tVMkbjS9whAsHJvkzEIFMiKskCqvvo0Syc+o+hGseR0CJ3B2geys3BSmbua6TZDp
+minSKHLcTuAkQtBWL5BGvMFfiD4vCydS/pl3I8/mwPL7Aw9f2tWbVkUGA14+gbOj
+mKLnMCbNGCKJhByCOmqWX6g6gvcBP3QOARmbIL1JxZtsGnBnzuSMjKHrJw2aWKzh
+NLUM622q/3C99yjTIfuPHTjaAT5JY/UZvV7OJl9K3gda+TarBDT6MbmExTqQ7Ftt
+sw+aiTre0EjYm3aOk+cHV0Uqcs2w0x1QdG1xqfrOBUvo+CMAEse4iwRXWFBL2Ctl
+Dm2Ht7VCPr9cjqSHsrCurHf5Evh12J6jEz0WTdIWwNlIkS7DaT48Y9BvwpczDdHg
+79LN1b3XX3kwaEm0+cGUwdg/r+glz4s6xRS4TyMKJ2IU3rqfC4a1KoqRzUFWDPSM
+gqBHxgVcROW9oupmPL/U8WWWlIuC1CzmsWfRay1rioh1AWG1XLQsnuoZTWcMOVB+
+37zY2ecsHXS4gm3FW9fzoeL0mcwNZWYvL46eY2c1FlZMvf8t7n3PDmusQZyKbpQe
+Ub0UDlGB19Jq4NNQUPgp9dko9S7B/66kGL0gPETTnDMFwQpDLOsu9MlYw3/4Hr73
+zVUqGhGwpC67xyJ4QHReI9CGWBZxdosHNGI/R2cSrNi2x+JfrmXoIbhLjvUX/28U
+f+aI+1a6ieNbeGQb5126SjDWxlLzkpQ96OmoTQtcZrY9c3B5Xz2wYkih14F3mjkk
+ylijJJicE0x2SrlsZww8cNpxtQwE3xK8NLv7Za7bFdG2ywfnCMPfeoMmpoEwhrNw
+QzNgV/drmn6dOt7+8dFzsOo+j4jcC6Y5o6THZU33HkkuK1Ov12fBCop2rPgvZmp/
+arY5NK/o0818cKMxrNMJCpn5BuAc6gU8XWTq6da5Ex5uD/ET/xZ+AY8GXpXyUMhr
+NFweVV+TSRxHsTQ3LAM3/KaBJGEfvm7PqpwiC0HAU4wAtwxx4YrBn2W1Tgx9vkrj
+7wmAaYH9tGBaZ4jMBmdEgL99UG+Qr9h4zpvB/GYoYrLiIN/JEmXoNX5lqbjJhOa9
+eebTUixB547zgzYbT9nR5vjOvwzluJK+of9LT35//xipleuMfKpuVebprjZy9Sjl
+vdsdPJt5cWFjQEVsyMXy4cks8nx6z761B2oWnOYjr1Ca9kab4wIsr7mArh6cpANt
+t+KURBDkXk6Kn2yRkw==
+=4XYy
+-----END PGP MESSAGE-----
