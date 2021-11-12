@@ -323,6 +323,8 @@ And now for a bunch of one liner configurations.
   (global-auto-revert-mode 1)                    ; If I edit something elsewhere, I probably want to reload
   (global-hl-line-mode)                          ; Highlight the active line
   (menu-bar-mode 0)                              ; Disable the menu bar
+  (scroll-bar-mode 0)                            ; Disable the scroll bar
+  (tool-bar-mode 0)                              ; Disable the tool bar
   (set-default-coding-systems 'utf-8)            ; Default to utf-8 encoding
 #+end_src
 
