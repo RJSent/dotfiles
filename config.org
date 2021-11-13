@@ -3,11 +3,53 @@
 #+AUTHOR: Richard Sent
 #+PROPERTY: header-args :results silent :tangle yes :mkdirp yes
 
-This is a comprehensive configuration file for my system.
+This is a comprehensive configuration file for my system. 
 
 * TODO Migrate init.org to here
 
 As part of this I need to modify ~my/tangle-hook~ .
+
+* Warning!
+
+When using noweb, be /very/ careful to be consistent with function
+names. If I make a mistake (i.e. using ~src/~ for the name and ~src-~
+in the call), ~my/tangle-init~ will fail silently for the rest of the session.
+
+* Base
+
+This heading organizes some basic configurations and prepares various
+files. For instance, I have a =setup.sh= script that (ideally)
+configures everything and only needs to be run once. We need to make
+sure this file is executable.
+
+#+begin_src shell :tangle ~/setup.sh :shebang #!/usr/bin/env bash
+#+end_src
+
+I also have a =daemon.sh= file that creates any necessary background
+daemons.
+
+#+begin_src shell :tangle ~/daemon.sh :shebang #!/usr/bin/env bash
+#+end_src
+
+** Logging
+
+=setup.sh= and any daemons I create should log to this file.
+
+#+NAME: src/config-log-file
+#+begin_src emacs-lisp
+  "~/.log.txt"
+#+end_src
+
+#+NAME: src/config-log-file-noweb
+#+CALL: src/config-log-file()
+
+*** noweb demo
+
+https://emacs.stackexchange.com/a/49098
+
+#+begin_src shell :noweb yes
+  echo <<src/config-log-file-noweb()>>
+#+end_src
 
 * Sway
 
@@ -18,7 +60,7 @@ As part of this I need to modify ~my/tangle-hook~ .
 An incomplete =.bashrc= file. I plan on breaking it up across the
 config file.
 
-#+begin_src bash :tangle ~/.bashrc
+#+begin_src shell :tangle ~/.bashrc
   # /etc/skel/.bashrc
   #
   # This file is sourced by all *interactive* bash shells on startup,
@@ -72,40 +114,45 @@ config file.
 
 * Encrypted							      :crypt:
 
-
 -----BEGIN PGP MESSAGE-----
 
-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
-t+KURBDkXk6Kn2yRkw==
-=4XYy
+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
+k5dKftgXHvcDW/CwrmlLNg==
+=Eyuk
 -----END PGP MESSAGE-----
