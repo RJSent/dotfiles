@@ -33,22 +33,14 @@ daemons.
 
 ** Logging
 
-=setup.sh= and any daemons I create should log to this file.
+=setup.sh= and any daemons I create should log to this file. Note that
+this returns ~" "~ around  the object if you use noweb. As such, I use
+~${HOME}/~ instead of ~~/~ as =bash= will complain otherwise if you
+try to use it during redirection.
 
 #+NAME: src/config-log-file
 #+begin_src emacs-lisp
-  "~/.log.txt"
-#+end_src
-
-#+NAME: src/config-log-file-noweb
-#+CALL: src/config-log-file()
-
-*** noweb demo
-
-https://emacs.stackexchange.com/a/49098
-
-#+begin_src shell :noweb yes
-  echo <<src/config-log-file-noweb()>>
+  "${HOME}/.log.txt"
 #+end_src
 
 * Sway
@@ -111,48 +103,47 @@ config file.
 
   export EDITOR=$'jove'
 #+end_src
-
+ 
 * Encrypted							      :crypt:
 
 -----BEGIN PGP MESSAGE-----
 
-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
-k5dKftgXHvcDW/CwrmlLNg==
-=Eyuk
+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
+7rJLxTWP6cmSFFTW
+=CGXy
 -----END PGP MESSAGE-----
