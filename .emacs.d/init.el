@@ -7,14 +7,17 @@
 ;; 
 
 (require 'org)
+(require 'org-crypt)
 ;; Open the configuration
 ;;; Code:
 
-(find-file (concat user-emacs-directory "init.org"))
+(find-file "~/config.org")
 ;; tangle it
+(org-decrypt-entries)
 (org-babel-tangle)
+(org-encrypt-entries)
 ;; load it
-(load-file (concat user-emacs-directory "init.el"))
+(load-file "~/config.org")
 ;; finally byte-compile it
 (byte-compile-file (concat user-emacs-directory "init.el"))
 
