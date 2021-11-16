@@ -5,6 +5,11 @@
 
 This is a comprehensive configuration file for my system. 
 
+* TODO adjust format for how sway is configured
+
+i.e. have signal number (10) for volume logically grouped together
+instead of disparate.
+
 * Warning!
 
 When using noweb, be /very/ careful to be consistent with function
@@ -32,6 +37,390 @@ try to use it during redirection.
 #+end_src
 
 * Sway
+
+** Variables
+
+#+begin_src conf :tangle ~/.config/sway/config
+  ### Variables
+  #
+  # Logo key. Use Mod1 for Alt.
+  set $mod Mod4
+  # Home row direction keys, like vim
+  set $left h
+  set $down j
+  set $up k
+  set $right l
+  # Your preferred terminal emulator
+  set $term alacritty
+  # Your preferred application launcher
+  # Note: pass the final command to swaymsg so that the resulting window can be opened
+  # on the original workspace that the command was run on.
+  set $menu dmenu_path | dmenu | xargs swaymsg exec --
+#+end_src
+
+** Output
+
+#+begin_src conf :tangle ~/.config/sway/config
+  ### Output configuration
+  #
+  # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+  output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+  #
+  # Example configuration:
+  ##   output HDMI-A-1 resolution 1920x1080 position 1920,0
+  output eDP-1 resolution 2560x1600 pos 0 0 scale 2
+  #
+  # You can get the names of your outputs by running: swaymsg -t get_outputs
+#+end_src
+
+** Idle
+
+#+begin_src conf :tangle ~/.config/sway/config
+  ### Idle configuration
+  #
+  # Example configuration:
+  #
+  # exec swayidle -w \
+  #          timeout 300 'swaylock -f -c 000000' \
+  #          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+  #          before-sleep 'swaylock -f -c 000000'
+  #
+  # This will lock your screen after 300 seconds of inactivity, then turn off
+  # your displays after another 300 seconds, and turn your screens back on when
+  # resumed. It will also lock your screen before your computer goes to sleep.
+#+end_src
+
+** Input
+
+#+begin_src conf :tangle ~/.config/sway/config
+  ### Input configuration
+  #
+  # Example configuration:
+  #
+  #   input "2:14:SynPS/2_Synaptics_TouchPad" {
+  #       dwt enabled
+  #       tap enabled
+  #       natural_scroll enabled
+  #       middle_emulation enabled
+  #   }
+  #
+  input "type:keyboard" {
+    xkb_options ctrl:nocaps
+  }
+
+  # Lower trackpoint sensitivity, -1 <= pointer_accel <= 1
+  # Numbers closer to 1 mean a large acceleration, while -1 is vice versa
+  input 2:10:TPPS/2_Elan_TrackPoint pointer_accel -0.7
+  # Lower trackpoint scrolling sensitivity, 0 <= scroll_factor < inf
+  # https://github.com/swaywm/sway/issues/3004
+  # Thanks SpencerMichaels 
+  input 2:10:TPPS/2_Elan_TrackPoint scroll_factor 0.3
+
+  # You can get the names of your inputs by running: swaymsg -t get_inputs
+  # Read `man 5 sway-input` for more information about this section.
+#+end_src
+
+** Key Bindings
+
+*** Basics
+
+#+begin_src conf :tangle ~/.config/sway/config
+  ### Key bindings
+  #
+  # Basics:
+  #
+  # Start a terminal
+  bindsym $mod+Return exec $term
+
+  # Kill focused window
+  bindsym $mod+Shift+q kill
+
+  # Start your launcher
+  bindsym $mod+d exec $menu
+
+  # Drag floating windows by holding down $mod and left mouse button.
+  # Resize them with right mouse button + $mod.
+  # Despite the name, also works for non-floating windows.
+  # Change normal to inverse to use left mouse button for resizing and right
+  # mouse button for dragging.
+  floating_modifier $mod normal
+
+  # Reload the configuration file
+  bindsym $mod+Shift+c reload
+
+  # Exit sway (logs you out of your Wayland session)
+  bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+#+end_src
+
+*** Navigation
+
+#+begin_src conf :tangle ~/.config/sway/config
+  #
+  # Moving around:
+  #
+  # Move your focus around
+  bindsym $mod+$left focus left
+  bindsym $mod+$down focus down
+  bindsym $mod+$up focus up
+  bindsym $mod+$right focus right
+  # Or use $mod+[up|down|left|right]
+  bindsym $mod+Left focus left
+  bindsym $mod+Down focus down
+  bindsym $mod+Up focus up
+  bindsym $mod+Right focus right
+
+  # Move the focused window with the same, but add Shift
+  bindsym $mod+Shift+$left move left
+  bindsym $mod+Shift+$down move down
+  bindsym $mod+Shift+$up move up
+  bindsym $mod+Shift+$right move right
+  # Ditto, with arrow keys
+  bindsym $mod+Shift+Left move left
+  bindsym $mod+Shift+Down move down
+  bindsym $mod+Shift+Up move up
+  bindsym $mod+Shift+Right move right
+#+end_src
+
+*** Workspaces
+
+#+begin_src conf :tangle ~/.config/sway/config
+  #
+  # Workspaces:
+  #
+  # Switch to workspace
+  bindsym $mod+1 workspace number 1
+  bindsym $mod+2 workspace number 2
+  bindsym $mod+3 workspace number 3
+  bindsym $mod+4 workspace number 4
+  bindsym $mod+5 workspace number 5
+  bindsym $mod+6 workspace number 6
+  bindsym $mod+7 workspace number 7
+  bindsym $mod+8 workspace number 8
+  bindsym $mod+9 workspace number 9
+  bindsym $mod+0 workspace number 10
+  # Move focused container to workspace
+  bindsym $mod+Shift+1 move container to workspace number 1
+  bindsym $mod+Shift+2 move container to workspace number 2
+  bindsym $mod+Shift+3 move container to workspace number 3
+  bindsym $mod+Shift+4 move container to workspace number 4
+  bindsym $mod+Shift+5 move container to workspace number 5
+  bindsym $mod+Shift+6 move container to workspace number 6
+  bindsym $mod+Shift+7 move container to workspace number 7
+  bindsym $mod+Shift+8 move container to workspace number 8
+  bindsym $mod+Shift+9 move container to workspace number 9
+  bindsym $mod+Shift+0 move container to workspace number 10
+  # Note: workspaces can have any name you want, not just numbers.
+  # We just use 1-10 as the default.
+#+end_src
+
+*** Layout
+
+#+begin_src conf :tangle ~/.config/sway/config
+  #
+  # Layout stuff:
+  #
+  # You can "split" the current object of your focus with
+  # $mod+b or $mod+v, for horizontal and vertical splits
+  # respectively.
+  bindsym $mod+b splith
+  bindsym $mod+v splitv
+
+  # Switch the current container between different layout styles
+  bindsym $mod+s layout stacking
+  bindsym $mod+w layout tabbed
+  bindsym $mod+e layout toggle split
+
+  # Make the current focus fullscreen
+  bindsym $mod+f fullscreen
+
+  # Toggle the current focus between tiling and floating mode
+  bindsym $mod+Shift+space floating toggle
+
+  # Swap focus between the tiling area and the floating area
+  bindsym $mod+space focus mode_toggle
+
+  # Move focus to the parent container
+  bindsym $mod+a focus parent
+#+end_src
+
+*** Scratchpad
+
+#+begin_src conf :tangle ~/.config/sway/config
+  #
+  # Scratchpad:
+  #
+  # Sway has a "scratchpad", which is a bag of holding for windows.
+  # You can send windows there and get them back later.
+
+  # Move the currently focused window to the scratchpad
+  bindsym $mod+Shift+minus move scratchpad
+
+  # Show the next scratchpad window or hide the focused scratchpad window.
+  # If there are multiple scratchpad windows, this command cycles through them.
+  bindsym $mod+minus scratchpad show
+#+end_src
+
+*** Resizing
+
+#+begin_src conf :tangle ~/.config/sway/config
+  #
+  # Resizing containers:
+  #
+  mode "resize" {
+  # left will shrink the containers width
+  # right will grow the containers width
+  # up will shrink the containers height
+  # down will grow the containers height
+  bindsym $left resize shrink width 10px
+  bindsym $down resize grow height 10px
+  bindsym $up resize shrink height 10px
+  bindsym $right resize grow width 10px
+
+  # Ditto, with arrow keys
+  bindsym Left resize shrink width 10px
+  bindsym Down resize grow height 10px
+  bindsym Up resize shrink height 10px
+  bindsym Right resize grow width 10px
+
+  # Return to default mode
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  }
+  bindsym $mod+r mode "resize"
+#+end_src
+
+** Status Bar
+
+#+begin_src conf :tangle ~/.config/sway/config
+  #
+  # Status Bar:
+  #
+  # Read `man 5 sway-bar` for more information about this section.
+  bar {
+      position top
+
+      # When the status_command prints a new line to stdout, swaybar updates.
+      # The default just shows the current date and time.
+      # status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+
+      status_command i3blocks
+
+      colors {
+          statusline #ffffff
+          background #323232
+          inactive_workspace #32323200 #32323200 #5c5c5c
+      }
+  }
+#+end_src
+
+*** i3blocks
+
+#+begin_src conf :tangle ~/.config/i3blocks/config
+  # i3blocks configuration file
+  #
+  # The i3blocks man page describes the usage of the binary,
+  # and its website describes the configuration:
+  #
+  #     https://vivien.github.io/i3blocks
+  # Global properties
+  separator=true
+  separator_block_width=25
+
+  [documentation]
+  full_text=Documentation
+  website=https://vivien.github.io/i3blocks
+  command=xdg-open "$website"
+  color=#f12711
+
+  [greetings]
+  color=#f5af19
+  command=echo "Hello, $USER!"
+  interval=once
+
+  # FIXME run on headphones plug-in/remove
+  # FIXME literate config signal number as variable
+  [volume]
+  command=~/bin/volume.sh
+  interval=once
+  signal=10
+
+  [battery]
+  command=~/bin/battery.sh
+  interval=10
+
+  [time]
+  command=date '+%Y-%m-%d %H:%M:%S'
+  interval=1
+#+end_src
+
+**** Scripts
+
+***** volume
+
+#+begin_src shell :tangle ~/bin/volume.sh
+  #!/usr/bin/env bash
+
+  VOL=$(pactl get-sink-volume @DEFAULT_SINK@ | awk '$1=="Volume:" {printf "%4s", $5}')
+
+  # Full and short texts
+  echo "Volume: $VOL"
+  echo "VOL: $VOL"
+
+  # Set urgent if we can't get volume
+  [ -z ${VOL}  ] && exit 33
+
+  exit 0
+#+end_src
+
+***** battery
+
+#+begin_src shell :tangle ~/bin/battery.sh
+  #!/usr/bin/env bash
+  # FIXME grep fails at < 10% with 3rd [0-9]
+  BAT=$(acpi -b | grep -E -o '[0-9][0-9][0-9]?%')
+
+  # Full and short texts
+  echo "Battery: $BAT"
+  echo "BAT: $BAT"
+
+  # Set urgent flag below 5% or use orange below 20%
+  [ ${BAT%?} -le 5  ] && exit 33
+  # [ ${BAT%?} == 100 ] && echo "$00FF00"
+  [ ${BAT%?} -le 20 ] && echo "$FF8000"
+
+  exit 0
+
+#+end_src
+
+** System Configuration
+
+#+begin_src conf :tangle ~/.config/sway/config
+  include /etc/sway/config.d/*
+#+end_src
+
+
+** Brightness
+
+#+begin_src conf :tangle ~/.config/sway/config
+  # Use dev-libs/light for monitor brightness
+  # FIXME better way to save brightness?
+  bindsym XF86MonBrightnessDown exec light -U 10 && light -O
+  bindsym XF86MonBrightnessUp   exec light -A 10 && light -O
+  # Restore previous brightness on startup
+  exec light -I
+#+end_src
+
+** Sound
+
+#+begin_src conf :tangle ~/.config/sway/config
+  # Use pulseaudio for sound control
+  # FIXME literate config signal number as variable
+  bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && pkill -SIGRTMIN+10 i3blocks
+  bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && pkill -SIGRTMIN+10 i3blocks
+  bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -SIGRTMIN+10 i3blocks
+  bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+#+end_src
+
 
 * Bash
 
@@ -1866,73 +2255,76 @@ Another screensaver package.
 
 -----BEGIN PGP MESSAGE-----
 
-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
-CQiDnm0bYtAZE5UqmTIE
-=qZVx
+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
+nb+hdSzs7JsYx6rRHWaA
+=eqrA
 -----END PGP MESSAGE-----
 
 ** List of TODOs
