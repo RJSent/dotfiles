@@ -357,9 +357,7 @@ try to use it during redirection.
 
 ***** volume
 
-#+begin_src shell :tangle ~/bin/volume.sh
-  #!/usr/bin/env bash
-
+#+begin_src shell :tangle ~/bin/volume.sh :shebang !#/usr/bin/env bash
   VOL=$(pactl get-sink-volume @DEFAULT_SINK@ | awk '$1=="Volume:" {printf "%4s", $5}')
 
   # Full and short texts
@@ -374,7 +372,7 @@ try to use it during redirection.
 
 ***** battery
 
-#+begin_src shell :tangle ~/bin/battery.sh
+#+begin_src shell :tangle ~/bin/battery.sh :shebang !#/usr/bin/env bash
   #!/usr/bin/env bash
   # FIXME grep fails at < 10% with 3rd [0-9]
   BAT=$(acpi -b | grep -E -o '[0-9][0-9][0-9]?%')
