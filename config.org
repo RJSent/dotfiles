@@ -1389,8 +1389,19 @@ like =isearch=.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package all-the-icons-ivy-rich
     :after all-the-icons ivy-rich
-    :config (all-the-icons-ivy-rich-mode 1))
+    :config (all-the-icons-ivy-rich-mode 1)
+    (set-face-attribute 'all-the-icons-ivy-rich-doc-face nil
+			:foreground (face-attribute
+				     'font-lock-comment-face :foreground)))
 #+end_src
+
+****** DONE fix minibuffer docs being "covered up" when selecting them
+CLOSED: [2021-11-16 Tue 18:52]
+
+~all-the-icons-ivy-rich-doc-face~ controls them (possibly indirectly
+with inheritance).
+
+I took the same approach as with ~linum~.
 
 ***** Counsel-Tramp
 
