@@ -2226,6 +2226,18 @@ better without practice!
       :after transient)
 #+end_src
 
+**** ix
+
+| =ix= | https:github.com/theanalyst/ix.el |
+
+A simple interface to =ix.io=, a pastebin. I'm not using a username or
+password because I shouldn't upload anything private to =ix.io=
+anyway.
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package ix)
+#+end_src
+
 *** Games
 
 **** Zone
