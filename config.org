@@ -360,7 +360,10 @@ try to use it during redirection.
 
   [emerge]
   color=#a5ef19
-  command=qlop -qrM | awk '{printf "%s %s: %3ds\n", "emerging", substr($3, index($3, "/")+1, length($3)-index($3, "/")-3), $NF}'
+  # No (xx of yy). Seems TOML messes with regex slightly.
+  # I found a solution that worked in the shell but not here.
+  # command=qlop -qrM | awk -F'/|[.]|( ETA: )' '{printf "emerging %s %4ds %s\n", $2, $NF, substr($5, index($5, " ")+1, length($5))}'
+  command=qlop -qrM | awk -F'[ /.]' '{printf "emerging %s %4ds\n", $4, $NF}'
   interval=1
 
   # FIXME run on headphones plug-in/remove
