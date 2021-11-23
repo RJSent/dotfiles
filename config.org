@@ -358,16 +358,10 @@ try to use it during redirection.
   separator=true
   separator_block_width=25
 
-  [documentation]
-  full_text=Documentation
-  website=https://vivien.github.io/i3blocks
-  command=xdg-open "$website"
-  color=#f12711
-
-  [greetings]
-  color=#f5af19
-  command=echo "Hello, $USER!"
-  interval=once
+  [emerge]
+  color=#a5ef19
+  command=qlop -qrM | awk '{printf "%s %s: %3ds\n", "emerging", substr($3, index($3, "/")+1, length($3)-index($3, "/")-3), $NF}'
+  interval=1
 
   # FIXME run on headphones plug-in/remove
   # FIXME literate config signal number as variable
