@@ -2027,9 +2027,14 @@ there is a lot more we can do with it.
 This package requires a Unix-based OS.
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-(unless sys/win32p
-  (use-package pdf-tools
-    :mode ("\\.pdf\\'" . pdf-tools-install)))
+  (unless sys/win32p
+    (use-package pdf-tools
+      :mode ("\\.pdf\\'" . pdf-tools-install)
+      ;; One of the two of these settings help improve display on my
+      ;; thinkpad x13 hidpi, not sure which lol
+      ;; https://github.com/politza/pdf-tools/issues/51
+      :config (setq pdf-view-use-scaling t
+		    pdf-view-use-imagemagick t)))
 #+end_src
 
 **** Restart Emacs
