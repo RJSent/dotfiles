@@ -3,7 +3,7 @@
 #+AUTHOR: Richard Sent
 #+PROPERTY: header-args :results silent :tangle yes :mkdirp yes
 
-This is a comprehensive configuration file for my system. 
+This is a comprehensive configuration file for my system.
 
 * TODO adjust format for how sway is configured
 
@@ -145,7 +145,7 @@ try to use it during redirection.
   input 2:10:TPPS/2_Elan_TrackPoint pointer_accel -0.7
   # Lower trackpoint scrolling sensitivity, 0 <= scroll_factor < inf
   # https://github.com/swaywm/sway/issues/3004
-  # Thanks SpencerMichaels 
+  # Thanks SpencerMichaels
   input 2:10:TPPS/2_Elan_TrackPoint scroll_factor 0.3
 
   # You can get the names of your inputs by running: swaymsg -t get_inputs
@@ -507,7 +507,7 @@ config file.
 
   export EDITOR=$'jove'
 #+end_src
- 
+
 * Emacs
 
 ** Installation
@@ -648,7 +648,7 @@ decided to create a Comint process.
 	       (re-search-forward "^$")
 	       (delete-region (point) (point-min))
 	       (buffer-string))))
-	;; root permissions required	
+	;; root permissions required
 	;; https://emacs.stackexchange.com/questions/29555
 	(let ((name "guix-install")
 	      (guix-script-file (make-temp-file "guix-" nil ".sh" guix-script)))
@@ -673,7 +673,7 @@ https://old.reddit.com/r/emacs/comments/kvvrmx/can_sudo_askpass_use_emacs/gj1l98
   (server-start)
 #+end_src
 
-#+begin_src bash :tangle 
+#+begin_src bash :tangle
 #+end_src
 
 ***** Straight
@@ -1355,7 +1355,7 @@ Highlight the line the cursor is on when scrolling.
 | =swiper=                 | https://github.com/abo-abo/swiper                    |
 
 Let's start with the backbone of it all. =Ivy= provides a
-completion engine that =counsel= and =swiper= build off of. 
+completion engine that =counsel= and =swiper= build off of.
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package ivy
