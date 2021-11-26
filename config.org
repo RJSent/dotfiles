@@ -2305,88 +2305,217 @@ Another screensaver package.
   (use-package fireplace
     :commands fireplace)
 #+end_src
- 
+
+*** Media
+
+**** RSS
+
+***** elfeed
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package elfeed
+    :bind ("C-c n" . elfeed))
+#+end_src
+
+****** elfeed-org
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package elfeed-org
+    :after elfeed
+    :config
+    (setq rmh-elfeed-org-files
+	  (list
+	   (concat user-emacs-directory"var/elfeed/rmh-elfeed.org")))
+    (elfeed-org))
+#+end_src
+
+****** Subscriptions						      :crypt:
+
+-----BEGIN PGP MESSAGE-----
+
+hQIMA341lovNpziwAQ//Ub/WGdUK+0rHqdnMZITRVpWF/zwuWE0TPfcazql8rmLv
+DzlhNLE6jMY6s4Ow/xKbEwOLXDLu3FHno438J+/KEmvBC7dXp7uhuLMCVlQNOpkn
+aatlJX50j4A7G1lMd9l/WZOTykMIr8ACaDETWmtk2ZOkh/Qlnhk68GISVpfpHHsQ
+LOF0lmoUagp4v/nNhMe+nLETFVIX25A58JYUApSBQ/nX1xqPyTIIXJWgTg+e/B5N
+fyOP0x4fjLBM7CXYyP6Mh//5l8JPBMiTaM5OACG60+2Hn69V3u4tb1siB3RZmWcm
+CkbwwlhxRNRs8di0P7aAdc7/zpsNcKeXO24cEkHKiCqYBPfqU33CQylp7TnZAElh
+sBiLHxsaskSPNo0n+nSNpqP3xfVEKlkVq5H+zBndV0Kn60mmZf8zWbryS+Pb5x66
+ZT7UPKR9xnnB97pFVNcft/xOQZD35jn6zaKG2MPSuH1AibYdWkXMeJ/TRVvJhuwG
+r7sR+Rzp7ZJxz9cm4x+IWXj7rIPnjZLdSm7dy0/i1eLGlU8wiFQp2jaGos+etCBo
+d4Qy3WaksB1pMGpKrTEHvPC4hxNCLXKGydgzsmXPo3kWm7UMnd56ajITDbx6JqNW
+EMnKzC/9oOKr2K6LWKs1ZouZ1vhWAX4ZVuTRMmAXGfD1botHF3qy4gzniUQDXc7S
+6QG8bQzpKcfnNRd8WZgMkgOUuaHHcFEDxT6y3Y+dUhldcy2ybgJpFCeU+NWf2s4B
+ph8kXZWSgn74pNGWj9su7tGOlNs9ZAeYv9DT9ej2yFT7P7M5WoCoWdVwXpEPeTMr
+6gmHrGKG+FliV4UFvCGLRs1RlUMoHaVGz02IaMx85jn8qCl4sRMfAwFewV0z8Cyg
+108X3htiJglbiAURCj2fizXIXC5L7tdVObeCRQYakQsT6CaC5oVexW9g4t1k4TA7
+ndi3uyCHrp4YnAF4mbc5agDmHqExCZDLScfrb2gEvjzwvknUnbPTIEiTJ9kvfFEV
+FXgvDrxeZNU7uenMvLM4GkOS+u1/OZn7x1HFtUDmEuvTQI9+ujIV8MPsc1GHzbMw
+HbVZdUzzfHHuNYq0YxG9CVPJtjfGx8C0A8zgjHaqiDOwQmo22z6lHJxlsJZZpSvQ
+ExVEvJ6sSA6Wu0valwGc3hdDxUaKTC4YcHdOkYjRXRmdk0Sy3QGX+7BMzcWYQMAe
+Kn2YVhP2Qy1D5QwDZwgPOTWHS+rahiMlKtoJZfBdvGfxejcKP+byDDcPQHxOzXTR
+dZdCYbfdL0Q+Cj8ap9wjcuOUsH1K8NP76H+DW7gRtVczVA9cmNYGAfP1CBq8KKya
+6FbrlVhLJqX7rma/ZasXVLTIeLVfuiAxYwEn2MjHDv64wB/9Xb4OEJDiieweoylr
+mB6gFvVbvPhu6Wy8NkvYX0Fqu7THJUaYSijEE//hRP+SwdbKi/Tw/MRaScqgezQV
+p5D9hm8MxFtbF4ya2hpCzx2kwaJc0AuypL7Dk5sUEJnx2lExAG9qKZhUUgAxzEGO
+CRLXAsgwP7CeS9JA7VBdukAddsOscJvUaCPI5VioMuf6aw9NqhpggSFxz/qCAEey
+tck5ylg4kx0u+EUPXj+Aq5nJhUAjrwPUCQank7rAN1YHOheWu+WOW16tF032eDQE
+Ft2CARQDby2nIagZVzoDbS1y
+=qcVn
+-----END PGP MESSAGE-----
+
+
+**** IRC
+
+***** Helper Functions
+
+I want ~my/erc-start-or-switch~ to select a visible =erc= window, if
+present, then run ~erc-track-switch-buffer~.
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (defun my/erc-first-visible-window ()
+      "Returns first visible erc window, or nil if none visible"
+    (let ((retbuffer nil))
+      (dolist (buffer (erc-buffer-list) retbuffer)
+	(when (erc-buffer-visible buffer)
+	  (setq retbuffer buffer)))
+      (if retbuffer
+	  (get-buffer-window retbuffer 'visible)
+	nil)))
+#+end_src
+
+A wrapper function I modified from [[https://old.reddit.com/r/emacs/comments/8ml6na][Reddit]].
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (defun my/erc-start-or-switch ()
+    "Connects to ERC, or switch to last active buffer."
+    (interactive)
+    (let ((erc-window (my/erc-first-visible-window)))
+      (if erc-window (select-window erc-window) nil))
+    (if (erc-buffer-list)
+	(erc-track-switch-buffer 1)
+      (when (y-or-n-p "Start ERC? ")
+	;; Relies on erc-nick and erc-password being set
+	(erc :server "irc.libera.chat" :port 6667))))
+#+end_src
+
+***** =erc=
+
+Basic =erc= configurations.
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package erc
+    :straight nil
+    :commands erc-buffer-list erc-track-switch-buffer erc-buffer-visible
+    :bind ("C-c e" . my/erc-start-or-switch)
+    :config
+    (setq erc-autojoin-channels-alist
+	  '(("libera.chat" "#emacs" "#emacs-beginners"
+	     "#erc" "#gentoo" "#gentoo-embedded"
+	     "#kde" "#libera" "#linux" "#org-mode"
+	     "#pine64" "#sway" "#sway-devel" ))
+	  erc-autojoin-timing 'ident
+	  erc-fill-function 'erc-fill-static
+	  erc-fill-static-center 16
+	  erc-join-buffer 'bury
+	  erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
+	  ;; See https://datatracker.ietf.org/doc/html/rfc1459
+	  ;; for explanation of number codes
+	  erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
+				    "324" "329" "332" "333" "353" "477"))
+    (let ((libera-credentials (netrc-credentials "irc.libera.chat")))
+      (setq erc-nick (nth 0 libera-credentials)
+	    erc-password (nth 1 libera-credentials))))
+#+end_src
+
+
+
+***** Authentication						      :crypt:
+
+-----BEGIN PGP MESSAGE-----
+
+hQIMA341lovNpziwARAAtQNJrFX21MKSwZikbJAlb1Lca8NqUzVehbp3EC41wd1P
+v65rKx5F/QFv6iQliQB7S6codI68kyzfbOrvkiH1tgOTSSNjylM/VAsP5r1FuiNP
+RYBDareJcFJximWDy6emVkqyZUvJM/eGMpw6Iq+YldnGX4QzMtm0kLHVvQLYBqRr
+lTyg7vHIycSzlH1iofmOhxMrFg4oZl2XpzzJMvUBiXcn0GCnQ2BjC1AESc1+oOSA
+iJs1/g748JC0cYcPPXRud9ACVc6/spqH1Se+hTkvPHIow/oCaovYCFP2zNuGW+tW
+lhZrG6fFgHvbvD4gSTlJMrBclM+zY/tAyvjOTmd0MGoCPca5l9FM1Bc6bfRFm1E9
+QF2vyDcklKiBTs8yY12K24RAjNBGJHkTtsqHzk+kGzWuZnZw/7AzGdrO8dHH66KM
+vSEu098unsij66mzqIkTDH+A5uNH9tr0z2WarsMYYNaPuK9UcpRHdh93JaZ8LrWz
+G4bCnwdOmBmYbJDehHK6htZDnkz/kcEXpO8NUmIqiiGxkt7TCYmaDOEvJDcnBWFa
+bYAHi+sfCUza8IQebPrLlRJI7MtFsFxLxCrI/WtA7sqn4XbqA7mAtaAr/oLldjW8
+r5+7lVLB/6A5cGoCPMP8Qr9E3/uhBFu9yBNbg3Rrrjd0kbUlPtjXiEcKO58/FAfS
+rgHgyaf5pVIs+FjhC1oMZeyaTetCBulSXRoWAx7Br3ve5nyRnCeOJN9MyZnZAYfk
+hJ71X71//QlaYqoTHtnH8rSQuQ1RuycJrh+PA3iMJ824G6U8dcA2JZms9Gfbm+Yr
+5stY9bRRniI8uNIq/UJsodACzyw/t17JBaunhWxauQFNm8ZYrGssDmhvdlsVvQnH
+x5ExULI5UdL3R/uMaQv00LW4ApCZbsLahl7ELf8TeA==
+=K4WU
+-----END PGP MESSAGE-----
+
 ** Encrypted							      :crypt:
 
 -----BEGIN PGP MESSAGE-----
 
-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
-=iuW7
+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
+=HguD
 -----END PGP MESSAGE-----
+
 
 ** List of TODOs
 
@@ -2433,28 +2562,27 @@ it enabled.
 
 
 * Encrypted							      :crypt:
- 
+
 -----BEGIN PGP MESSAGE-----
 
-hQIMA341lovNpziwAQ/+LbiTbiWH6LQqmPJBHwhv1l5lGQGS+sK7lg/XpfSe5u36
-WRN+MHYLnT4qpbZ7CkoicmWlanNeS4Is8ktYThDgXJfx1hnhOY/lg68XmpHZzDg6
-DgFWRh1II3+FMod0vT0Hq7Vi7o0G5KccYAWpNpFkcmDU9Tpkf8ebYK6i9ZN7FWRv
-anmXMcDaJXWNuyr84bd0GzeV0WDHXTRyWCDL9ukcdqUzGFyRhFRozl8zvmR+PZuC
-DKqp3Fo7ZcDjCh7/vWSleM8nPoV/fDkGcAEnzWKK7IKbgytU9XeG4XyvPorCkYVM
-kbm31MKc0tT6HpWzTCxHQVNjjTeBIWAqAfqIZCvtGRNc9GIigoUbK5aj8owHz7YP
-azYW9NN9kHKrqek9c+yNZorzTk6FFCoiRY76fevSjOeKjt/a+dnGahF9d5dXRH4d
-CeqxIH8Qv033gapSafnYKa3fGwbaHaYb1BpEtcHbJMo5Rn2P30H7KI5deEen7NLW
-k3z3zyViphrRziNmlTm/oepQH6fo0c/1bIh66CDgFou0mquIeSkkaEqYDz4dPNiD
-QcholUcDqsXAMrsivlG3VrgrBrLF3p3QMtVFLWABi9SL1TwY1O58J4ZgHYoR0F3f
-R3VV5Cr0dISq2g8I9MhDuXttHvDGT8pG0doG72ZVq0JCVfPMTDRCvgNRnRg/jA3S
-wK0BbQ+JuY05xji6dfmazAISh1d6TPDGx1AXO7mU+i5WIu/un9dAzT7nvlrrOH8/
-a4OPPPP/VNwXRiEKaLR105jKea8wJQtAGNpzUQh/+di7kEOCSBBsqEQf+fFbhXtN
-HZETrsjUeUe16uTdNK2Os06BAyqJhEf09cBHQ3ZDjiuOsi5fUCjMWQ4QkFFt7iUN
-2bzYJ1hnK5iV9iK0eQ6eut9zN3Nd1lXSdBomfUpm6ITzaz5nMrHM2sndkDGMkMk8
-U4KEPA6vUPzAK2uwPae2++7OG/14LeJewM3uOBbFiqQQEwnB7CbLJYojXr5LcVId
-TQG8vBrq2s8WdSlpa+S/CrxpL267WeyapssCngCTHE7C8zcicd1i2GNYECsQViXk
-BSBjGA/T5LrMxv5c3Vb3rs520vv0CaLowrGy62oAiilwemKNGKrj/J6NXSKbufVz
-vhEmyWoo2a9iXPQPm8O9anTuWl4wGyFCdrHTdzvrJw==
-=Uecx
+hQIMA341lovNpziwAQ//Tg84kr5axMm1v8u0o8whN6A+7oEO0JOCD9K40XO/mUwt
+9SiNK63p4laZrtFfG67PPQjF47NT6QF3lmmwCxvMTxids9YXAmf/YCuSszp+2BG0
+TQL7W2Yrvjvz11eQL4DxttrvKa/lUVX0Zxh2y7BqYxDW5EvXsIk9eXSp1d5N9PXD
+YNfeKvJlPk5fu2rhaxZRVgkdPlx68cxJlMtAaG+Hm9jzqttAfLVD2S1xFMd32e6a
+tLDxTzBp2a75FQddXGxduw7Xm8cJnaEB75TA5d80HvLfuDjtsbUfUhCWkqyDUygr
+G1of19Z2GMfOgunrOllBiJxIQGY6eucXDO2+6mcOlbmRD8ajjcJHrWh8LLgXiekM
+yCe3KPkOH6JrgWXPYWDb7ltWkyWW7/1FfZ6kdmNq931BQfhruPIo2xa4FGD7r711
+Mj9gHhP8Wi0luK67FL++ilk4n+NPxA9wTyk4dmQEAxm/YrkfuM7M7/UIUcL7+q0D
+MAS2noU34oST3ciFkC3PVm/rVr+2otn/L6q4WhtOM8TlpF6U6lDio3KgGtHIgQdi
+dPbSbpPbMOVaN/3K0GSrFSYQtwVT86p6BZFTf3wYkXiRW9y/ONd+nXMaNbSK1Plo
+AvthbkutZc/js9N8j2pextu/cl+OgO3dM9eISyPnlD1/qk+slyPNXDIT9YkFoNrS
+wKsBBpWVvRSqJIBCUJhR3YTRRamsn3LDDk5WquE40ojlTFGzEokBDxGpWFacHJ+Y
+RXeLG+8vx6sXTFFOxubumDDctSvFMdDY5UN4/zCBwtIiHk3T15nNnIWN3N3qogrH
+cnQjeHI6UaXZVuIhleXu5C1QQm8FP3qVT7T3yOxjh79vTwRCiVq9n8fKc9SOuOOz
+JFnHXZU5hiZ2xBfJO4Ssq29rFjQr+COb6PFIBQPuktACnmBDEpHETDNE0i/9EerP
++zrId+zBe8qRFzGuH89LnQD1Oi0DtKBVrKIDt8NppLi9UgRA60BerJhLiffA+oB9
+yQOaG532HYrEKPfm+Q3RhHrfjx/wbsPlOVVK6NGo+OLtlLyQgILy443qyz7HZkjN
+B1NIBfqcmDClNwE/1GgQWJ+u+GhtmAAru9YfSVijVX77p8jRha0p8tE0+JEUNUB/
+sTXnmVOdIvtESo0ts/KFVBpXOLy5nFpJVIwbXds=
+=Fl3G
 -----END PGP MESSAGE-----
-
