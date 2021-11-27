@@ -261,14 +261,19 @@ isn't the best solution long term.
     xkb_options ctrl:nocaps
   }
 
-  # Lower trackpoint sensitivity, -1 <= pointer_accel <= 1
-  # Numbers closer to 1 mean a large acceleration, while -1 is vice versa
-  input 2:10:TPPS/2_Elan_TrackPoint pointer_accel -0.5
-  # Lower trackpoint scrolling sensitivity, 0 <= scroll_factor < inf
-  # https://github.com/swaywm/sway/issues/3004
-  # Thanks SpencerMichaels
-  input 2:10:TPPS/2_Elan_TrackPoint scroll_factor 0.3
+  input 2:10:TPPS/2_Elan_TrackPoint {
+    # Lower trackpoint sensitivity, -1 <= pointer_accel <= 1
+    # Numbers closer to 1 mean a large acceleration, while -1 is vice versa
+    pointer_accel -0.5
+    # Lower trackpoint scrolling sensitivity, 0 <= scroll_factor < inf
+    # https://github.com/swaywm/sway/issues/3004
+    # Thanks SpencerMichaels
+    scroll_factor 0.3
+  }
 
+  input "type:touchpad" {
+    pointer_accel 0.4
+  }
   # You can get the names of your inputs by running: swaymsg -t get_inputs
   # Read `man 5 sway-input` for more information about this section.
 #+end_src
