@@ -118,6 +118,10 @@ config file.
 
 * Fontconfig
 
+I can use tools like ~fc-list~ to view what fonts I have installed and
+available. Similarly, ~fc-match~ will tell me what names are valid for
+those fonts..
+
 #+begin_src xml :tangle ~/.config/fontconfig/fonts.conf
   <?xml version="1.0"?>
   <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
@@ -134,8 +138,8 @@ config file.
       <family>monospace</family>
       <prefer>
 	<family>Fira Code</family>
-	<family>Fira Mono</family>
 	<family>Liberation Mono</family>
+	<family>Noto Sans Mono</family>
       </prefer>
     </alias>
     <alias>
@@ -2170,7 +2174,7 @@ Why install one theme when many will do? Yeah, that sounds right.
 I like being able to see the text on my screen.
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (add-to-list 'default-frame-alist '(font . "Fira Code-9:weight=light"))
+  (add-to-list 'default-frame-alist '(font . "monospace-9:weight=light"))
 #+end_src
 
 **** Ibuffer
