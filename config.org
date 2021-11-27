@@ -257,7 +257,7 @@ isn't the best solution long term.
 
   # Lower trackpoint sensitivity, -1 <= pointer_accel <= 1
   # Numbers closer to 1 mean a large acceleration, while -1 is vice versa
-  input 2:10:TPPS/2_Elan_TrackPoint pointer_accel -0.7
+  input 2:10:TPPS/2_Elan_TrackPoint pointer_accel -0.5
   # Lower trackpoint scrolling sensitivity, 0 <= scroll_factor < inf
   # https://github.com/swaywm/sway/issues/3004
   # Thanks SpencerMichaels
