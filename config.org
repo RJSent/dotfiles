@@ -1637,18 +1637,33 @@ When this configuration is loaded for the first time, the =init.el= is
 the file that is loaded. It looks like this:
 
 #+BEGIN_SRC emacs-lisp :tangle no
+  ;;; init.el --- Initialization
   ;; This file replaces itself with the actual configuration at first run.
 
   ;; We can't tangle without org!
+
+  ;;; Commentary:
+  ;; 
+
+  ;; org-crypt built in since at least 27.2
   (require 'org)
+  (require 'org-crypt)
   ;; Open the configuration
-  (find-file (concat user-emacs-directory "init.org"))
+  ;;; Code:
+
+  (find-file "~/config.org")
   ;; tangle it
+  (org-decrypt-entries)
   (org-babel-tangle)
+  (org-encrypt-entries)
   ;; load it
-  (load-file (concat user-emacs-directory "init.el"))
+  (load-file "~/config.org")
   ;; finally byte-compile it
   (byte-compile-file (concat user-emacs-directory "init.el"))
+
+  (provide 'init)
+
+  ;;; init.el ends here
 #+END_SRC
 
 It tangles the org-file, so that this file is overwritten with the actual

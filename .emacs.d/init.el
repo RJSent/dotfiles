@@ -6,6 +6,7 @@
 ;;; Commentary:
 ;; 
 
+;; org-crypt built in since at least 27.2
 (require 'org)
 (require 'org-crypt)
 ;; Open the configuration
