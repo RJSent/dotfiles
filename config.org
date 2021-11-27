@@ -5,11 +5,6 @@
 
 This is a comprehensive configuration file for my system.
 
-* TODO adjust format for how sway is configured
-
-i.e. have signal number (10) for volume logically grouped together
-instead of disparate.
-
 * Warning!
 
 When using noweb, be /very/ careful to be consistent with function
