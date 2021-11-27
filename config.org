@@ -173,7 +173,7 @@ config file.
 ** Output
 
 XWayland applications (e.g. Emacs) do not handle Sway-native scaling
-well, see [[https://github.com/swaywm/sway/issues/2966][#2966]] and [[https://github.com/swaywm/wlroots/pull/2064][2064]]. Emacs supports being built with pure gtk
+well, see [[https://github.com/swaywm/sway/issues/2966][#2966]] and [[https://github.com/swaywm/wlroots/pull/2064][#2064]]. Emacs supports being built with pure gtk
 (~--pgtk~), where, if it's also build with ~--without-x~ it should be
 a Wayland native application, avoiding blurry text problems.
 
@@ -182,6 +182,8 @@ not be supported upstream, not sure), so instead I am going to set the
 scale to 1 and adjust the font sizes in all my other applications.
 [[https://old.reddit.com/r/swaywm/comments/oih4az/help_with_xwayland_scaling_for_hidpi_monitors/][Reddit]] has a nice description of the problem that is current as of
 July 2021.
+
+See [[https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/2064][#2064]] on GitLab for any progress on the proposed solution.
 
 #+begin_src conf :tangle ~/.config/sway/config
   ### Output configuration
