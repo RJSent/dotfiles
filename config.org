@@ -1584,6 +1584,30 @@ isn't the best solution long term.
   include /usr/share/nano/patch.nanorc
 #+end_src
 
+* Git								      :crypt:
+
+-----BEGIN PGP MESSAGE-----
+
+hQIMA341lovNpziwAQ//SXTPVMcBe8wppmIiSyI/MfqwdnlKY385vOgewYYANbvK
+NCKntrXQ16fctMNAq0iNpyJ5eia0p+AiYngwYx+R8e3DORMqk0IQDyzzq2ymNkeA
+roNK6z0ph8iRJ6WxyqrEc2uyuTkAwyAaQ3Rs/uzNjn6nxHqMOb6H+ZNr1qBAkfwB
+vHBFRCr20Tv6bdQ9AnEFUX10Bv5rboreHD2LNxr4l9D0kNTl22coeEeRXJqe7UG0
+GdjUYRnT68UsFIWc0P1m5ikZ4tbei/Yc6Vi//juGqM3w6R8MiI7vGTso8XTHqgCN
+k0BHbvOKW3y+0UWHyRD/MC5J5qHzzn7nsoO9jUjnYlDMJL9hwgYX4z23mRCt0tLh
+UW9Urc6JbV7Z4uJKYu8j0XiPSFVGmqqfrkZ9MwXcY6FRxfUuHh/STyT9R0vgPRfL
+mhKW8TrgtEPsY5qpdCVMVnprQpKhkw/kkEp8qP5MCc1G4OxLgOjYxGgsJsqdmU8J
+mrQoWbX89A3Mk7h3G9Hv5RsQDqV8HBv4Ies7xbd1z2+0wco6kJd11s/BnOurqtHe
+1OmHfGs3030IlXC3vBdsa/l8ogaraBWcJqPX8pghGL0WFLCGLgSsu9Z4oY1x8Y0k
+BDwg3X+C/8erI1uAnZaKiXOemQ2M/OKU+IQ19i1vV3tXnSFLtK8LILCSP5bYza3S
+wDoBxNqOGQ4LWJuPXfiCoB/d3dN8ueQrHNmfryt29Qj7s6VQ22hEX3FryGZHr4yB
+CWTyXfWYbpe+gR4uMj078gABTTzgfUtLoZi00EEBqJzUT31gs3+stI2k8nsS1RUm
+deET6jrGaLJEcOPQlvPN1ktd++it+FfKkmmiOZf4UGvv9nNb0aZ3oLJYbrXh3VDZ
+l1l97fVagfXtkKQdYDTajEq0l5YBxFefIRwpy5xfJpQ1iPQBcG6nRiRayRk8TCcj
+4x1/y1K7iNMI8+oZ4Xi8ITsHMGPw8fqE7Huyr1cAiWYbYZvxfdeZIHFJDbzcgXdN
+Aek+HfY6YLNBQk3l
+=MI0g
+-----END PGP MESSAGE-----
+
 * Emacs
 
 ** Installation
