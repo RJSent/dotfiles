@@ -92,18 +92,45 @@ try to use it during redirection.
 
 ** Output
 
+XWayland applications (e.g. Emacs) do not handle Sway-native scaling
+well, see [[https://github.com/swaywm/sway/issues/2966][#2966]] and [[https://github.com/swaywm/wlroots/pull/2064][2064]]. Emacs supports being built with pure gtk
+(~--pgtk~), where, if it's also build with ~--without-x~ it should be
+a Wayland native application, avoiding blurry text problems.
+
+However, Gentoo does not have the USE flags for this yet (and it may
+not be supported upstream, not sure), so instead I am going to set the
+scale to 1 and adjust the font sizes in all my other applications.
+[[https://old.reddit.com/r/swaywm/comments/oih4az/help_with_xwayland_scaling_for_hidpi_monitors/][Reddit]] has a nice description of the problem that is current as of
+July 2021.
+
 #+begin_src conf :tangle ~/.config/sway/config
   ### Output configuration
   #
   # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
   output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
   #
-  # Example configuration:
-  ##   output HDMI-A-1 resolution 1920x1080 position 1920,0
-  output eDP-1 resolution 2560x1600 pos 0 0 scale 2
-  #
-  # You can get the names of your outputs by running: swaymsg -t get_outputs
+  output eDP-1 resolution 2560x1600 pos 0 0 scale 1
 #+end_src
+
+Adjust the font of ~sway-bar~ and window titles to a reasonable size.
+
+#+begin_src conf :tangle ~/.config/sway/config
+   font pango:monospace Medium 18
+#+end_src
+
+Scale all X applications with this one easy trick! (Wayland developers
+/hate/ him!) As an extra bonus, this also scales ~dmenu~.
+
+#+begin_src :conf :tangle ~/.Xresources
+  Xft.dpi:   190
+#+end_src
+
+And load the application on Sway startup.
+
+#+begin_src conf :tangle ~/.config/sway/config
+  exec xrdb -merge ~/.Xresources
+#+end_src
+
 
 ** Idle
 
@@ -1155,12 +1182,12 @@ Why install one theme when many will do? Yeah, that sounds right.
     :config (load-theme 'doom-monokai-pro t))
 #+end_src
 
-**** Fontq
+**** Font
 
 I like being able to see the text on my screen.
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (add-to-list 'default-frame-alist '(font . "Fira Code-9"))
+  (add-to-list 'default-frame-alist '(font . "Fira Code-9:weight=light"))
 #+end_src
 
 **** Ibuffer
