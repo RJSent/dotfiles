@@ -2501,6 +2501,7 @@ use ~:demand t~. I tried ~ivy-mode-hook~ but that caused issues with =prescient=
     :diminish
     :demand t
     :after ivy
+    :commands counsel-org-goto counsel-org-tag
     ;; :bind ("C-x b" . counsel-switch-buffer) ; Disabled due to slowdowns
     :bind (("M-y" . counsel-yank-pop)
 	   :map ivy-minibuffer-map
@@ -2895,26 +2896,7 @@ the org-latex-logfile-extensions when initially exporting the file.
 	   ;; TODO: try to move counsel bindings to use-package counsel
 	   ("C-c C-j" . counsel-org-goto)
 	   ("C-c C-q" . counsel-org-tag))
-    :after (counsel)                      ; Not functionally needed, just in case for the binding
-    :init
-    ;; Override highlighted headings in minibuffer (projectile, swiper, etc)
-    ;; Use face-remap-add-relative so it's buffer local
-    (defun override-org-level-faces ()
-      (dolist (face '(org-level-1
-		      org-level-2
-		      org-level-3
-		      org-level-4
-		      org-level-5
-		      org-level-6
-		      org-level-7
-		      org-level-8))
-	;; FIXME below likely bugged, see messages when opening emacs
-	(face-remap-add-relative face '(;:weight 'normal
-					:height 1.0
-					  ;	:foreground (face-foreground 'default)
-					  ;	:background (face-background 'default)))))
-					))))
-    (add-hook 'minibuffer-setup-hook 'override-org-level-faces)
+    :after (counsel) ; Not functionally needed, just in case for the binding
     :config
     (setq org-startup-folded t
 	  org-highlight-latex-and-related '(native)
@@ -2923,7 +2905,6 @@ the org-latex-logfile-extensions when initially exporting the file.
 	  org-adapt-indentation nil
 	  org-fontify-whole-block-delimiter-line nil
 	  org-latex-prefer-user-labels t
-	  ;; org-hide-emphasis-markers t
 	  org-confirm-babel-evaluate nil
 	  org-agenda-files '("~/org")
 	  org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
@@ -2935,23 +2916,14 @@ the org-latex-logfile-extensions when initially exporting the file.
 	  org-todo-keywords '((sequence "TODO" "WAITING" "|" "DONE" "CANCELLED"))
 	  org-todo-keyword-faces '(("WAITING" . "magenta")
 				   ("CANCELLED" . "orange")
-				   ("DONE" . "darkgrey")) )
+				   ("DONE" . "darkgrey")))
     (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
     (font-lock-add-keywords 'org-mode
 			    '(("^ *\\([-]\\) "
-			       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-    ;; Decrease heading size based on level
-    (let ((i 1.5))
-      (dolist (face '(org-level-1
-		      org-level-2
-		      org-level-3
-		      org-level-4
-		      org-level-5
-		      org-level-6
-		      org-level-7
-		      org-level-8))
-	(set-face-attribute face nil :weight 'semi-bold :height i)
-	(setq i (- i 0.05))))
+			       (0 (prog1 ()
+				    (compose-region
+				     (match-beginning 1)
+				     (match-end 1) "•"))))))
     (org-babel-do-load-languages
      'org-babel-load-languages '((C . t)
 				 (emacs-lisp . t)
@@ -2959,26 +2931,21 @@ the org-latex-logfile-extensions when initially exporting the file.
 				 (gnuplot . t)
 				 (mermaid . t)
 				 (shell . t)))
-    ;; Automatically add used languages to org-babel
-    ;; REMOVED due to incompatibilities when using #+CALL:
-    ;; (defadvice org-babel-execute-src-block (around load-language nil activate)
-    ;;   "Load language if needed"
-    ;;   (let ((language (org-element-property :language (org-element-at-point))))
-    ;;     (unless (cdr (assoc (intern language) org-babel-load-languages))
-    ;; 	(add-to-list 'org-babel-load-languages (cons (intern language) t))
-    ;; 	(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-    ;;     ad-do-it))
-    (defun update-org-latex-fragment-scale ()
-      (org-latex-preview '(64))
-      (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
-	(plist-put org-format-latex-options :scale (* 2.3 text-scale-factor))))
-    (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale))
-  ;; (define-advice org-export-dispatch (:after nil logfiles-update)
-  ;; (message "hi")))
-  ;; (unless (member "tex" org-latex-logfiles-extensions)
-  ;;   (dolist (extension '("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm"
-  ;; 			 "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl"))
-  ;;     (add-to-list 'org-latex-logfiles-extensions extension)))))
+    ;; Monospace headings so tags are aligned
+    (dolist (face '(org-level-1
+		    org-level-2
+		    org-level-3
+		    org-level-4
+		    org-level-5
+		    org-level-6
+		    org-level-7
+		    org-level-8))
+      (set-face-attribute face nil :family "monospace"))
+      (defun update-org-latex-fragment-scale ()
+	(org-latex-preview '(64))
+	(let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
+	  (plist-put org-format-latex-options :scale (* 2.3 text-scale-factor))))
+      (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale))
 #+end_src
 
 **** Extensions
