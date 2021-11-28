@@ -1620,6 +1620,9 @@ Aek+HfY6YLNBQk3l
 I'll write this up later.
 
 ** Configuration
+:PROPERTIES:
+:header-args: :tangle ~/.emacs.d/init.el
+:END:
 
 *** Meta
 
@@ -1693,7 +1696,7 @@ tracking again with:
 I want lexical scoping for the init-file, which can be specified in the
 header. The first line of the configuration is as follows:
 
-#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+#+BEGIN_SRC emacs-lisp
   ;;; -*- lexical-binding: t -*-
 #+END_SRC
 
@@ -1712,7 +1715,7 @@ I use =Org Crypt=, which has a feature where it will encrypt your
 =org= file when you save. This breaks tangling. I had to modify this
 function to tangle everything first, then encrypt before saving.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defun my/tangle-init ()
     "If the current buffer is 'init.org' the code-blocks are
   tangled, and the tangled file is compiled."
@@ -1751,7 +1754,7 @@ run.
 a long time (check the subheading for how far my plight went), I
 decided to create a Comint process.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   ;; Don't install if already present
   (let ((guix-present (condition-case nil
 			  (start-process "guix-test" nil "guix" "--version")
@@ -1789,7 +1792,7 @@ https://old.reddit.com/r/emacs/comments/kvvrmx/can_sudo_askpass_use_emacs/gj1l98
 
 =SUDO_ASKPASS=emacsclient -e '(read-passwd "sudo password: ")' | xargs=
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (server-start)
 #+end_src
 
@@ -1801,7 +1804,7 @@ https://old.reddit.com/r/emacs/comments/kvvrmx/can_sudo_askpass_use_emacs/gj1l98
 I use [[https://github.com/raxod502/straight.el][straight.el]] for package management. This is boostrap code from
 the Github repo to set up straight.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (setq straight-repository-branch "develop") ; prebuild support for mu4e
   (defvar straight-fix-flycheck t)
   (defvar bootstrap-version)
@@ -1829,7 +1832,7 @@ custom (and most built-in) keybindings are nonfunctional.
 
 Solution found [[https://old.reddit.com/r/emacs/comments/c6fvvr/unable_to_initialize_package_with_usepackage/es92xjd/][here]].
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package bind-key)
 #+end_src
 
@@ -1838,7 +1841,7 @@ Solution found [[https://old.reddit.com/r/emacs/comments/c6fvvr/unable_to_initia
 I don't want to worry about stuff breaking because of environment
 variable weirdness.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package exec-path-from-shell
     :demand t
     :config
@@ -1848,7 +1851,7 @@ variable weirdness.
 
 **** no-littering
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package no-littering
     :demand t
     :config
@@ -1862,7 +1865,7 @@ We want to keep the garbage collector from running while we initialize
 everything. We can reset it later to a more reasonable value. If we
 didn't do this, Emacs would hang when running the garbage collector.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (setq-default
    gc-cons-threshold most-positive-fixnum ; 8 MiB
    gc-cons-percentage 0.6)
@@ -1872,7 +1875,7 @@ Replace the file-name-handler-alist to nil, as regexing is cpu
 intensive. We need to keep the original value to restore it later. I
 don't know all the details behind it, but it sounds helpful!
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defvar default-file-name-handler-alist file-name-handler-alist)
   (setq file-name-handler-alist nil)
 #+end_src
@@ -1880,7 +1883,7 @@ don't know all the details behind it, but it sounds helpful!
 And now we revert the changes with a startup hook. ~16777216~ is the
 value Doom uses.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (add-hook 'emacs-startup-hook
             (lambda ()
               (setq gc-cons-threshold 16777216
@@ -1891,14 +1894,14 @@ value Doom uses.
 Garbage-collect on focus-out. Emacs /should/ feel snappier overall.
 With Emacs 27.1, focus-out-hook is deprecated.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+#+BEGIN_SRC emacs-lisp
   (add-function :after after-focus-change-function (unless (frame-focus-state) #'garbage-collect))
 #+END_SRC
 
 Apparently this can result in a significant speedup when using fonts
 larger or smaller than the system default.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (setq frame-inhibit-implied-resize t)
 #+end_src
 
@@ -1914,7 +1917,7 @@ I don't need no fancy user interface! These ones are only active when
 in a window. Apparently putting this in ~early-init.el~ will speed up
 startup even more.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (push '(menu-bar-lines . 1) default-frame-alist)
   (push '(tool-bar-lines . 0) default-frame-alist)
   (push '(vertical-scroll-bars) default-frame-alist)
@@ -1922,7 +1925,7 @@ startup even more.
 
 And now for a bunch of one liner configurations.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (setq-default
    auth-source-save-behavior nil                 ; Not interested in auth-source
    frame-resize-pixelwise t                      ; Removes empty space at bottom of screen when maximized
@@ -1951,7 +1954,7 @@ And now for a bunch of one liner configurations.
 
 Start Emacs in fullscreen.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+#+BEGIN_SRC emacs-lisp
   (if (eq window-system 'ns)
       (set-frame-parameter nil 'fullscreen 'maximized)
     (set-frame-parameter nil 'fullscreen 'fullboth))
@@ -1959,13 +1962,13 @@ Start Emacs in fullscreen.
 
 I already know about Emacs, thank you.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (fset 'display-startup-echo-area-message 'ignore)
 #+end_src
 
 I don't enjoy Emacs messing with my window layouts.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (setq display-buffer-alist
 	'((".*" (display-buffer-reuse-window display-buffer-same-window))))
   (add-to-list 'display-buffer-alist           ; reuse windows in other frames
@@ -1990,7 +1993,7 @@ init.el:77:14: Warning: reference to free variable ‘bind-key’
 where ~bind-key~ can be the name of many different (but not all)
 packages.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   ;; This has no effect. (Actually, it removed the all-the-icons
   ;;  warning, but caused another)
   ; (eval-when-compile (straight-use-package 'use-package))
@@ -1999,7 +2002,7 @@ packages.
 To hide (but not disable) compilation warnings with native-comp, I'll
 change ~warning-suppress-types~.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (setq warning-suppress-types '((comp)))
 #+end_src
 
@@ -2009,7 +2012,7 @@ While I could use ~(setq disabled-command-function nil)~, I'd prefer to
 disable them piecemeal in the off-chance there's a disabled command I
 actually want to be disabled.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (put 'downcase-region 'disabled nil)           ; Is it really that confusing?
   (put 'erase-buffer 'disabled nil)              ; It's literally in the name
   (put 'upcase-region 'disabled nil)             ; I reiterate. Is it really that confusing?
@@ -2039,7 +2042,7 @@ one.
 A slowly growing list of constants. Many of these are thanks to
 [[https://github.com/seagle0128/.emacs.d][Centaur Emacs]].
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defconst sys/win32p                    ; I hope I don't need this constant
     (eq system-type 'windows-nt)
     "Are we running on a WinTel system?")
@@ -2122,7 +2125,7 @@ at all with this init.org file. Instead, I found
 Unfontify the last line of a subtree if it's the end of a source
 block. This is the line responsible for the bleeding.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   ;; (defun dwim-unfontify-last-line-of-subtree (&rest _)
   ;;   "Unfontify last line of subtree if it's a source block."
   ;;   (save-excursion
@@ -2151,7 +2154,7 @@ Looking at the source for =outline-toggle-children=, I thought
 =outline-show-heading= was a good choice to advise. Keeping all this in
 mind I wrote this advising function.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   ;; (defun dwim-fontify-last-line-of-block (&rest _)
   ;;   "Do what I mean: fontify last line of source block.
   ;;  When the heading has a source block as the last item (in the subtree) do the
@@ -2179,7 +2182,7 @@ mind I wrote this advising function.
 Sort words in region alphabetically. If arg is negative, sort them in
 reverse.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defun sort-words (reverse beg end)
     "Sort words in region alphabetically, in REVERSE if negative.
   Prefixed with negative \\[universal-argument], sorts in reverse.
@@ -2199,7 +2202,7 @@ Functions used by packages I have installed.
 Return t if a font is installed, nil otherwise. Used by
 =all-the-icons=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defun aorst/font-installed-p (font-name)
     "Check if font with FONT-NAME is available."
     (if (find-font (font-spec :name font-name))
@@ -2210,7 +2213,7 @@ Return t if a font is installed, nil otherwise. Used by
 A duo of functions for getting human readable file sizes. Used by
 =ibuffer-vc=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defun ajv/human-readable-file-sizes-to-bytes (string)
     "Convert a human-readable file size into bytes."
     (interactive)
@@ -2248,7 +2251,7 @@ A duo of functions for getting human readable file sizes. Used by
 I like having pretty icons next to a lot of things. I also don't like
 remembering to install them on a new machine.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package all-the-icons
     :config
     (when (and (not (aorst/font-installed-p "all-the-icons"))
@@ -2259,7 +2262,7 @@ remembering to install them on a new machine.
 
 I also like having them in dired.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package all-the-icons-dired
     :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
@@ -2270,7 +2273,7 @@ I also like having them in dired.
 
 Why install one theme when many will do? Yeah, that sounds right.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package doom-themes
     :config (load-theme 'doom-monokai-pro t))
 #+end_src
@@ -2279,7 +2282,7 @@ Why install one theme when many will do? Yeah, that sounds right.
 
 I like being able to see the text on my screen.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "monospace-9:weight=light"))
 #+end_src
 
@@ -2290,13 +2293,13 @@ I like being able to see the text on my screen.
 
 First and foremost, replace =list-buffers= with =Ibuffer=
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
 Next, I'll set up some pretty icons.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package all-the-icons-ibuffer
     :diminish
     :after all-the-icons)
@@ -2307,7 +2310,7 @@ control groups.
 
 FIXME: Currently the ~*Help*~ buffer is not properly aligned with the others.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package ibuffer-vc ; Also consider ibuffer-projectile
     :after all-the-icons-ibuffer
     :hook (ibuffer . (lambda () (ibuffer-vc-set-filter-groups-by-vc-root) ; Look at combining with custom ibuffer groups with 'ibuffer-projectile-generate-filter-groups
@@ -2351,7 +2354,7 @@ FIXME: Currently the ~*Help*~ buffer is not properly aligned with the others.
 Emacs has a lot of keybindings. I can't remember every keybinding. I
 use a tool to remember every keybinding for me.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package which-key
     :defer 1
     :diminish
@@ -2367,7 +2370,7 @@ I find the linum foreground color too dim (at least with
 ~doom-monokai-pro~), so I set it to match the color of comments. This
 should be generic enough to work well with most themes.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package linum
     :hook (prog-mode . linum-mode)
     :after (doom-themes)
@@ -2387,7 +2390,7 @@ should be generic enough to work well with most themes.
 Since I haven't gotten around to customizing my modeline yet, I just
 use =doom-modeline=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package doom-modeline ; Later, replace with custom following similar process to https://www.gonsie.com/blorg/modeline.html
     :hook (after-init . doom-modeline-mode)
     :custom                               ; Could use more use-package-ifying
@@ -2414,11 +2417,11 @@ use =doom-modeline=.
 To help me when I actually do customize the modeline myself, I'll have
 =diminish= to hide my active minor modes.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package diminish)
 #+end_src
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package emacs
     :config (display-time))
 #+end_src
@@ -2429,7 +2432,7 @@ To help me when I actually do customize the modeline myself, I'll have
 
 Show a dashboard on startup.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package dashboard
     :hook (after-init . dashboard-setup-startup-hook)
     :bind (:map dashboard-mode-map
@@ -2460,7 +2463,7 @@ Show a dashboard on startup.
 
 Highlight the line the cursor is on when scrolling.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package beacon
     :defer 1
     :config (beacon-mode 1))
@@ -2477,7 +2480,7 @@ Highlight the line the cursor is on when scrolling.
 Let's start with the backbone of it all. =Ivy= provides a
 completion engine that =counsel= and =swiper= build off of.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package ivy
     :diminish
     :hook (after-init . ivy-mode)
@@ -2493,7 +2496,7 @@ completion engine that =counsel= and =swiper= build off of.
 FIXME: I'd prefer to find a way to load =counsel= without needing to
 use ~:demand t~. I tried ~ivy-mode-hook~ but that caused issues with =prescient=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package counsel
     :diminish
     :demand t
@@ -2508,7 +2511,7 @@ use ~:demand t~. I tried ~ivy-mode-hook~ but that caused issues with =prescient=
 =swiper= is an =isearch= alternative, which is good because I don't
 like =isearch=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package swiper
     :after ivy
     :bind (("C-s" . swiper)
@@ -2522,7 +2525,7 @@ like =isearch=.
 
 =ivy-rich= makes things look purdy.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package ivy-rich
     :after (ivy counsel)
     :config
@@ -2535,7 +2538,7 @@ like =isearch=.
 
 =all-the-icons-ivy-rich= makes the purdy thing look purdy.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package all-the-icons-ivy-rich
     :after all-the-icons ivy-rich
     :config (all-the-icons-ivy-rich-mode 1)
@@ -2563,7 +2566,7 @@ are populated from ~/.ssh/config~. Connections can also be added using
 Support for =docker= and =vagrant= is also provided if you are using
 =docker-tramp= or =vagrant-tramp=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package counsel-tramp
     :bind ("C-c t" . counsel-tramp))
 #+end_src
@@ -2577,7 +2580,7 @@ Support for =docker= and =vagrant= is also provided if you are using
 =prescient= provide a new completion library for =ivy=, =counsel=, and
 and/or =selectrum=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package prescient
     :after ivy
     :config (prescient-persist-mode)      ; Save history
@@ -2587,7 +2590,7 @@ and/or =selectrum=.
 =ivy-prescient= provides integration between =ivy= and =prescient=. As
 =counsel= modifies user options of =ivy=, we must load it first.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package ivy-prescient
     :after counsel
     :config (ivy-prescient-mode)
@@ -2597,7 +2600,7 @@ and/or =selectrum=.
 =company-prescient= provides integration between =company= and
 =prescient=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package company-prescient
     :after company
     :config (company-prescient-mode))
@@ -2608,7 +2611,7 @@ and/or =selectrum=.
 | =projectile=         | https://github.com/bbatsov/projectile           |
 | =counsel-projectile= | https://github.com/ericdanan/counsel-projectile |
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package projectile
     :diminish
     :config (projectile-mode +1)
@@ -2620,7 +2623,7 @@ and/or =selectrum=.
 =counsel-projectile= provides integration between =projectile= and
 =counsel=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package counsel-projectile
     :after (counsel projectile)
     :config (counsel-projectile-mode))
@@ -2637,7 +2640,7 @@ select a window.
 Instead of 0-9, =ace-window= will use the home row keys to select a
 window.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package ace-window
     :defines aw-keys
     :commands ace-window
@@ -2652,7 +2655,7 @@ window.
 Easier navigation within a buffer. Run ~avy-goto-char-2~, type two
 characters, then use the home row to select where to move the cursor.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package avy
     :bind ("C-;" . avy-goto-char-2))
 #+end_src
@@ -2670,13 +2673,13 @@ help with editing.
 Apparently =rainbow-delimiters= provides similar functionality to
 =highlight-parentheses=, I'll look into it later.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package highlight-parentheses
     :diminish
     :hook ((prog-mode org-mode) . highlight-parentheses-mode))
 #+end_src
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package smartparens
     :diminish
     :hook (prog-mode . smartparens-mode)
@@ -2687,7 +2690,7 @@ Apparently =rainbow-delimiters= provides similar functionality to
 
 | =wrep= | https://github.com/mhayashi1120/Emacs-wgrep |
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package wgrep
     :defer 1)
 #+end_src
@@ -2699,7 +2702,7 @@ Apparently =rainbow-delimiters= provides similar functionality to
 A text-completion framework. Would like to replace RET with C-j like
 =ivy=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package company
     :defines company-minimum-prefix-length company-frontends company-idle-delay
     :diminish
@@ -2717,7 +2720,7 @@ A text-completion framework. Would like to replace RET with C-j like
 
 Syntax checking for Emacs.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package flycheck
     :diminish
     :defer 1
@@ -2745,7 +2748,7 @@ This is currently bugged with =enh-ruby-mode=. End of line comments
 are not inserted, although it can successfully comment and uncomment
 an entire line.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package comment-dwim-2
     :config
     (defadvice comment-indent (around comment-indent-with-spaces activate) ; Not the cause of enh-ruby-mode issue
@@ -2775,7 +2778,7 @@ Replace ~zap-to-char~ and ~zap-up-to-char~ with ~zzz~ equivalents. I
 can select a  specific character, either forward or back, with the
 home row. As opposed to the closest character.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package zzz-to-char
     :bind ("M-z" . zzz-to-char))
 #+end_src
@@ -2791,7 +2794,7 @@ home row. As opposed to the closest character.
 =rbenv= for Emacs is 7 years old and unmainted. I'd like to replace it
 sooner rather than later.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package rbenv
     :diminish
     :hook (ruby-mode . global-rbenv-mode))
@@ -2807,7 +2810,7 @@ Tested \approx 4/2020, didn't observe 11/2020 but may still be present.
 IRB sessions outside of Emacs. (Not tested thoroughly!)
 
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package inf-ruby ; Latest version has --nomultline by default, but not for bundle console, only ruby
     :hook (ruby-mode . inf-ruby-minor-mode))
 #+end_src
@@ -2816,7 +2819,7 @@ I really want to replace =robe= with =lsp-mode= and
 =solargraph=. Having to run a full-blown interpreter seems overkill
 and prone to errors.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package robe
     :defines company-backends
     :diminish
@@ -2830,7 +2833,7 @@ and prone to errors.
 
 Pretty much only one package for YAML.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package yaml-mode
     :mode "\\.yml\\'")
 #+end_src
@@ -2852,7 +2855,7 @@ config which resets ‘tab-always-indent’ back to the default:
 
 [[https://www.emacswiki.org/emacs/AsmMode]]
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defun my-asm-mode-hook ()
     ;; asm-mode sets it locally to nil, to "stay closer to the old TAB behaviour".
     (setq tab-always-indent (default-value 'tab-always-indent)))
@@ -2883,7 +2886,7 @@ previews.
 I'm currently trying to write advice for ~org-export-dispatch~ to add
 the org-latex-logfile-extensions when initially exporting the file.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package org
     :mode (("\\.org$" . org-mode))
     :hook (org-mode . turn-on-auto-fill)  ; Don't make me spam M-q
@@ -2988,7 +2991,7 @@ I enjoy colored bullets. I might remove
 ~org-superstar-leading-bullets~ since it doesn't bother me too much
 and doesn't seem to work anyway.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package org-superstar
     :hook (org-mode . org-superstar-mode)
     :config
@@ -3005,7 +3008,7 @@ it more compatible with other installation paths, including the
 default (not hidden). I also include ~mermaid-mode~, making editing a
 lot more tolerable.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package ob-mermaid
     :after org
     :config
@@ -3026,7 +3029,7 @@ for gnuplot src blocks in org mode. The =gnuplot= emacs package might also be
 required, although I think it comes built in with recent versions of
 =org=.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
     (use-package gnuplot)
 #+end_src
 
@@ -3041,7 +3044,7 @@ meaning headings will not encrypt on save.
 I wasn't able to solve this issue, so I just removed the autoload that
 ~:bind~ adds with ~:demand~.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package org-crypt
     :straight nil
     :demand t
@@ -3067,7 +3070,7 @@ variable-pitch. The variable ~mixed-pitch-fixed-pitch-faces~ is a list of faces
 that will remain fixed-pitch in ~mixed-pitch-mode~.
 #+end_quote
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package mixed-pitch
     :hook (org-mode . mixed-pitch-mode))
 #+end_src
@@ -3086,7 +3089,7 @@ In other words, this is great for blogging. It supports multiple posts
 per =org= file, separated by top level headings. I suspect this'll be
 my preferred way to edit.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
 (use-package ox-hugo
   :after ox)
 #+end_src
@@ -3102,7 +3105,7 @@ navigation, or similar, but still provide a benefit.
 
 A package that provides easy base conversions inside of Emacs.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package 0xc
     :commands (0xc-convert 0xc-convert-point 0xc-live-convert))
 #+end_src
@@ -3120,7 +3123,7 @@ It seems the fix isn't perfect, Esup is largely underestimating my
 startup time. When I look in the breakdown, large sections of the code
 are unaccounted for.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package esup
     :commands esup
     :config (setq esup-depth 0))
@@ -3146,7 +3149,7 @@ there is a lot more we can do with it.
 
 This package requires a Unix-based OS.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (unless sys/win32p
     (use-package pdf-tools
       :mode ("\\.pdf\\'" . pdf-tools-install)
@@ -3163,7 +3166,7 @@ This package requires a Unix-based OS.
 
 A small package to restart Emacs within Emacs.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
       (use-package restart-emacs
         :commands restart-emacs
         :config (setq restart-emacs-restore-frames t))
@@ -3346,7 +3349,7 @@ A capable terminal emulator. This is compatible with =irb= multiline.
 Projectile also supports creating a named vterm with
 ~projectile-run-vterm~.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package vterm
     :commands vterm
     :config (setq vterm-timer-delay 0.01))
@@ -3361,7 +3364,7 @@ This package provides the command vterm-toggle which toggles between
 the vterm buffer and whatever buffer you are editing.
 #+end_quote
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package vterm-toggle
     :commands vterm-toggle vterm-toggle-cd
     :bind ("C-c v" . vterm-toggle))
@@ -3375,7 +3378,7 @@ I'm certainly not at a point where I fully grasp the intricacies of
 =magit= (=git= alone is enough of a pain!), but I can't possibly get
 better without practice!
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
     (use-package magit
       :after transient)
 #+end_src
@@ -3388,7 +3391,7 @@ A simple interface to =ix.io=, a pastebin. I'm not using a username or
 password because I shouldn't upload anything private to =ix.io=
 anyway.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package ix)
 #+end_src
 
@@ -3398,7 +3401,7 @@ anyway.
 
 A neat little screensaver for buffers.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package zone
     :commands (zone-when-idle zone-choose)
     :defer 5
@@ -3421,7 +3424,7 @@ A neat little screensaver for buffers.
 
 Another screensaver package.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package fireplace
     :commands fireplace)
 #+end_src
@@ -3432,7 +3435,7 @@ Another screensaver package.
 
 ***** elfeed
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package elfeed
     :bind ("C-c n" . elfeed)
     (:map elfeed-search-mode-map
@@ -3442,7 +3445,7 @@ Another screensaver package.
 
 ****** elfeed-org
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package elfeed-org
     :after elfeed
     :config
@@ -3494,7 +3497,7 @@ pmsh3oVHV1uoxY+PQU94
 I want ~my/erc-start-or-switch~ to select a visible =erc= window, if
 present, then run ~erc-track-switch-buffer~.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defun my/erc-first-visible-window ()
       "Returns first visible erc window, or nil if none visible"
     (let ((retbuffer nil))
@@ -3508,7 +3511,7 @@ present, then run ~erc-track-switch-buffer~.
 
 A wrapper function I modified from [[https://old.reddit.com/r/emacs/comments/8ml6na][Reddit]].
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (defun my/erc-start-or-switch ()
     "Connects to ERC, or switch to last active buffer."
     (interactive)
@@ -3525,7 +3528,7 @@ A wrapper function I modified from [[https://old.reddit.com/r/emacs/comments/8ml
 
 Basic =erc= configurations.
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package erc
     :straight nil
     :commands erc-buffer-list erc-track-switch-buffer erc-buffer-visible
@@ -3574,69 +3577,69 @@ x5ExULI5UdL3R/uMaQv00LW4ApCZbsLahl7ELf8TeA==
 =K4WU
 -----END PGP MESSAGE-----
 
-** Encrypted							      :crypt:
+*** Encrypted							      :crypt:
 
 -----BEGIN PGP MESSAGE-----
 
-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
-=HguD
+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
+o8nhv6sKkC33GpNy00Ubvww4TpG5p+0sUg==
+=QfZp
 -----END PGP MESSAGE-----
 
 
