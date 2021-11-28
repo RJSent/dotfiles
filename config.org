@@ -3435,6 +3435,8 @@ Another screensaver package.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package elfeed
     :bind ("C-c n" . elfeed)
+    (:map elfeed-search-mode-map
+	  ("U" . elfeed-update))
     :config (setq elfeed-search-title-max-width 90))
 #+end_src
 
