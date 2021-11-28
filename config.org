@@ -3395,6 +3395,21 @@ anyway.
   (use-package ix)
 #+end_src
 
+**** image-mode
+
+This is a built-in Emacs package. I don't like the default zoom in
+behavior, where you explicitly need to press ~+~ (i.e. ~Shift-=~)
+instead of just ~=~.
+
+Because it's built in, there's no need to download it.
+
+#+begin_src emacs-lisp
+  (use-package image-mode
+    :straight nil
+    :bind (:map image-mode-map
+		("=" . image-increase-size)))
+#+end_src
+
 *** Games
 
 **** Zone
