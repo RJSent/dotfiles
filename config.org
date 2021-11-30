@@ -1895,17 +1895,18 @@ value Doom uses.
 
 #+begin_src emacs-lisp
   (add-hook 'emacs-startup-hook
-            (lambda ()
-              (setq gc-cons-threshold 16777216
-                    gc-cons-percentage 0.1
-                    file-name-handler-alist default-file-name-handler-alist)))
+	    (lambda ()
+	      (setq gc-cons-threshold 16777216
+		    gc-cons-percentage 0.1
+		    file-name-handler-alist default-file-name-handler-alist)))
 #+end_src
 
 Garbage-collect on focus-out. Emacs /should/ feel snappier overall.
 With Emacs 27.1, focus-out-hook is deprecated.
 
 #+BEGIN_SRC emacs-lisp
-  (add-function :after after-focus-change-function (unless (frame-focus-state) #'garbage-collect))
+  (add-function :after after-focus-change-function
+		(unless (frame-focus-state) #'garbage-collect))
 #+END_SRC
 
 Apparently this can result in a significant speedup when using fonts
