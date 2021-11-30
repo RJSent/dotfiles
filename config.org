@@ -1,7 +1,7 @@
 # -*- eval: (remove-hook 'before-save-hook 'org-encrypt-entries t); eval: (auto-save-mode 0); -*-
 #+TITLE: Configuration
 #+AUTHOR: Richard Sent
-#+PROPERTY: header-args :results silent :tangle yes :mkdirp yes
+#+PROPERTY: header-args :results silent :mkdirp yes
 
 This is a comprehensive configuration file for my system.
 
