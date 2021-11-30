@@ -225,6 +225,9 @@ isn't the best solution long term.
   export QT_SCALE_FACTOR=2.0
 #+end_src
 
+FIXME: This isn't applied, as if .bash_profile isn't being sourced by
+the login shell. (At least, the export is lost on interactive shells)
+
 
 ** Idle
 
