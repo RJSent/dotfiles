@@ -119,7 +119,6 @@ config file.
 #+begin_src bash :tangle ~/.profile
   # Enable Wayland support for Firefox
   export MOZ_ENABLE_WAYLAND=1
-
 #+end_src
 
 * Fontconfig
@@ -1541,6 +1540,15 @@ applications.
   # Dir.mkdir(history_dir) unless Dir.exist?(history_dir = File.join(ENV['XDG_DATA_HOME'], 'irb'))
   unless Dir.exist?(history_dir = File.join(ENV['XDG_DATA_HOME'], 'irb')) then Dir.mkdir(history_dir) end
   IRB.conf[:HISTORY_FILE] ||= File.join(history_dir, 'irb_history') 
+#+end_src
+
+#+begin_src bash :tangle ~/.profile
+  if [[ "$XDG_CONFIG_HOME" ]]; then
+      export IRBRC="$XDG_CONFIG_HOME"/irb/irbrc
+  else
+      export IRBRC=~/.config/irb/irbrc
+  fi
+
 #+end_src
 
 * Nano
