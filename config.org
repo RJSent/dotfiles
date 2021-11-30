@@ -2440,14 +2440,19 @@ Show a dashboard on startup.
 		("n" . dashboard-next-line)
 		("p" . dashboard-previous-line))
     :config
+    (set-face-attribute 'dashboard-items-face nil :weight 'normal)
+    (set-face-attribute 'dashboard-heading nil :weight 'semi-bold)
+    (set-face-attribute 'dashboard-text-banner nil :weight 'semi-bold)
     (setq dashboard-project-backend 'projectile
 	  ;; initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
 	  dashboard-set-navigator t
-	  dashboard-startup-banner 'logo
+	  dashboard-startup-banner 1
+	  ;; There's a weird interaction with org, org-superstar, and
+	  ;; dashboard that breaks fontifying the startup-banner when
+	  ;; agenda items are used
 	  dashboard-items '((projects  . 8)
 			    (bookmarks . 5)
-			    (recents . 5)
-			    (agenda . 5))
+			    (recents . 5))
 	  ;; override "p" binding for projects, can't be done with :bind
 	  dashboard-item-shortcuts '((recents . "r")
 				     (bookmarks . "m")
@@ -2897,7 +2902,6 @@ the org-latex-logfile-extensions when initially exporting the file.
 	   ;; TODO: try to move counsel bindings to use-package counsel
 	   ("C-c C-j" . counsel-org-goto)
 	   ("C-c C-q" . counsel-org-tag))
-    :after (counsel) ; Not functionally needed, just in case for the binding
     :config
     (setq org-startup-folded t
 	  org-highlight-latex-and-related '(native)
@@ -2942,11 +2946,11 @@ the org-latex-logfile-extensions when initially exporting the file.
 		    org-level-7
 		    org-level-8))
       (set-face-attribute face nil :family "monospace"))
-      (defun update-org-latex-fragment-scale ()
-	(org-latex-preview '(64))
-	(let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
-	  (plist-put org-format-latex-options :scale (* 2.3 text-scale-factor))))
-      (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale))
+    (defun update-org-latex-fragment-scale ()
+      (org-latex-preview '(64))
+      (let ((text-scale-factor (expt text-scale-mode-step text-scale-mode-amount)))
+	(plist-put org-format-latex-options :scale (* 2.3 text-scale-factor))))
+    (add-hook 'text-scale-mode-hook 'update-org-latex-fragment-scale))
 #+end_src
 
 **** Extensions
@@ -3015,8 +3019,8 @@ I wasn't able to solve this issue, so I just removed the autoload that
 #+begin_src emacs-lisp
   (use-package org-crypt
     :straight nil
-    :demand t
     :bind ("C-c d" . org-decrypt-entries)
+    :commands org-decrypt-entries org-encrypt-entries
     :config
     (org-crypt-use-before-save-magic)
     (setq org-crypt-key "1982679C"        ; Change to your key
