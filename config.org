@@ -101,8 +101,9 @@ config file.
       . ~/.bashrc
   fi
 
-  # Uncomment if I start using .profile shenanigans
-  # [[ -r ~/.profile ]] && . ~/.profile
+  # See https://askubuntu.com/a/121075 for what should go
+  # in .bashrc, .bash_profile, and .profile
+  [[ -r ~/.profile ]] && . ~/.profile
 
   # Use ssh-agent to temporarily store passphrases in RAM
   if ! pgrep -u "$USER" ssh-agent > /dev/null; then
@@ -111,9 +112,14 @@ config file.
   if [[ ! "$SSH_AUTH_SOCK" ]]; then
       source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
   fi
+#+end_src
 
+** .profile
+
+#+begin_src bash :tangle ~/.profile
   # Enable Wayland support for Firefox
   export MOZ_ENABLE_WAYLAND=1
+
 #+end_src
 
 * Fontconfig
@@ -218,16 +224,11 @@ And load the application on Sway startup.
 #+end_src
 
 While we're at at, let's also scale all Wayland-native QT
-applications. I currently set this in =.bash_profile=, which probably
-isn't the best solution long term.
+applications.
 
-#+begin_src bash :tangle ~/.bash_profile
+#+begin_src bash :tangle ~/.profile
   export QT_SCALE_FACTOR=2.0
 #+end_src
-
-FIXME: This isn't applied, as if .bash_profile isn't being sourced by
-the login shell. (At least, the export is lost on interactive shells)
-
 
 ** Idle
 
