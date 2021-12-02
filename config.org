@@ -5,6 +5,11 @@
 
 This is a comprehensive configuration file for my system.
 
+I still need to implement package installing using GNU Guix. ~wob~ and
+~pywal~ are two that I am looking at. I also want to migrate more
+packages to use Guix to improve migratability of my configuration to
+new machines.
+
 * Warning!
 
 When using noweb, be /very/ careful to be consistent with function
@@ -3709,3 +3714,5 @@ XGG2dQfYvBJXSYZdO6ISaolh/TzGRod+y+m+EMQq7JKOEQPos1tPamXjgOCeSOmO
 aAExlvI0eJ2QDxaKnVpgDCS9vHB0cQ/STjNIIe8=
 =ejX2
 -----END PGP MESSAGE-----
+
+
