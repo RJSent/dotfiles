@@ -43,6 +43,9 @@ try to use it during redirection.
 An incomplete =.bashrc= file. I plan on breaking it up across the
 config file.
 
+I also need to fix ssh-agent environment variables. They aren't passed
+to Emacs or other subprocesses when launched through dmenu.
+
 #+begin_src shell :tangle ~/.bashrc
   # /etc/skel/.bashrc
   #
