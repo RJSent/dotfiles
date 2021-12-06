@@ -3360,6 +3360,16 @@ the vterm buffer and whatever buffer you are editing.
     :bind ("C-c v" . vterm-toggle))
 #+end_src
 
+**** Eshell
+
+#+begin_src emacs-lisp
+  (use-package eshell
+    :commands eshell
+    :straight nil                         ; built in
+    :custom
+    (eshell-scroll-to-bottom-on-input t))
+#+end_src
+
 **** Magit
 
 | =magit= | [[https:magit.vc]] |
