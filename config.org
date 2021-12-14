@@ -3370,6 +3370,13 @@ the vterm buffer and whatever buffer you are editing.
     (eshell-scroll-to-bottom-on-input t))
 #+end_src
 
+***** Syntax Highlighting
+
+#+begin_src emacs-lisp
+  (use-package eshell-syntax-highlighting
+    :hook (eshell-mode . eshell-syntax-highlighting-global-mode))
+#+end_src
+
 **** Magit
 
 | =magit= | [[https:magit.vc]] |
