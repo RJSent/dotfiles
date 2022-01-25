@@ -94,8 +94,6 @@ to Emacs or other subprocesses when launched through dmenu.
   # Colored diffs and colored cats (meow)
   alias cdiff=colordiff
   alias ccat=bat
-
-  export EDITOR=$'jove'
 #+end_src
 
 ** .bash_profile
@@ -127,6 +125,12 @@ to Emacs or other subprocesses when launched through dmenu.
 #+begin_src bash :tangle ~/.profile
   # Enable Wayland support for Firefox
   export MOZ_ENABLE_WAYLAND=1
+
+  # Used by fish shell. Do I need full path?
+  export BROWSER=/usr/bin/firefox
+
+  # TODO: move to emacs -nw, need to test config
+  export EDITOR=jove
 #+end_src
 
 * Fish
