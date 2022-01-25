@@ -129,6 +129,35 @@ to Emacs or other subprocesses when launched through dmenu.
   export MOZ_ENABLE_WAYLAND=1
 #+end_src
 
+* Fish
+:PROPERTIES:
+:header-args: :tangle ~/.config/fish/config.fish
+:END:
+
+** Interactive
+
+*** Preamble
+
+#+begin_src shell
+  if status is-interactive
+#+end_src
+
+*** Body
+
+**** Dotfiles Alias
+
+#+begin_src shell
+  alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+#+end_src
+
+***** TODO Eliminate redundancy between bashrc and this
+
+*** Postamble
+
+#+begin_src shell
+  end
+#+end_src
+
 * Fontconfig
 
 I can use tools like ~fc-list~ to view what fonts I have installed and
@@ -1077,10 +1106,10 @@ applications.
   #   - (macOS) /bin/bash --login
   #   - (Linux/BSD) user login shell
   #   - (Windows) powershell
-  #shell:
-  #  program: /bin/bash
-  #  args:
-  #    - --login
+  shell:
+    program: /bin/fish
+    #  args:
+    #    - --login
 #+end_src
 
 ** Startup Directory
@@ -3345,7 +3374,9 @@ Projectile also supports creating a named vterm with
 #+begin_src emacs-lisp
   (use-package vterm
     :commands vterm
-    :config (setq vterm-timer-delay 0.01))
+    :config (setq vterm-timer-delay 0.01
+		  vterm-shell (or (executable-find "fish")
+				  "/bin/bash")))
 #+end_src
 
 ***** vterm-toggle
