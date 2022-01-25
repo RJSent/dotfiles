@@ -2490,6 +2490,12 @@ Highlight the line the cursor is on when scrolling.
     :config (beacon-mode 1))
 #+end_src
 
+**** Battery
+
+#+begin_src emacs-lisp
+  (display-battery-mode)
+#+end_src
+
 *** Navigation
 
 **** Ivy
