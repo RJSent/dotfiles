@@ -3563,6 +3563,7 @@ Basic =erc= configurations.
 	     "#erc" "#gentoo" "#gentoo-embedded"
 	     "#kde" "#libera" "#linux" "#org-mode"
 	     "#pine64" "#sway" "#sway-devel" ))
+	  erc-autojoin-delay 5
 	  erc-autojoin-timing 'ident
 	  erc-fill-function 'erc-fill-static
 	  erc-fill-static-center 16
