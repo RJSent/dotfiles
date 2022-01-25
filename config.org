@@ -2926,6 +2926,9 @@ config which resets ‘tab-always-indent’ back to the default:
 
 *** Org
 
+For latex previews, you also need =dvipng=. When I migrate to Guix, I
+should programmatically install it / add it to the manifest file.
+
 **** Main
 
 | =org= | https://orgmode.org/ |
