@@ -523,7 +523,7 @@ applications.
 
 ***** volume
 
-#+begin_src shell :tangle ~/bin/volume.sh :shebang !#/usr/bin/env bash
+#+begin_src shell :tangle ~/bin/volume.sh :shebang #!/usr/bin/env bash
   VOL=$(pactl get-sink-volume @DEFAULT_SINK@ | awk '$1=="Volume:" {printf "%4s", $5}')
 
   # Full and short texts
