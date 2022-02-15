@@ -2932,6 +2932,9 @@ config which resets ‘tab-always-indent’ back to the default:
 For latex previews, you also need =dvipng=. When I migrate to Guix, I
 should programmatically install it / add it to the manifest file.
 
+Also in case I ever have this problem in the future, for LaTeX previews
+to work, you need to enable png support for Emacs.
+
 **** Main
 
 | =org= | https://orgmode.org/ |
@@ -2972,6 +2975,7 @@ the org-latex-logfile-extensions when initially exporting the file.
 	  org-latex-prefer-user-labels t
 	  org-confirm-babel-evaluate nil
 	  org-agenda-files '("~/org")
+	  org-preview-latex-image-directory (concat (xdg-cache-home) "/emacs/ltximg")
 	  org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
 	  org-blank-before-new-entry '((heading . t) (plain-list-item . t))
 	  org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "log"
