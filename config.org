@@ -3512,6 +3512,15 @@ Another screensaver package.
     :commands fireplace)
 #+end_src
 
+**** Snow
+
+| =snow= | [[https://github.com/alphapapa/snow.el]] |
+
+#+begin_src emacs-lisp
+  (use-package snow
+    :commands snow)
+#+end_src
+
 *** Media
 
 **** RSS
