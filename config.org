@@ -3425,7 +3425,7 @@ the vterm buffer and whatever buffer you are editing.
 
 #+begin_src emacs-lisp
   (use-package eshell
-    :commands eshell
+    :bind ("C-c E" . eshell)
     :straight nil                         ; built in
     :custom
     (eshell-scroll-to-bottom-on-input t))
