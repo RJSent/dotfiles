@@ -2724,6 +2724,19 @@ characters, then use the home row to select where to move the cursor.
     :bind ("C-;" . avy-goto-char-2))
 #+end_src
 
+**** Dumb Jump
+
+#+begin_src emacs-lisp
+  (use-package dumb-jump
+    ;; Unless hook* is added I need to use this workaround.
+    ;; https://github.com/jwiegley/use-package/pull/916
+    :init (add-hook 'xref-backend-functions 'dumb-jump-xref-activate)
+    :commands dumb-jump-xref-activate
+    ;; Requires xref >= 1.1.0 or Emacs >= 28.1
+    :config (setq xref-show-definitions-function
+		  'xref-show-definitions-completing-read))
+#+end_src
+
 *** Editing
 
 This section is for non-language-specific customizations that still
