@@ -2680,7 +2680,10 @@ and/or =selectrum=.
     :diminish
     :config (projectile-mode +1)
     (setq projectile-completion-system 'ivy     ; Dashboard support
-	  projectile-git-submodule-command nil) ; prevent slowdowns with large submodules
+	  projectile-git-submodule-command nil  ; prevent slowdowns with large submodules
+	  ; minimize lag when working with svn on remote server
+	  ; https://github.com/bbatsov/projectile/issues/657
+	  projectile-file-exists-local-cache-expire 300) 
     :bind-keymap ("C-c p" . projectile-command-map))
 #+end_src
 
